@@ -68,9 +68,6 @@ public class Member implements OAuth2User {
     @Column(name = "fast_during_time")
     private Integer fastDuringTime;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Diet> scheduleList = new ArrayList<>();
-
 
     @Override
     public Map<String, Object> getAttributes() {

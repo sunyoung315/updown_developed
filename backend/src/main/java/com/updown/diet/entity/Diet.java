@@ -20,7 +20,7 @@ public class Diet {
     @Id
     @Column(name = "diet_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int dietId;
+    private Integer dietId;
 
     @ManyToOne
     @JoinColumn(name="member_id")
@@ -45,6 +45,6 @@ public class Diet {
     @Column(name = "diet_img")
     private String dietImg;
 
-    @Column(name = "is_fast")
+    @Column(name = "is_fast", nullable = false)
     private Boolean isFast;
 }
