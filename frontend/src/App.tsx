@@ -1,8 +1,5 @@
-import MainPage from '@/pages/MainPage';
-import LoginPage from '@/pages/LoginPage';
-import SignUpPage from '@/pages/SignUpPage';
-import LoadingPage from '@/pages/LoadingPage';
-import MyPage from '@/pages/MyPage';
+import { MainPage, LoginPage, LoadingPage, SignUpPage, MyPage } from '@/pages';
+import { BottomNav } from '@/components';
 import { getAccessToken, refreshAccessToken } from './api/auth';
 import { tokenStore } from './store';
 import { Route, Routes, useLocation } from 'react-router-dom';
@@ -38,8 +35,8 @@ function App() {
       }
     };
 
-    refresh(); // async 함수 실행
-  }, [location.pathname]); // 의존성 배열
+    refresh();
+  }, [location.pathname]);
 
   return (
     <AppWrapper>
@@ -49,11 +46,8 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/load" element={<LoadingPage />} />
         <Route path="/mypage" element={<MyPage />} />
-        {/* <Route
-          path="/mypage"
-          element={<MyPage tokenRefreshed={tokenRefreshed} />}
-        /> */}
       </Routes>
+      <BottomNav />
     </AppWrapper>
   );
 }
