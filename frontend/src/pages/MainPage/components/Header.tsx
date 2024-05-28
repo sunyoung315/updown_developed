@@ -1,43 +1,34 @@
 import { useState } from 'react';
-import LeftArrow from '@/assets/icon/left-arrow.svg';
-import RightArrow from '@/assets/icon/right-arrow.svg';
-import CalendarIcon from '@/assets/icon/calendar.svg';
+import LeftArrow from '@/assets/icons/left-arrow.svg';
+import RightArrow from '@/assets/icons/right-arrow.svg';
+import CalendarIcon from '@/assets/icons/calendar.svg';
 import styled from 'styled-components';
 
 const HeaderWrapper = styled.div`
-  height: 2rem;
-  background-color: #fffefc;
+  height: 3rem;
+  background-color: ${props => props.theme.white};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.8rem;
 `;
 
-const ArrowButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const ArrowButton = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
 `;
 
 const DateWrapper = styled.span`
-  font-size: 1rem;
+  font-size: 1.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 `;
 
-const CalendarButton = styled.button`
-  border: none;
-  background-color: transparent;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const CalendarButton = styled.img`
+  width: 1.1rem;
+  height: 1.1rem;
 `;
 
 const Header = () => {
@@ -68,13 +59,13 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
-      <ArrowButton onClick={prevDate}>
-        <img src={LeftArrow} />
-      </ArrowButton>
+      <button onClick={prevDate}>
+        <ArrowButton src={LeftArrow} />
+      </button>
       <DateWrapper>
-        <CalendarButton>
-          <img src={CalendarIcon} />
-        </CalendarButton>
+        <button>
+          <CalendarButton src={CalendarIcon} />
+        </button>
         {todayYear === year && todayMonth === month && todayDay === day
           ? '오늘'
           : todayYear === year && todayMonth === month && todayDay - 1 === day
@@ -83,9 +74,9 @@ const Header = () => {
               ? '내일'
               : selectedDate}
       </DateWrapper>
-      <ArrowButton onClick={nextDate}>
-        <img src={RightArrow} />
-      </ArrowButton>
+      <button onClick={nextDate}>
+        <ArrowButton src={RightArrow} />
+      </button>
     </HeaderWrapper>
   );
 };

@@ -3,22 +3,37 @@ import styled from 'styled-components';
 const DailyRecordWrapper = styled.div`
   width: 100%;
   height: 30rem;
-  background-color: #f4bfc5;
+  background-color: ${props => props.theme.pink};
 `;
 
 const TitleWrapper = styled.div`
   width: 100%;
-  height: 5rem;
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem;
-  font-weight: bold;
+  align-items: center;
+  padding-left: 1.8rem;
+  padding-right: 1.8rem;
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+  font-size: 1.25rem;
+`;
+
+const ShareButtomWrapper = styled.button`
+  width: 4.5rem;
+  padding: 0.3rem;
+  background-color: ${props => props.theme.darkpink};
+  font-size: 1rem;
+  color: ${props => props.theme.white};
+  border-radius: 0.5rem;
 `;
 
 const DailyRecord = () => {
   return (
     <DailyRecordWrapper>
-      <TitleWrapper>하루 기록</TitleWrapper>
+      <TitleWrapper>
+        <span>하루 기록</span>
+        <ShareButtomWrapper>공유하기</ShareButtomWrapper>
+      </TitleWrapper>
     </DailyRecordWrapper>
   );
 };

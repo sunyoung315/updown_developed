@@ -1,5 +1,4 @@
-import Header from './components/Header';
-import DailyRecord from './components/DailyRecord';
+import { Header, DailyRecord, DailyDiet } from './components';
 import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
@@ -12,6 +11,7 @@ const MainPage = () => {
     <>
       <Header />
       <DailyRecord />
+      <DailyDiet />
       <button onClick={goMyPage}>마이페이지</button>
     </>
   );

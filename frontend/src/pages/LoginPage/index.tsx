@@ -1,4 +1,4 @@
-import kakao from '@/assets/image/kakao_btn.png';
+import kakao from '@/assets/images/kakao_btn.png';
 import styled from 'styled-components';
 
 const MainPageWrapper = styled.div`

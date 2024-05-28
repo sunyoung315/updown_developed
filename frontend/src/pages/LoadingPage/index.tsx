@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAxios from '@/util/http-commons';
-// import axios from 'axios';
 import { httpStatusCode } from '@/util/http-status';
 import { setAccessToken } from '@/api/auth';
 

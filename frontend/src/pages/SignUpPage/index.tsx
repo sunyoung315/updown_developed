@@ -7,12 +7,12 @@ const SignUpPage = () => {
   const navigator = useNavigate();
 
   const [data, setData] = useState({
-    gender: '',
+    gender: '남성',
     age: 0,
     height: 0.0,
     nowWeight: 0.0,
     targetWeight: 0.0,
-    activeLevel: '',
+    activeLevel: '거의없음',
     targetCalories: 0.0,
   });
 
