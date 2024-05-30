@@ -18,9 +18,9 @@ const TitleWrapper = styled.div`
   font-size: 1.25rem;
 `;
 
-const ShareButtomWrapper = styled.button`
+const ShareButtonWrapper = styled.button`
   width: 4.5rem;
-  padding: 0.3rem;
+  padding: 0.4rem;
   background-color: ${props => props.theme.darkpink};
   font-size: 1rem;
   color: ${props => props.theme.white};
@@ -32,7 +32,7 @@ const DailyRecord = () => {
     <DailyRecordWrapper>
       <TitleWrapper>
         <span>하루 기록</span>
-        <ShareButtomWrapper>공유하기</ShareButtomWrapper>
+        <ShareButtonWrapper>공유하기</ShareButtonWrapper>
       </TitleWrapper>
     </DailyRecordWrapper>
   );

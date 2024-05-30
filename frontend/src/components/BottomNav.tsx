@@ -4,6 +4,11 @@ const BottomNavWrapper = styled.div`
   height: 3.25rem;
   display: flex;
   justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: ${props => props.theme.white};
 `;
 
 const BottomNav = () => {

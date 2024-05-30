@@ -32,28 +32,31 @@ const DailyDiet = () => {
   const [breakfast, setBreakfast] = useState({
     dietId: 0,
     category: '아침',
-    dietImg: 'imageSrc',
+    dietImg: 'pouring',
     totalCalories: 100.0,
     isFast: false,
   });
+
   const [lunch, setLunch] = useState({
     dietId: 0,
     category: '점심',
-    dietImg: 'imageSrc',
+    dietImg: 'rice',
     totalCalories: 200.0,
     isFast: false,
   });
+
   const [dinner, setDinner] = useState({
     dietId: 0,
     category: '저녁',
-    dietImg: 'imageSrc',
+    dietImg: 'salad',
     totalCalories: 300.0,
     isFast: false,
   });
+
   const [snack, setSnack] = useState({
     dietId: 0,
     category: '간식',
-    dietImg: 'imageSrc',
+    dietImg: 'juice',
     totalCalories: 400.0,
     isFast: false,
   });

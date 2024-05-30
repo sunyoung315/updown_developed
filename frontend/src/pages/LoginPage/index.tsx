@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const MainPageWrapper = styled.div`
   width: 100%;
   height: 100vh;
-  background-image: url('src/assets/image/mainpage.png');
+  background-image: url('src/assets/images/mainpage.png');
   background-size: cover;
   background-position: center;
   display: flex;

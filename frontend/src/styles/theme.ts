@@ -9,6 +9,7 @@ const theme = {
   darkgreen: '#7FA17D',
   skyblue: '#A4CCD6',
   blue: '#6298A5',
+  bordergrey: '#EEEEEE',
   lightgrey: '#F6F6F6',
   grey: '#B7B7B7',
   darkgrey: '#242424',

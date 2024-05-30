@@ -1,4 +1,11 @@
-import { MainPage, LoginPage, LoadingPage, SignUpPage, MyPage } from '@/pages';
+import {
+  MainPage,
+  LoginPage,
+  LoadingPage,
+  SignUpPage,
+  MyPage,
+  DietPage,
+} from '@/pages';
 import { BottomNav } from '@/components';
 import { getAccessToken, refreshAccessToken } from './api/auth';
 import { tokenStore } from './store';
@@ -10,7 +17,7 @@ const AppWrapper = styled.div`
   margin: auto;
   max-width: 430px;
   min-height: 100vh;
-  background-color: #fffefc;
+  background-color: white;
 `;
 
 function App() {
@@ -46,8 +53,10 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/load" element={<LoadingPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/diet/:category" element={<DietPage />} />
+        {/* <Route path="/diet/regist/:category" element={<DietRegist />} /> */}
       </Routes>
-      <BottomNav />
+      {/* <BottomNav /> */}
     </AppWrapper>
   );
 }

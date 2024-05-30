@@ -7,6 +7,7 @@ const GlobalFont = createGlobalStyle`
     @font-face {
         font-family: 'omyudapretty';
         src: local('omuydapretty'), url(${OmyuPretty}) format('woff');
+        font-weight: 'normal';
     }
 `;
 
