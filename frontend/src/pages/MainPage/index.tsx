@@ -1,18 +1,19 @@
+import styled from 'styled-components';
 import { Header, DailyRecord, DailyDiet } from './components';
-import { useNavigate } from 'react-router-dom';
+
+const ContentsWrapper = styled.div`
+  padding-top: 3rem;
+  padding-bottom: 3.25rem;
+`;
 
 const MainPage = () => {
-  const navigator = useNavigate();
-  const goMyPage = () => {
-    navigator('/mypage');
-  };
-
   return (
     <>
       <Header />
-      <DailyRecord />
-      <DailyDiet />
-      <button onClick={goMyPage}>마이페이지</button>
+      <ContentsWrapper>
+        <DailyRecord />
+        <DailyDiet />
+      </ContentsWrapper>
     </>
   );
 };

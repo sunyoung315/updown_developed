@@ -1,5 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+// import useAxios from '@/util/http-commons';
 import { OneFood } from './components';
+import { BottomNav, Button } from '@/components';
 import BackIcon from '@/assets/icons/back-icon.svg';
 import styled from 'styled-components';
 
@@ -14,7 +16,7 @@ const SummaryWrapper = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
   padding-left: 1.5rem;
@@ -87,6 +89,7 @@ const FoodListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.7rem;
+  margin-bottom: 3rem;
 `;
 
 const Category = styled.div`
@@ -100,11 +103,38 @@ const Count = styled.span`
   color: ${props => props.theme.orange};
 `;
 
+const ButtonWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1.3rem;
+  column-gap: 1.3rem;
+  padding: 1rem 0;
+`;
+
 const DietPage = () => {
   const navigator = useNavigate();
 
   const location = useLocation();
   const dietId = location.state.dietId;
+  const category = decodeURI(location.pathname.split('/')[2]);
+
+  // const foodList = useAxios.get(`/diet/${category}`, {data: dietId});
+  const foodList = [
+    {
+      foodId: 1,
+      foodName: '마라탕',
+      brandName: '춘리마라탕',
+      foodIntake: '1인분 (700g)',
+      foodCalories: 625,
+    },
+    {
+      foodId: 2,
+      foodName: '로티셰리바베큐 샌드위치',
+      brandName: '서브웨이',
+      foodIntake: '1인분 (300g)',
+      foodCalories: 410,
+    },
+  ];
 
   const goMain = () => {
     navigator('/main');
@@ -141,9 +171,15 @@ const DietPage = () => {
       </SummaryWrapper>
       <FoodListWrapper>
         <Category>
-          점심 메뉴 <Count>1</Count>
+          {category} 메뉴 <Count>{foodList.length}</Count>
         </Category>
-        <OneFood />
+        {foodList.map(food => (
+          <OneFood food={food} key={food.foodId} />
+        ))}
+        <ButtonWrapper>
+          <Button buttonName="검색" />
+          <Button buttonName="직접 등록" />
+        </ButtonWrapper>
       </FoodListWrapper>
     </>
   );

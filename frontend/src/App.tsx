@@ -45,6 +45,12 @@ function App() {
     refresh();
   }, [location.pathname]);
 
+  // BottomNav가 보여야 하는 경로인지 체크
+  const showBottomNav =
+    location.pathname !== '/' &&
+    location.pathname !== '/signup' &&
+    location.pathname !== '/load';
+
   return (
     <AppWrapper>
       <Routes>
@@ -56,7 +62,7 @@ function App() {
         <Route path="/diet/:category" element={<DietPage />} />
         {/* <Route path="/diet/regist/:category" element={<DietRegist />} /> */}
       </Routes>
-      {/* <BottomNav /> */}
+      {showBottomNav && <BottomNav />}
     </AppWrapper>
   );
 }

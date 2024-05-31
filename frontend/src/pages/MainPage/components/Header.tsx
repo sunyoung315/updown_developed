@@ -5,12 +5,14 @@ import CalendarIcon from '@/assets/icons/calendar.svg';
 import styled from 'styled-components';
 
 const HeaderWrapper = styled.div`
+  width: 100%;
   height: 3rem;
   background-color: ${props => props.theme.white};
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem;
+  position: fixed;
 `;
 
 const ArrowButton = styled.img`

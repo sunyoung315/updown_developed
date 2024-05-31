@@ -6,7 +6,20 @@ export interface tokenState {
 export type dietProps = {
   dietId: number;
   category: string;
-  dietImg: string;
-  totalCalories: number;
-  isFast: boolean;
+  dietImg?: string;
+  totalCalories?: number;
+  isFast?: boolean;
+};
+
+export type foodProps = {
+  foodId: number;
+  foodName: string;
+  brandName?: string;
+  foodIntake?: string;
+  foodCalories?: number;
+};
+
+export type buttonProps = {
+  buttonName?: string;
+  onClick?: () => void;
 };

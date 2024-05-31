@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import CloseBtn from '@/assets/icons/close-icon.svg';
 import styled from 'styled-components';
+import { foodProps } from '@/types/type';
+import { BottomNav } from '@/components';
 
 const OneFoodWrapper = styled.div`
   width: 100%;
@@ -8,6 +11,8 @@ const OneFoodWrapper = styled.div`
   border: 1px solid #eeeeee;
   border-radius: 0.5rem;
   padding: 1.1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
 `;
 
 const TopWrapper = styled.div`
@@ -47,22 +52,36 @@ const Calorie = styled.span`
   color: ${props => props.theme.black};
 `;
 
-const OneFood = () => {
+const OneFood = ({ food }: { food: foodProps }) => {
+  const { foodId, foodName, brandName, foodIntake, foodCalories } = food;
+
+  const navigator = useNavigate();
+  const goFoodDetail = () => {
+    navigator(`/diet/food/${foodId}`);
+  };
+
+  const deleteFood = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation(); // 이벤트 전파 중단
+    console.log('음식 삭제');
+  };
+
   return (
-    <OneFoodWrapper>
+    <OneFoodWrapper onClick={goFoodDetail}>
       <TopWrapper>
-        <FoodName>마라탕</FoodName>
-        <button>
+        <FoodName>{foodName}</FoodName>
+        <button onClick={event => deleteFood(event)}>
           <img src={CloseBtn} alt="close" />
         </button>
       </TopWrapper>
       <BottomWrapper>
         <FoodInfo>
           <BrandName>
-            춘리마라탕 &nbsp;<Amount>1인분 (700g)</Amount>
+            {brandName} &nbsp;<Amount>{foodIntake}</Amount>
           </BrandName>
         </FoodInfo>
-        <Calorie>625 Kcal</Calorie>
+        <Calorie>{foodCalories} Kcal</Calorie>
       </BottomWrapper>
     </OneFoodWrapper>
   );
