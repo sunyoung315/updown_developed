@@ -109,5 +109,9 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<?> test(){
+        return ResponseEntity.ok("배포 테스트입니다.");
+    }
 
 }
