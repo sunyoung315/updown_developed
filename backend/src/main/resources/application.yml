@@ -8,9 +8,9 @@ spring:
     import:
       - optional:file:.env[.properties]
   datasource:
-    url: ${DB_URL}
-    username: ${USER_NAME}
-    password: ${USER_PASSWORD}
+    url: jdbc:mariadb://43.200.9.203:3306/updown?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: updown
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     properties:
@@ -20,10 +20,10 @@ spring:
         use_sql_comments: true
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      host: 43.200.9.203
+      port: 6379
   jwt:
-    secret: ${JWT_KEY}
+    secret: NiwgcnInBfUM27lY4FOev97y0eSzxBFEPMgcTpr8ZrU=
   security:
     oauth2:
       client:
@@ -42,3 +42,50 @@ spring:
             authorization-grant-type: authorization_code
             client-name: kakao
             scope: account_email
+
+
+
+#spring:
+#  application:
+#    name: updown
+#  messages:
+#    basename: errors, messages
+#    encoding: UTF-8
+#  config:
+#    import:
+#      - optional:file:.env[.properties]
+#  datasource:
+#    url: ${DB_URL}
+#    username: ${USER_NAME}
+#    password: ${USER_PASSWORD}
+#    driver-class-name: org.mariadb.jdbc.Driver
+#  jpa:
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true
+#  data:
+#    redis:
+#      host: ${REDIS_HOST}
+#      port: ${REDIS_PORT}
+#  jwt:
+#    secret: ${JWT_KEY}
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          kakao:
+#            authorization-uri: https://kauth.kakao.com/oauth/authorize
+#            token-uri: https://kauth.kakao.com/oauth/token
+#            user-info-uri: https://kapi.kakao.com/v2/user/me
+#            user-name-attribute: id
+#        registration:
+#          kakao:
+#            client-id: f2c2997e17162c11e27d08ea2b904d5e
+#            client-secret: DNGedRz0MhC7PHufXc2aJtCiXP62xZiw
+#            client-authentication-method: client_secret_post
+#            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+#            authorization-grant-type: authorization_code
+#            client-name: kakao
+#            scope: account_email
