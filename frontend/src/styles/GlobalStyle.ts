@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import theme from './theme';
 import reset from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
@@ -30,6 +31,17 @@ const GlobalStyle = createGlobalStyle`
         align-items: center;
         justify-content: center;
         font-family: "omyudapretty";
+        }
+    input {
+        font-family: "omyudapretty";
+        border: 0;
+        background: transparent;
+    }
+    input:focus {
+        outline: none;
+    }
+    input::placeholder {
+        color: ${theme.grey};
     }
 `;
 

@@ -31,7 +31,7 @@ const DietWrapper = styled.div`
 const DailyDiet = () => {
   const [breakfast, setBreakfast] = useState({
     dietId: 0,
-    category: '아침',
+    category: 'breakfast',
     dietImg: 'pouring',
     totalCalories: 100.0,
     isFast: false,
@@ -39,7 +39,7 @@ const DailyDiet = () => {
 
   const [lunch, setLunch] = useState({
     dietId: 0,
-    category: '점심',
+    category: 'lunch',
     dietImg: 'rice',
     totalCalories: 200.0,
     isFast: false,
@@ -47,7 +47,7 @@ const DailyDiet = () => {
 
   const [dinner, setDinner] = useState({
     dietId: 0,
-    category: '저녁',
+    category: 'dinner',
     dietImg: 'salad',
     totalCalories: 300.0,
     isFast: false,
@@ -55,7 +55,7 @@ const DailyDiet = () => {
 
   const [snack, setSnack] = useState({
     dietId: 0,
-    category: '간식',
+    category: 'snack',
     dietImg: 'juice',
     totalCalories: 400.0,
     isFast: false,

@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 const HeaderWrapper = styled.div`
   width: 100%;
+  min-width: 375px;
+  max-width: 430px;
   height: 3rem;
   background-color: ${props => props.theme.white};
   display: flex;

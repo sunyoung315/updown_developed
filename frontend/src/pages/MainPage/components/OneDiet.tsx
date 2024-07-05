@@ -60,7 +60,15 @@ const OneDiet = ({ diet }: { diet: dietProps }) => {
   return (
     <OneDietWrapper>
       <CategoryWrapper>
-        <Category>{category}</Category>
+        <Category>
+          {category == 'breakfast'
+            ? '아침'
+            : category == 'lunch'
+              ? '점심'
+              : category == 'dinner'
+                ? '저녁'
+                : '간식'}
+        </Category>
         {dietId === 0 ? (
           <button onClick={goDietDetails}>
             <img src={PlusIcon} alt="plus" />

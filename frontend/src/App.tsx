@@ -5,6 +5,8 @@ import {
   SignUpPage,
   MyPage,
   DietPage,
+  DietRegistPage,
+  DietSearchPage,
 } from '@/pages';
 import { BottomNav } from '@/components';
 import { getAccessToken, refreshAccessToken } from './api/auth';
@@ -60,6 +62,8 @@ function App() {
         <Route path="/load" element={<LoadingPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/diet/:category" element={<DietPage />} />
+        <Route path="/diet/regist" element={<DietRegistPage />} />
+        <Route path="/diet/search" element={<DietSearchPage />} />
         {/* <Route path="/diet/regist/:category" element={<DietRegist />} /> */}
       </Routes>
       {showBottomNav && <BottomNav />}

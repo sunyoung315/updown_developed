@@ -1,8 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 // import useAxios from '@/util/http-commons';
 import { OneFood } from './components';
-import { BottomNav, Button } from '@/components';
-import BackIcon from '@/assets/icons/back-icon.svg';
+import { Button, Header } from '@/components';
 import styled from 'styled-components';
 
 const SummaryWrapper = styled.div`
@@ -11,26 +10,6 @@ const SummaryWrapper = styled.div`
   aspect-ratio: auto 1 / 1;
   background-color: ${props => props.theme.orange};
   text-align: center;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-`;
-
-const NutritionButton = styled.button`
-  width: 6rem;
-  padding: 0.4rem;
-  background-color: ${props => props.theme.white};
-  color: ${props => props.theme.orange};
-  font-size: 1rem;
-  text-align: center;
-  border-radius: 0.5rem;
 `;
 
 const Calorie = styled.span`
@@ -88,8 +67,7 @@ const Image = styled.img`
 const FoodListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1.7rem;
-  margin-bottom: 3rem;
+  padding: 1.7rem 1.7rem 3.25rem;
 `;
 
 const Category = styled.div`
@@ -108,7 +86,7 @@ const ButtonWrapper = styled.div`
   grid-template-columns: repeat(2, 1fr);
   row-gap: 1.3rem;
   column-gap: 1.3rem;
-  padding: 1rem 0;
+  padding: 1rem 0 1rem;
 `;
 
 const DietPage = () => {
@@ -124,14 +102,14 @@ const DietPage = () => {
       foodId: 1,
       foodName: '마라탕',
       brandName: '춘리마라탕',
-      foodIntake: '1인분 (700g)',
+      foodIntake: '700g',
       foodCalories: 625,
     },
     {
       foodId: 2,
       foodName: '로티셰리바베큐 샌드위치',
       brandName: '서브웨이',
-      foodIntake: '1인분 (300g)',
+      foodIntake: '300g',
       foodCalories: 410,
     },
   ];
@@ -140,19 +118,10 @@ const DietPage = () => {
     navigator('/main');
   };
 
-  const openModal = () => {
-    console.log('영양 성분 상세');
-  };
-
   return (
     <>
       <SummaryWrapper>
-        <Header>
-          <button onClick={goMain}>
-            <img src={BackIcon} alt="back" />
-          </button>
-          <NutritionButton onClick={openModal}>영양 성분 상세</NutritionButton>
-        </Header>
+        <Header onClick={goMain} nutritionButton={true} />
         <div>
           <Calorie>1000 Kcal </Calorie>
           <Title> 먹었어요</Title>
@@ -171,14 +140,24 @@ const DietPage = () => {
       </SummaryWrapper>
       <FoodListWrapper>
         <Category>
-          {category} 메뉴 <Count>{foodList.length}</Count>
+          {category == 'breakfast'
+            ? '아침'
+            : category == 'lunch'
+              ? '점심'
+              : category == 'dinner'
+                ? '저녁'
+                : '간식'}{' '}
+          메뉴 <Count>{foodList.length}</Count>
         </Category>
         {foodList.map(food => (
           <OneFood food={food} key={food.foodId} />
         ))}
         <ButtonWrapper>
-          <Button buttonName="검색" />
-          <Button buttonName="직접 등록" />
+          <Button buttonName="검색" onClick={() => navigator('/diet/search')} />
+          <Button
+            buttonName="직접 등록"
+            onClick={() => navigator('/diet/regist', { state: { category } })}
+          />
         </ButtonWrapper>
       </FoodListWrapper>
     </>
