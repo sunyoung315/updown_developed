@@ -4,8 +4,12 @@ import {
   LoadingPage,
   SignUpPage,
   MyPage,
+  DietDetailPage,
+  DietEditPage,
   DietPage,
   DietRegistPage,
+  DietScEditPage,
+  DietScRegistPage,
   DietSearchPage,
 } from '@/pages';
 import { BottomNav } from '@/components';
@@ -61,10 +65,13 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/load" element={<LoadingPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/diet/detail/:foodId" element={<DietDetailPage />} />
+        <Route path="/diet/edit/:foodId" element={<DietEditPage />} />
+        <Route path="/diet/edit/sc/:foodId" element={<DietScEditPage />} />
         <Route path="/diet/:category" element={<DietPage />} />
         <Route path="/diet/regist" element={<DietRegistPage />} />
+        <Route path="/diet/regist/sc" element={<DietScRegistPage />} />
         <Route path="/diet/search" element={<DietSearchPage />} />
-        {/* <Route path="/diet/regist/:category" element={<DietRegist />} /> */}
       </Routes>
       {showBottomNav && <BottomNav />}
     </AppWrapper>

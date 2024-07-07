@@ -1,15 +1,15 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 // import useAxios from '@/util/http-commons';
-import { OneFood } from './components';
+import { Box, IconButton } from '@/components';
 import { Button, Header } from '@/components';
 import styled from 'styled-components';
 
 const SummaryWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  aspect-ratio: auto 1 / 1;
   background-color: ${props => props.theme.orange};
   text-align: center;
+  padding-bottom: 2.5rem;
 `;
 
 const Calorie = styled.span`
@@ -48,15 +48,20 @@ const Gram = styled.span`
   padding-right: 1.8rem;
 `;
 
-const ImageWrapper = styled.div`
+const ImageBox = styled.div`
   width: 13rem;
   height: 13rem;
   border-radius: 0.5rem;
   background-color: ${props => props.theme.yellow};
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  align-items: center;
+  position: relative;
+`;
+
+const ImageIcon = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
 
 const Image = styled.img`
@@ -99,18 +104,40 @@ const DietPage = () => {
   // const foodList = useAxios.get(`/diet/${category}`, {data: dietId});
   const foodList = [
     {
-      foodId: 1,
+      foodId: 11,
       foodName: '마라탕',
       brandName: '춘리마라탕',
-      foodIntake: '700g',
-      foodCalories: 625,
+      foodIntake: 700,
+      foodCalories: 1000,
+      carbohydrate: 10,
+      sugars: 2,
+      dietaryFiber: 1,
+      protein: 1.4,
+      fat: 20,
+      saturatedFat: 15,
+      transFat: 2,
+      cholesterol: 15,
+      sodium: 2000,
+      potassium: 400,
+      method: true,
     },
     {
-      foodId: 2,
+      foodId: 22,
       foodName: '로티셰리바베큐 샌드위치',
       brandName: '서브웨이',
-      foodIntake: '300g',
+      foodIntake: 300,
       foodCalories: 410,
+      carbohydrate: 10,
+      sugars: 2,
+      dietaryFiber: 1,
+      protein: 1.4,
+      fat: 20,
+      saturatedFat: 15,
+      transFat: 2,
+      cholesterol: 15,
+      sodium: 2000,
+      potassium: 400,
+      method: false,
     },
   ];
 
@@ -118,10 +145,14 @@ const DietPage = () => {
     navigator('/main');
   };
 
+  const registPhoto = () => {
+    console.log('식단 사진 등록');
+  };
+
   return (
     <>
       <SummaryWrapper>
-        <Header onClick={goMain} nutritionButton={true} />
+        <Header iconName="back" onClick={goMain} nutritionButton={true} />
         <div>
           <Calorie>1000 Kcal </Calorie>
           <Title> 먹었어요</Title>
@@ -134,9 +165,12 @@ const DietPage = () => {
           <Nutrition>지</Nutrition>
           <Gram style={{ paddingRight: '0' }}>10 g</Gram>
         </NutritionWrapper>
-        <ImageWrapper>
+        <ImageBox>
           <Image src="/images/salad.png" alt="salad" />
-        </ImageWrapper>
+          <ImageIcon>
+            <IconButton iconName="photo" onClick={registPhoto} />
+          </ImageIcon>
+        </ImageBox>
       </SummaryWrapper>
       <FoodListWrapper>
         <Category>
@@ -150,10 +184,13 @@ const DietPage = () => {
           메뉴 <Count>{foodList.length}</Count>
         </Category>
         {foodList.map(food => (
-          <OneFood food={food} key={food.foodId} />
+          <Box type="diet" info={food} key={food.foodId} />
         ))}
         <ButtonWrapper>
-          <Button buttonName="검색" onClick={() => navigator('/diet/search')} />
+          <Button
+            buttonName="검색"
+            onClick={() => navigator('/diet/search', { state: { category } })}
+          />
           <Button
             buttonName="직접 등록"
             onClick={() => navigator('/diet/regist', { state: { category } })}

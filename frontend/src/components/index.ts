@@ -1,8 +1,21 @@
 import BottomNav from './BottomNav';
+import Box from './Box';
 import Button from './Button';
 import Header from './Header';
 import IconButton from './IconButton';
+import Info from './Info';
 import Input from './Input';
-import Search from './Search';
+import SearchInput from './SearchInput';
+import SearchResult from './SearchResult';
 
-export { BottomNav, Button, Header, IconButton, Input, Search };
+export {
+  BottomNav,
+  Box,
+  Button,
+  Header,
+  IconButton,
+  Info,
+  Input,
+  SearchInput,
+  SearchResult,
+};

@@ -1,4 +1,5 @@
 import theme from '@/styles/theme';
+import iconPaths from '@/styles/icon';
 
 export interface tokenState {
   checkToken: boolean;
@@ -13,13 +14,41 @@ export type dietProps = {
   isFast?: boolean;
 };
 
-export type foodProps = {
+type foodProps = {
   foodId: number;
   foodName: string;
   brandName?: string;
-  foodIntake?: string;
+  foodIntake?: number;
   foodCalories?: number;
+  method?: boolean;
 };
+
+type exerciseProps = {
+  exerciseId: number;
+  exerciseName: string;
+  exerciseTime: number;
+  exerciseBurned: number;
+  exerciseCount?: number;
+  exerciseWeight?: number;
+  exerciseDistance?: number;
+  method?: boolean;
+};
+
+type commonProps = {
+  type: 'diet' | 'exercise';
+};
+
+type dietCommonProps = commonProps & {
+  type: 'diet';
+  info: foodProps;
+};
+
+type exerciseCommonProps = commonProps & {
+  type: 'exercise';
+  info: exerciseProps;
+};
+
+export type boxProps = dietCommonProps | exerciseCommonProps;
 
 export type buttonProps = {
   buttonName?: string;
@@ -36,10 +65,11 @@ export type inputProps = {
   starColor?: keyof typeof theme;
   unit?: string;
   onChange: React.Dispatch<React.SetStateAction<any>>;
+  value?: string | number;
 };
 
-export type HeaderProps = {
-  iconName?: string;
+export type headerProps = {
+  iconName: keyof typeof iconPaths;
   onClick?: () => void;
   headerName?: string;
   nutritionButton?: boolean;
@@ -49,13 +79,81 @@ export type HeaderProps = {
   searchFood?: () => void;
 };
 
-export type IconButtonProps = {
-  iconName?: string;
-  onClick?: () => void;
+export type iconButtonProps = {
+  iconName: keyof typeof iconPaths;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
-export type SearchProps = {
+export type searchProps = {
   placeholder?: string;
   onChange?: React.Dispatch<React.SetStateAction<string>>;
-  searchFood?: () => void;
+  search?: () => void;
+};
+
+type foodResult = {
+  foodInfoId: number;
+  foodInfoName: string;
+  brandName: string;
+  foodInfoCalories: number;
+};
+
+type exerciseResult = {
+  exerciseInfoId: number;
+  exerciseName: string;
+  met: number;
+};
+
+// type에 따른 조건부 타입 지정
+type commonResultProps = {
+  type: 'diet' | 'exercise';
+  category: string;
+};
+
+type dietSearchResultProps = commonResultProps & {
+  type: 'diet';
+  result: foodResult;
+};
+
+type exerciseSearchResultProps = commonResultProps & {
+  type: 'exercise';
+  result: exerciseResult;
+};
+
+export type searchResultProps =
+  | dietSearchResultProps
+  | exerciseSearchResultProps;
+
+export type infoProps = {
+  infodir?: string;
+  title?: string;
+  content?: string | number;
+  isRequired?: boolean;
+  starColor?: keyof typeof theme;
+  titleColor?: keyof typeof theme;
+  unit?: string;
+};
+
+type food = {
+  foodId: number;
+  foodName: string;
+  brandName: string;
+  foodIntake: number;
+  foodCalories: number;
+  carbohydrate: number;
+  sugars: number;
+  dietaryFiber: number;
+  protein: number;
+  fat: number;
+  saturatedFat: number;
+  transFat: number;
+  cholesterol: number;
+  sodium: number;
+  potassium: number;
+};
+
+export type formProps = {
+  food: food;
+  buttonName?: string;
+  category?: string;
+  foodId?: number;
 };

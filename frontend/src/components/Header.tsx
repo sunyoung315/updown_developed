@@ -1,5 +1,5 @@
-import { HeaderProps } from '@/types/type';
-import Search from './Search';
+import { headerProps } from '@/types/type';
+import SearchInput from './SearchInput';
 import IconButton from './IconButton';
 import styled from 'styled-components';
 
@@ -8,6 +8,7 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 1.3rem 1.7rem;
+  gap: 0.5rem;
 `;
 
 const NutritionButton = styled.button`
@@ -31,7 +32,7 @@ const Blank = styled.div<{ $search: boolean | undefined }>`
   height: 1.7rem;
 `;
 
-const Header = (HeaderProps: HeaderProps) => {
+const Header = (headerProps: headerProps) => {
   const {
     iconName,
     onClick,
@@ -41,7 +42,7 @@ const Header = (HeaderProps: HeaderProps) => {
     placeholder,
     onChange,
     searchFood,
-  } = HeaderProps;
+  } = headerProps;
 
   const openModal = () => {
     console.log('영양 성분 상세');
@@ -58,10 +59,10 @@ const Header = (HeaderProps: HeaderProps) => {
       )}
       {search && (
         <>
-          <Search
+          <SearchInput
             onChange={onChange}
             placeholder={placeholder}
-            searchFood={searchFood}
+            search={searchFood}
           />
           <Blank $search={search} />
         </>

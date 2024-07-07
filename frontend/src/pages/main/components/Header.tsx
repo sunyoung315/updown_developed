@@ -55,11 +55,15 @@ const Header = () => {
 
   const prevDate = () => {
     setDate(new Date(year, month, day - 1));
+    localStorage.setItem('date', date.toString());
   };
 
   const nextDate = () => {
     setDate(new Date(year, month, day + 1));
+    localStorage.setItem('date', date.toString());
   };
+
+  localStorage.setItem('date', selectedDate);
 
   return (
     <HeaderWrapper>

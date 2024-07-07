@@ -7,7 +7,7 @@ const InputWrapper = styled.div<{ $inputdir: string }>`
   grid-template-columns: ${props =>
     props.$inputdir === 'column' ? 'repeat(2, 1fr)' : 'none'};
   align-items: ${props => (props.$inputdir === 'column' ? 'center' : 'none')};
-  flex-direction: ${props => (props.$inputdir === 'row' ? 'column' : 'none')};
+  flex-direction: ${props => (props.$inputdir === 'row' ? 'column' : 'row')};
   gap: ${props => (props.$inputdir === 'row' ? '0.5rem' : '0')};
 `;
 
@@ -24,14 +24,18 @@ const InputLabel = styled.label`
   padding: 0 0.7rem;
 `;
 
-const InputBox = styled.input`
+const InputBox = styled.input<{ $inputnamecolor?: keyof typeof theme }>`
   width: 100%;
   font-size: 1.25rem;
+  color: ${props =>
+    theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
 `;
 
-const UnitWrapper = styled.span`
+const UnitWrapper = styled.span<{ $inputnamecolor?: keyof typeof theme }>`
   font-size: 1.25rem;
   padding-left: 0.5rem;
+  color: ${props =>
+    theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
 `;
 
 const Input = (inputProps: inputProps) => {
@@ -45,6 +49,7 @@ const Input = (inputProps: inputProps) => {
     unit,
     starColor,
     onChange,
+    value,
   } = inputProps;
 
   return (
@@ -67,8 +72,12 @@ const Input = (inputProps: inputProps) => {
           id="input"
           placeholder={placeholder ? placeholder : '0'}
           onChange={e => onChange(e.target.value)}
+          value={value}
+          $inputnamecolor={inputNameColor}
         />
-        {unit && <UnitWrapper>{unit}</UnitWrapper>}
+        {unit && (
+          <UnitWrapper $inputnamecolor={inputNameColor}>{unit}</UnitWrapper>
+        )}
       </InputLabel>
     </InputWrapper>
   );

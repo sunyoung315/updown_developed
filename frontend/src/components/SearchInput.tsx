@@ -1,4 +1,4 @@
-import { SearchProps } from '@/types/type';
+import { searchProps } from '@/types/type';
 import SearchIcon from '@/assets/icons/search-icon.svg';
 import styled from 'styled-components';
 
@@ -17,8 +17,8 @@ const InputBox = styled.input`
   font-size: 1rem;
 `;
 
-const Search = (SearchProps: SearchProps) => {
-  const { placeholder, onChange, searchFood } = SearchProps;
+const SearchInput = (searchProps: searchProps) => {
+  const { placeholder, onChange, search } = searchProps;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
@@ -36,9 +36,9 @@ const Search = (SearchProps: SearchProps) => {
         size={27}
       />
 
-      <img src={SearchIcon} alt="icon" onClick={searchFood} />
+      <img src={SearchIcon} alt="icon" onClick={search} />
     </SearchWrapper>
   );
 };
 
-export default Search;
+export default SearchInput;

@@ -1,6 +1,6 @@
-import { IconButtonProps } from '@/types/type';
-import BackIcon from '@/assets/icons/back-icon.svg';
-import CloseIcon from '@/assets/icons/close-icon.svg';
+import iconPaths from '@/styles/icon';
+
+import { iconButtonProps } from '@/types/type';
 import styled from 'styled-components';
 
 const IconButtonWrapper = styled.button`
@@ -11,12 +11,12 @@ const IconButtonWrapper = styled.button`
   align-items: center;
 `;
 
-const IconButton = (IconButtonProps: IconButtonProps) => {
-  const { iconName, onClick } = IconButtonProps;
+const IconButton = (iconButtonProps: iconButtonProps) => {
+  const { iconName, onClick } = iconButtonProps;
 
   return (
     <IconButtonWrapper onClick={onClick}>
-      <img src={iconName === 'CloseIcon' ? CloseIcon : BackIcon} alt="icon" />
+      <img src={iconPaths[iconName]} alt="icon" />
     </IconButtonWrapper>
   );
 };

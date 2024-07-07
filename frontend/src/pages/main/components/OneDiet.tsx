@@ -37,9 +37,9 @@ const FastWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-const Fast = styled.span<{ $isFast: boolean }>`
+const Fast = styled.span<{ $isfast?: boolean }>`
   font-size: 1.1rem;
-  color: ${props => (props.$isFast ? props.theme.white : props.theme.yellow)};
+  color: ${props => (props.$isfast ? props.theme.white : props.theme.yellow)};
 `;
 
 const OneDiet = ({ diet }: { diet: dietProps }) => {
@@ -97,7 +97,7 @@ const OneDiet = ({ diet }: { diet: dietProps }) => {
               alt="fast-check"
             />
           </span>
-          <Fast $isFast={fast}>단식했어요</Fast>
+          <Fast $isfast={fast}>단식했어요</Fast>
         </FastWrapper>
       )}
     </OneDietWrapper>

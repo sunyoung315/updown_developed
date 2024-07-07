@@ -1,11 +1,14 @@
-import LoadingPage from './LoadingPage';
-import LoginPage from './LoginPage';
-import MainPage from './MainPage';
-import MyPage from './MyPage';
-import SignUpPage from './SignUpPage';
-import DietPage from './DietPage';
-import DietRegistPage from './DietRegistPage';
-import DietSearchPage from './DietSearchPage';
+import { LoadingPage, LoginPage, MyPage, SignUpPage } from './member';
+import MainPage from './main/MainPage';
+import {
+  DietDetailPage,
+  DietEditPage,
+  DietPage,
+  DietRegistPage,
+  DietScEditPage,
+  DietScRegistPage,
+  DietSearchPage,
+} from './diet';
 
 export {
   LoadingPage,
@@ -13,7 +16,11 @@ export {
   MainPage,
   MyPage,
   SignUpPage,
+  DietDetailPage,
+  DietEditPage,
   DietPage,
   DietRegistPage,
+  DietScEditPage,
+  DietScRegistPage,
   DietSearchPage,
 };
