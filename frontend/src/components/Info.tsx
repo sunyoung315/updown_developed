@@ -21,10 +21,11 @@ const InfoTitle = styled.span`
   font-size: 1.13rem;
 `;
 
-const InfoContent = styled.label<{ $infodir: string | undefined }>`
+const InfoContent = styled.label<{ $infodir?: string; $ntr?: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${props => (props.$ntr ? 'flex-end' : 'space-between')};
+  gap: ${props => (props.$ntr ? '1rem' : '0')};
   padding: 0.3rem;
   font-size: ${props => (props.$infodir === 'row' ? '1.88rem' : '1.25rem')};
 `;
@@ -35,8 +36,16 @@ const Unit = styled.span`
 `;
 
 const Info = (infoProps: infoProps) => {
-  const { infodir, title, content, isRequired, starColor, titleColor, unit } =
-    infoProps;
+  const {
+    infodir,
+    title,
+    content,
+    isRequired,
+    starColor,
+    titleColor,
+    unit,
+    ntr,
+  } = infoProps;
 
   return (
     <InfoWrapper $infodir={infodir} $titlecolor={titleColor}>
@@ -48,7 +57,7 @@ const Info = (infoProps: infoProps) => {
           </span>
         )}
       </InfoTitle>
-      <InfoContent $infodir={infodir}>
+      <InfoContent $infodir={infodir} $ntr={ntr}>
         {content ? content : '-'}
         {unit && <Unit>{unit}</Unit>}
       </InfoContent>

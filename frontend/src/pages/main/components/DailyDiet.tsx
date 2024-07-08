@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OneDiet from './OneDiet';
 import styled from 'styled-components';
+import useAxios from '@/util/http-commons';
+import { Diet } from '@/types/type';
 
 const DailyDietWrapper = styled.div`
   width: 100%;
@@ -28,47 +30,48 @@ const DietWrapper = styled.div`
   padding-right: 1.3rem;
 `;
 
-const DailyDiet = () => {
-  const [breakfast, setBreakfast] = useState({
-    dietId: 0,
-    category: 'breakfast',
-    dietImg: 'pouring',
-    totalCalories: 100.0,
-    isFast: false,
-  });
+const DailyDiet = ({ date }: { date: Date }) => {
+  const [todayDiet, setTodayDiet] = useState<Diet[]>([]);
 
-  const [lunch, setLunch] = useState({
-    dietId: 0,
-    category: 'lunch',
-    dietImg: 'rice',
-    totalCalories: 200.0,
-    isFast: false,
-  });
+  const getTodayDiet = async () => {
+    try {
+      const year = new Date(date).getFullYear();
+      const month = new Date(date).getMonth();
+      const day = new Date(date).getDate();
 
-  const [dinner, setDinner] = useState({
-    dietId: 0,
-    category: 'dinner',
-    dietImg: 'salad',
-    totalCalories: 300.0,
-    isFast: false,
-  });
+      const regDate =
+        year.toString() +
+        '-' +
+        (month < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) +
+        '-' +
+        (day < 10 ? '0' + day.toString() : day.toString());
 
-  const [snack, setSnack] = useState({
-    dietId: 0,
-    category: 'snack',
-    dietImg: 'juice',
-    totalCalories: 400.0,
-    isFast: false,
-  });
+      const response = await useAxios.get('/diet', {
+        params: { regDate },
+      });
+      setTodayDiet(response.data);
+    } catch (err) {
+      console.log('일별 식단 정보 조회 에러:', err);
+    }
+  };
+
+  useEffect(() => {
+    getTodayDiet();
+  }, [date]);
+
+  const breakfast = todayDiet?.find(diet => diet.category === 'breakfast');
+  const lunch = todayDiet?.find(diet => diet.category === 'lunch');
+  const dinner = todayDiet?.find(diet => diet.category === 'dinner');
+  const snack = todayDiet?.find(diet => diet.category === 'snack');
 
   return (
     <DailyDietWrapper>
       <TitleWrapper>식단</TitleWrapper>
       <DietWrapper>
-        <OneDiet diet={breakfast} />
-        <OneDiet diet={lunch} />
-        <OneDiet diet={dinner} />
-        <OneDiet diet={snack} />
+        <OneDiet diet={breakfast} title="breakfast" />
+        <OneDiet diet={lunch} title="lunch" />
+        <OneDiet diet={dinner} title="dinner" />
+        <OneDiet diet={snack} title="snack" />
       </DietWrapper>
     </DailyDietWrapper>
   );

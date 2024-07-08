@@ -1,6 +1,8 @@
 import { Button, Info, Input } from '@/components';
 import { formProps } from '@/types/type';
 import { useState, useEffect } from 'react';
+import useAxios from '@/util/http-commons';
+import { httpStatusCode } from '@/util/http-status';
 import styled from 'styled-components';
 
 const InputWrapper = styled.div`
@@ -26,7 +28,7 @@ const SearchForm = (formProps: formProps) => {
   const { food, buttonName, category, foodId } = formProps;
 
   const [foodIntake, setFoodIntake] = useState(food.foodIntake);
-  const [foodCalories, setFoodCalories] = useState(food.foodCalories);
+  const [calories, setCalories] = useState(food.foodCalories);
   const [carbohydrate, setCarbohydrate] = useState(food.carbohydrate);
   const [sugars, setSugars] = useState(food.sugars);
   const [dietaryFiber, setDietaryFiber] = useState(food.dietaryFiber);
@@ -42,7 +44,7 @@ const SearchForm = (formProps: formProps) => {
     foodName: food.foodName,
     brandName: food.brandName,
     foodIntake,
-    foodCalories,
+    calories,
     carbohydrate,
     sugars,
     dietaryFiber,
@@ -57,7 +59,7 @@ const SearchForm = (formProps: formProps) => {
   };
 
   useEffect(() => {
-    setFoodCalories(
+    setCalories(
       Math.round((food.foodCalories / food.foodIntake) * foodIntake * 100) /
         100,
     );
@@ -94,12 +96,22 @@ const SearchForm = (formProps: formProps) => {
     );
   }, [foodIntake]);
 
-  const handleClick = () => {
+  const regDate = localStorage.getItem('date');
+
+  const handleClick = async () => {
     if (buttonName === '등록하기') {
-      // regDate & category & newInfo 보내기
-      console.log('newInfo', newInfo);
-      console.log('regDate', localStorage.getItem('date'));
-      console.log('category', category);
+      try {
+        console.log(category);
+        const response = await useAxios.post(`/diet/${category}`, {
+          food: newInfo,
+          regDate,
+        });
+        if (response.status === httpStatusCode.OK) {
+          console.log('식단 등록 성공');
+        }
+      } catch (error) {
+        console.log('식단 등록 에러: ', error);
+      }
     } else if (buttonName === '수정완료') {
       // foodId & newInfo 보내기
       console.log('newInfo', newInfo);
@@ -129,7 +141,7 @@ const SearchForm = (formProps: formProps) => {
       />
       <Info
         title="칼로리"
-        content={foodCalories}
+        content={calories}
         isRequired={true}
         starColor="orange"
         unit="kcal"

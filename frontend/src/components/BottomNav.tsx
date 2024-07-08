@@ -18,6 +18,7 @@ const BottomNavWrapper = styled.div`
   right: 0;
   background-color: ${props => props.theme.white};
   box-shadow: 0rem -0.1rem 0.5rem rgba(0, 0, 0, 0.1);
+  z-index: 20;
 `;
 
 const Button = styled.button`

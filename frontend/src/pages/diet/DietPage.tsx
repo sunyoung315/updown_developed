@@ -99,7 +99,7 @@ const DietPage = () => {
   const navigator = useNavigate();
 
   const location = useLocation();
-  // const dietId = location.state.dietId;
+  const dietId = location.state.dietId;
   const category = decodeURI(location.pathname.split('/')[2]);
 
   // const foodList = useAxios.get(`/diet/${category}`, {data: dietId});
@@ -109,7 +109,7 @@ const DietPage = () => {
       foodName: '마라탕',
       brandName: '춘리마라탕',
       foodIntake: 700,
-      foodCalories: 1000,
+      calories: 1000,
       carbohydrate: 10,
       sugars: 2,
       dietaryFiber: 1,
@@ -127,7 +127,7 @@ const DietPage = () => {
       foodName: '로티셰리바베큐 샌드위치',
       brandName: '서브웨이',
       foodIntake: 300,
-      foodCalories: 410,
+      calories: 410,
       carbohydrate: 10,
       sugars: 2,
       dietaryFiber: 1,

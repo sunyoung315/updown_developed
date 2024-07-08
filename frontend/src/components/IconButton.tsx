@@ -1,5 +1,4 @@
 import iconPaths from '@/styles/icon';
-
 import { iconButtonProps } from '@/types/type';
 import styled from 'styled-components';
 
@@ -11,12 +10,17 @@ const IconButtonWrapper = styled.button`
   align-items: center;
 `;
 
+const Image = styled.img<{ $size?: number }>`
+  width: ${props => props.$size}rem;
+  height: ${props => props.$size}rem;
+`;
+
 const IconButton = (iconButtonProps: iconButtonProps) => {
-  const { iconName, onClick } = iconButtonProps;
+  const { iconName, onClick, size } = iconButtonProps;
 
   return (
     <IconButtonWrapper onClick={onClick}>
-      <img src={iconPaths[iconName]} alt="icon" />
+      <Image src={iconPaths[iconName]} alt="icon" $size={size} />
     </IconButtonWrapper>
   );
 };

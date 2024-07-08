@@ -62,7 +62,7 @@ const DietDetailPage = () => {
         />
         <Info
           title="칼로리"
-          content={food.foodCalories}
+          content={food.calories}
           isRequired={true}
           starColor="orange"
           unit="kcal"

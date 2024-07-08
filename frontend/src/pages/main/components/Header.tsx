@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { dateProps } from '@/types/type';
 import LeftArrow from '@/assets/icons/left-arrow.svg';
 import RightArrow from '@/assets/icons/right-arrow.svg';
 import CalendarIcon from '@/assets/icons/calendar.svg';
@@ -35,13 +36,14 @@ const CalendarButton = styled.img`
   height: 1.1rem;
 `;
 
-const Header = () => {
+const Header = (dateProps: dateProps) => {
+  const { date, setDate } = dateProps;
+
   const today = new Date();
   const todayYear = new Date(today).getFullYear();
   const todayMonth = new Date(today).getMonth();
   const todayDay = new Date(today).getDate();
 
-  const [date, setDate] = useState(today);
   const year = new Date(date).getFullYear();
   const month = new Date(date).getMonth();
   const day = new Date(date).getDate();

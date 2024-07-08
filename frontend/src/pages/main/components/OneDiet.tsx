@@ -5,6 +5,7 @@ import CheckIcon from '@/assets/icons/check-icon.svg';
 import PlusIcon from '@/assets/icons/plus-icon.svg';
 import YlCheckIcon from '@/assets/icons/yl-check-icon.svg';
 import WhCheckIcon from '@/assets/icons/wh-check-icon.svg';
+import FoodImage from '@/assets/images/마라탕.png';
 import styled from 'styled-components';
 
 const OneDietWrapper = styled.div`
@@ -39,57 +40,60 @@ const FastWrapper = styled.div`
 
 const Fast = styled.span<{ $isfast?: boolean }>`
   font-size: 1.1rem;
-  color: ${props => (props.$isfast ? props.theme.white : props.theme.yellow)};
+  color: ${props => (props?.$isfast ? props.theme.white : props.theme.yellow)};
 `;
 
-const OneDiet = ({ diet }: { diet: dietProps }) => {
-  const { dietId, category, dietImg, totalCalories, isFast } = diet;
+const Calories = styled.div`
+  font-size: 1.2rem;
+  color: ${props => props.theme.white};
+`;
 
-  const [fast, setFast] = useState(isFast);
+const OneDiet = (dietProps: dietProps) => {
+  const { diet } = dietProps || {};
+  const { title } = dietProps;
+
+  const [fast, setFast] = useState(diet?.isFast);
 
   const navigator = useNavigate();
 
-  const goRegistDiet = () => {
-    navigator(`/diet/regist/${category}`);
+  const goDietDetails = () => {
+    navigator(`/diet/${title}`, { state: { dietId: diet?.dietId } });
   };
 
-  const goDietDetails = () => {
-    navigator(`/diet/${category}`, { state: { dietId: dietId } });
+  const registFasting = () => {
+    setFast(!fast);
+    // 단식 등록 axios
   };
 
   return (
     <OneDietWrapper>
       <CategoryWrapper>
         <Category>
-          {category == 'breakfast'
+          {title == 'breakfast'
             ? '아침'
-            : category == 'lunch'
+            : title == 'lunch'
               ? '점심'
-              : category == 'dinner'
+              : title == 'dinner'
                 ? '저녁'
                 : '간식'}
         </Category>
-        {dietId === 0 ? (
-          <button onClick={goDietDetails}>
-            <img src={PlusIcon} alt="plus" />
-          </button>
-        ) : (
-          <button onClick={goDietDetails}>
+        <button onClick={goDietDetails}>
+          {(diet && !fast) || fast ? (
             <img src={CheckIcon} alt="check" />
-          </button>
-        )}
+          ) : (
+            <img src={PlusIcon} alt="plus" />
+          )}
+        </button>
       </CategoryWrapper>
-      {dietId !== 0 ? (
-        <DietImg src={dietImg} />
+      {diet && !diet.isFast && diet.dietImg ? (
+        <DietImg src={diet?.dietImg} />
       ) : (
-        <DietImg
-          src={fast ? `/images/fasting.png` : `/images/${dietImg}.png`}
-        />
+        <DietImg src={fast ? `/images/fasting.png` : `/images/${title}.png`} />
       )}
-      {dietId !== 0 ? (
-        <div>{totalCalories}</div>
+      {diet && !diet?.isFast ? (
+        <Calories>{diet?.totalCalories} kcal</Calories>
       ) : (
-        <FastWrapper onClick={() => setFast(!fast)}>
+        <FastWrapper onClick={registFasting}>
           <span>
             <img
               style={{ display: 'inline' }}

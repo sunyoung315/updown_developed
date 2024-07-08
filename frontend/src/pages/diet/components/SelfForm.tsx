@@ -1,5 +1,7 @@
 import { Button, Input } from '@/components';
 import { formProps } from '@/types/type';
+import useAxios from '@/util/http-commons';
+import { httpStatusCode } from '@/util/http-status';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -31,26 +33,26 @@ const Br = styled.div`
 const SelfForm = (formProps: formProps) => {
   const { food, buttonName, category, foodId } = formProps;
 
-  const [foodName, setFoodName] = useState(food?.foodName);
-  const [brandName, setBrandName] = useState(food?.brandName);
-  const [foodIntake, setFoodIntake] = useState(food?.foodIntake);
-  const [foodCalories, setFoodCalories] = useState(food?.foodCalories);
-  const [carbohydrate, setCarbohydrate] = useState(food?.carbohydrate);
-  const [sugars, setSugars] = useState(food?.sugars);
-  const [dietaryFiber, setDietaryFiber] = useState(food?.dietaryFiber);
-  const [protein, setProtein] = useState(food?.protein);
-  const [fat, setFat] = useState(food?.fat);
-  const [saturatedFat, setSaturatedFat] = useState(food?.saturatedFat);
-  const [transFat, setTransFat] = useState(food?.transFat);
-  const [cholesterol, setCholesterol] = useState(food?.cholesterol);
-  const [sodium, setSodium] = useState(food?.sodium);
-  const [potassium, setPotassium] = useState(food?.potassium);
+  const [foodName, setFoodName] = useState(food.foodName);
+  const [brandName, setBrandName] = useState(food.brandName);
+  const [foodIntake, setFoodIntake] = useState(food.foodIntake);
+  const [calories, setCalories] = useState(food.foodCalories);
+  const [carbohydrate, setCarbohydrate] = useState(food.carbohydrate);
+  const [sugars, setSugars] = useState(food.sugars);
+  const [dietaryFiber, setDietaryFiber] = useState(food.dietaryFiber);
+  const [protein, setProtein] = useState(food.protein);
+  const [fat, setFat] = useState(food.fat);
+  const [saturatedFat, setSaturatedFat] = useState(food.saturatedFat);
+  const [transFat, setTransFat] = useState(food.transFat);
+  const [cholesterol, setCholesterol] = useState(food.cholesterol);
+  const [sodium, setSodium] = useState(food.sodium);
+  const [potassium, setPotassium] = useState(food.potassium);
 
   const newFood = {
     foodName,
     brandName,
     foodIntake,
-    foodCalories,
+    calories,
     carbohydrate,
     sugars,
     dietaryFiber,
@@ -64,12 +66,22 @@ const SelfForm = (formProps: formProps) => {
     method: false, // 직접 등록
   };
 
-  const handleClick = () => {
+  const regDate = localStorage.getItem('date');
+
+  const handleClick = async () => {
     if (buttonName === '등록하기') {
-      // regDate & category & newInfo 보내기
-      console.log('newInfo', newFood);
-      console.log('regDate', localStorage.getItem('date'));
-      console.log('category', category);
+      try {
+        console.log(newFood.calories);
+        const response = await useAxios.post(`/diet/${category}`, {
+          food: newFood,
+          regDate,
+        });
+        if (response.status === httpStatusCode.OK) {
+          console.log('식단 등록 성공');
+        }
+      } catch (error) {
+        console.log('식단 등록 에러: ', error);
+      }
     } else if (buttonName === '수정완료') {
       // foodId & newInfo 보내기
       console.log('newInfo', newFood);
@@ -114,8 +126,8 @@ const SelfForm = (formProps: formProps) => {
         isRequired={true}
         starColor="orange"
         unit="kcal"
-        onChange={setFoodCalories}
-        value={foodCalories}
+        onChange={setCalories}
+        value={calories}
       />
       <Hr />
       <Input

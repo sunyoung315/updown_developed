@@ -6,12 +6,30 @@ export interface tokenState {
   setCheckToken: (checkToken: boolean) => void;
 }
 
-export type dietProps = {
+export interface Diet {
   dietId: number;
-  category: string;
+  category: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  dietImg: string;
+  totalCalories: number;
+  isFast: boolean;
+}
+
+export type dateProps = {
+  date: Date;
+  setDate: React.Dispatch<React.SetStateAction<Date>>;
+};
+
+type diet = {
+  dietId?: number;
+  category?: string;
   dietImg?: string;
   totalCalories?: number;
   isFast?: boolean;
+};
+
+export type dietProps = {
+  diet?: diet;
+  title: string;
 };
 
 type foodProps = {
@@ -19,7 +37,7 @@ type foodProps = {
   foodName: string;
   brandName?: string;
   foodIntake?: number;
-  foodCalories?: number;
+  calories?: number;
   method?: boolean;
 };
 
@@ -82,6 +100,7 @@ export type headerProps = {
 export type iconButtonProps = {
   iconName: keyof typeof iconPaths;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  size?: number;
 };
 
 export type searchProps = {
@@ -131,6 +150,7 @@ export type infoProps = {
   starColor?: keyof typeof theme;
   titleColor?: keyof typeof theme;
   unit?: string;
+  ntr?: boolean;
 };
 
 type food = {
@@ -156,4 +176,10 @@ export type formProps = {
   buttonName?: string;
   category?: string;
   foodId?: number;
+};
+
+export type bottomSheetProps = {
+  isOpen?: boolean;
+  onClose?: () => void;
+  children?: React.ReactNode;
 };
