@@ -1,10 +1,10 @@
 package com.updown.diet.service;
 
 import com.updown.diet.dto.req.InsertFoodReq;
-import com.updown.diet.dto.req.UpdateFoodReq;
+import com.updown.diet.dto.res.DayDietRes;
 import com.updown.diet.dto.res.DietSearchRes;
 import com.updown.diet.entity.Diet;
-import com.updown.diet.entity.DietCatogory;
+import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
 import com.updown.diet.exception.NotInsertFoodException;
 import com.updown.diet.repository.DietRepository;
@@ -13,11 +13,14 @@ import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DietServiceImpl implements DietService{
+public class DietServiceImpl implements DietService {
     private final DietRepository dietRepository;
     private final FoodRepository foodRepository;
 
@@ -29,14 +32,15 @@ public class DietServiceImpl implements DietService{
 
     /**
      * 음식 등록
+     *
      * @param category
      * @param member
      */
     @Override
-    public void insertDiet(String category, Member member, InsertFoodReq insertFoodReq) {
+    public void insertDiet(DietCategory category, Member member, InsertFoodReq insertFoodReq) {
         try {
             // 해당 날짜와 카테고리에 맞는 식단 가져오기
-            Optional<Diet> optionalDiet = dietRepository.findByMemberAndRegDateAndCategory(member, insertFoodReq.getRegDate(), DietCatogory.valueOf(category));
+            Optional<Diet> optionalDiet = dietRepository.findByMemberAndRegDateAndCategory(member, insertFoodReq.getRegDate(), category);
             Diet diet;
 
             // 식단이 존재하면 가져오고, 그렇지 않으면 새로운 식단 생성
@@ -45,7 +49,7 @@ public class DietServiceImpl implements DietService{
             } else {
                 diet = Diet.builder()
                         .member(member)
-                        .category(DietCatogory.valueOf(category))
+                        .category(category)
                         .dietTotalIntake(0) // 초기값 설정
                         .dietTotalCalories(0) // 초기값 설정
                         .regDate(insertFoodReq.getRegDate())
@@ -74,13 +78,14 @@ public class DietServiceImpl implements DietService{
 
     /**
      * 직접 등록한 음식 수정
+     *
      * @param member
      * @param foodId
      * @param food
      */
     @Override
     public void updateDiet(Member member, Integer foodId, Food food) {
-        System.out.println("여긴가?"+foodRepository.findByFoodId(foodId).get());
+        System.out.println("여긴가?" + foodRepository.findByFoodId(foodId).get());
         System.out.println(food.getCarbohydrate());
         System.out.println(food.getTransFat());
         System.out.println(dietRepository.findById(foodRepository.findByFoodId(foodId).get().getDiet().getDietId()));
@@ -109,6 +114,33 @@ public class DietServiceImpl implements DietService{
 
         dietRepository.save(diet);
 
+    }
+
+    /**
+     * 일별 식단 정보 조회
+     *
+     * @param member
+     * @param regDate
+     * @return
+     */
+    @Override
+    public List<DayDietRes> searchDayDiet(Member member, Date regDate) {
+        List<Diet> diets = dietRepository.findByMemberAndRegDate(member, regDate);
+        List<DayDietRes> dietList = new ArrayList<>();
+
+        for(Diet diet : diets){
+            DayDietRes dayDietRes = DayDietRes.builder()
+                    .dietId(diet.getDietId())
+                    .category(diet.getCategory())
+                    .dietImg(diet.getDietImg())
+                    .totalCalories(diet.getDietTotalCalories())
+                    .isFast(diet.getIsFast())
+                    .build();
+
+            dietList.add(dayDietRes);
+        }
+
+        return dietList;
     }
 
 }

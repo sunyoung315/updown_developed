@@ -31,7 +31,7 @@ public class Diet {
      */
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
-    private DietCatogory category;
+    private DietCategory category;
 
     @Column(name = "diet_total_intake", nullable = false)
     private float dietTotalIntake;
