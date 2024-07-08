@@ -5,10 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class InsertFoodReq {
     private Food food;
-    private Date regDate;
+    private LocalDate regDate;
 }

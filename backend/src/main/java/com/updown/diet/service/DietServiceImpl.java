@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,7 +125,7 @@ public class DietServiceImpl implements DietService {
      * @return
      */
     @Override
-    public List<DayDietRes> searchDayDiet(Member member, Date regDate) {
+    public List<DayDietRes> searchDayDiet(Member member, LocalDate regDate) {
         List<Diet> diets = dietRepository.findByMemberAndRegDate(member, regDate);
         List<DayDietRes> dietList = new ArrayList<>();
 

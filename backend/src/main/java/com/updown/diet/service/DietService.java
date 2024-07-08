@@ -8,6 +8,7 @@ import com.updown.diet.entity.Food;
 import com.updown.member.entity.Member;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DietService {
@@ -17,5 +18,5 @@ public interface DietService {
 
     void updateDiet(Member member, Integer foodId, Food food);
 
-    List<DayDietRes> searchDayDiet(Member member, Date regDate);
+    List<DayDietRes> searchDayDiet(Member member, LocalDate regDate);
 }

@@ -7,7 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -40,7 +41,7 @@ public class Diet {
     private float dietTotalCalories;
 
     @Column(name = "reg_date", nullable = false)
-    private Date regDate;
+    private LocalDate regDate;
 
     @Column(name = "diet_img")
     private String dietImg;

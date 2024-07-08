@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -45,7 +46,7 @@ public class DietController {
      */
     @Transactional
     @GetMapping
-    public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestBody Date regDate){
+    public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestParam LocalDate regDate){
         List<DayDietRes> dietList = dietService.searchDayDiet(member, regDate);
         return ResponseEntity.ok().body(dietList);
     }
