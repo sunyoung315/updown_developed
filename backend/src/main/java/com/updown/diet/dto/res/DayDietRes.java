@@ -16,12 +16,4 @@ public class DayDietRes {
     private float totalCalories;
     boolean isFast;
 
-    // 기존 생성자를 public으로 변경
-//    public DayDietRes(int dietId, DietCategory category, String dietImg, float totalCalories, boolean isFast) {
-//        this.dietId = dietId;
-//        this.category = category;
-//        this.dietImg = dietImg;
-//        this.totalCalories = totalCalories;
-//        this.isFast = isFast;
-//    }
 }

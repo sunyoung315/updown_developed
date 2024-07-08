@@ -25,7 +25,7 @@ public class DietController {
 
     /**
      * 음식 등록
-     * @param category // 아침, 점심, 간식, 저녁
+     * @param category
      * @param member
      * @param insertFoodReq
      * @return

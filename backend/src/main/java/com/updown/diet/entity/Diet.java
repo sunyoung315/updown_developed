@@ -27,7 +27,7 @@ public class Diet {
     private Member member;
 
     /**
-     * 아침, 점심, 간식, 저녁
+     * breakfast, lunch, snack, dinner
      */
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
