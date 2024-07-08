@@ -13,6 +13,8 @@ import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class DietServiceImpl implements DietService{
@@ -32,37 +34,43 @@ public class DietServiceImpl implements DietService{
      */
     @Override
     public void insertDiet(String category, Member member, InsertFoodReq insertFoodReq) {
-        try{
-            Food food = insertFoodReq.getFood();
-            // 해당 날짜와 카테고리에 맞는 식단이 존재한다면 식단 가져와서 food에 넣고 저장
-            if(!dietRepository.findByMemberAndRegDate(member, insertFoodReq.getRegDate()).isEmpty()){
-                Diet diet = dietRepository.findByMemberAndRegDate(member, insertFoodReq.getRegDate()).get();
-                // food에 식단 고유번호 저장
-                food.setDiet(diet);
-                foodRepository.save(food);
-                // 식단 칼로리, 섭취량 업데이트 후 저장
-                diet.setDietTotalCalories(diet.getDietTotalCalories()+ food.getCalories());
-                diet.setDietTotalIntake(diet.getDietTotalIntake()+food.getFoodIntake());
-                diet.setIsFast(false);
-                dietRepository.save(diet);
-            } // 해당 식단 존재하지 않는다면 식단 생성 후 저장
-            else{
-                Diet diet = Diet.builder()
+        try {
+            // 해당 날짜와 카테고리에 맞는 식단 가져오기
+            Optional<Diet> optionalDiet = dietRepository.findByMemberAndRegDateAndCategory(member, insertFoodReq.getRegDate(), DietCatogory.valueOf(category));
+            Diet diet;
+
+            // 식단이 존재하면 가져오고, 그렇지 않으면 새로운 식단 생성
+            if (optionalDiet.isPresent()) {
+                diet = optionalDiet.get();
+            } else {
+                diet = Diet.builder()
                         .member(member)
                         .category(DietCatogory.valueOf(category))
-                        .dietTotalIntake(insertFoodReq.getFood().getFoodIntake())
-                        .dietTotalCalories(insertFoodReq.getFood().getCalories())
+                        .dietTotalIntake(0) // 초기값 설정
+                        .dietTotalCalories(0) // 초기값 설정
                         .regDate(insertFoodReq.getRegDate())
                         .isFast(false)
                         .build();
                 dietRepository.save(diet);
-                food.setDiet(diet);
-                foodRepository.save(food);
             }
-        }catch (Exception e){
+
+            // 음식 객체 생성 및 식단 설정
+            Food food = insertFoodReq.getFood();
+            food.setDiet(diet);
+
+            // 음식 저장
+            foodRepository.save(food);
+
+            // 식단 칼로리 및 섭취량 업데이트
+            diet.setDietTotalCalories(diet.getDietTotalCalories() + food.getCalories());
+            diet.setDietTotalIntake(diet.getDietTotalIntake() + food.getFoodIntake());
+            dietRepository.save(diet);
+
+        } catch (Exception e) {
             throw new NotInsertFoodException(e);
         }
     }
+
 
     /**
      * 직접 등록한 음식 수정
