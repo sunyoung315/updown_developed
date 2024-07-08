@@ -1,5 +1,5 @@
 import { Header } from '@/components';
-import { SelfForm } from './components';
+import { SearchForm, SelfForm } from './components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,8 +11,11 @@ const DietEditPage = () => {
   const navigator = useNavigate();
 
   const location = useLocation();
-  const foodId = Number(location.pathname.substring(11));
   const food = location.state.food;
+  // method => false: 직접 등록 / true: 검색 등록
+  const foodId = food.method
+    ? Number(location.pathname.substring(14))
+    : Number(location.pathname.substring(11));
 
   const goBack = () => {
     navigator(-1);
@@ -21,7 +24,11 @@ const DietEditPage = () => {
   return (
     <DietEditWrapper>
       <Header iconName="back" onClick={goBack} headerName="음식 수정" />
-      <SelfForm food={food} buttonName="수정완료" foodId={foodId} />
+      {food.method ? (
+        <SearchForm food={food} buttonName="수정완료" foodId={foodId} />
+      ) : (
+        <SelfForm food={food} buttonName="수정완료" foodId={foodId} />
+      )}
     </DietEditWrapper>
   );
 };

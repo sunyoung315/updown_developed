@@ -1,5 +1,5 @@
 import { Header } from '@/components';
-import { SelfForm } from './components';
+import { SearchForm, SelfForm } from './components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -12,12 +12,13 @@ const DietRegistPage = () => {
 
   const location = useLocation();
   const category = location.state.category;
+  const foodInfo = location.state.foodInfo;
 
   const goBack = () => {
     navigator(-1);
   };
 
-  const foodInfo = {
+  const food = {
     foodName: '',
     brandName: '',
     foodIntake: 0,
@@ -36,8 +37,29 @@ const DietRegistPage = () => {
 
   return (
     <DietRegistWrapper>
-      <Header iconName="back" onClick={goBack} headerName="음식 직접 등록" />
-      <SelfForm foodInfo={foodInfo} buttonName="등록하기" category={category} />
+      {foodInfo ? (
+        <>
+          <Header
+            iconName="back"
+            onClick={goBack}
+            headerName="음식 검색 등록"
+          />
+          <SearchForm
+            food={foodInfo}
+            buttonName="등록하기"
+            category={category}
+          />
+        </>
+      ) : (
+        <>
+          <Header
+            iconName="back"
+            onClick={goBack}
+            headerName="음식 직접 등록"
+          />
+          <SelfForm food={food} buttonName="등록하기" category={category} />
+        </>
+      )}
     </DietRegistWrapper>
   );
 };

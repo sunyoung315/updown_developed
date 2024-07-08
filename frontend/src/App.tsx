@@ -8,8 +8,6 @@ import {
   DietEditPage,
   DietPage,
   DietRegistPage,
-  DietScEditPage,
-  DietScRegistPage,
   DietSearchPage,
 } from '@/pages';
 import { BottomNav } from '@/components';
@@ -67,10 +65,8 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/diet/detail/:foodId" element={<DietDetailPage />} />
         <Route path="/diet/edit/:foodId" element={<DietEditPage />} />
-        <Route path="/diet/edit/sc/:foodId" element={<DietScEditPage />} />
         <Route path="/diet/:category" element={<DietPage />} />
         <Route path="/diet/regist" element={<DietRegistPage />} />
-        <Route path="/diet/regist/sc" element={<DietScRegistPage />} />
         <Route path="/diet/search" element={<DietSearchPage />} />
       </Routes>
       {showBottomNav && <BottomNav />}

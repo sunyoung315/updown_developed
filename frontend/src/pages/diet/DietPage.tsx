@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 // import useAxios from '@/util/http-commons';
 import { Box, IconButton } from '@/components';
 import { Button, Header } from '@/components';
+import FoodImage from '@/assets/images/마라탕.png';
 import styled from 'styled-components';
 
 const SummaryWrapper = styled.div`
@@ -98,7 +99,7 @@ const DietPage = () => {
   const navigator = useNavigate();
 
   const location = useLocation();
-  const dietId = location.state.dietId;
+  // const dietId = location.state.dietId;
   const category = decodeURI(location.pathname.split('/')[2]);
 
   // const foodList = useAxios.get(`/diet/${category}`, {data: dietId});
@@ -141,6 +142,15 @@ const DietPage = () => {
     },
   ];
 
+  const diet = {
+    dietImg: FoodImage,
+    totalCalories: 1410,
+    totalCarbohydrate: 20,
+    totalProtein: 2.8,
+    totalFat: 40,
+    foodList,
+  };
+
   const goMain = () => {
     navigator('/main');
   };
@@ -154,19 +164,19 @@ const DietPage = () => {
       <SummaryWrapper>
         <Header iconName="back" onClick={goMain} nutritionButton={true} />
         <div>
-          <Calorie>1000 Kcal </Calorie>
+          <Calorie>{diet.totalCalories} Kcal </Calorie>
           <Title> 먹었어요</Title>
         </div>
         <NutritionWrapper>
           <Nutrition>탄</Nutrition>
-          <Gram>10 g</Gram>
+          <Gram>{diet.totalCarbohydrate} g</Gram>
           <Nutrition>단</Nutrition>
-          <Gram>10 g</Gram>
+          <Gram>{diet.totalProtein} g</Gram>
           <Nutrition>지</Nutrition>
-          <Gram style={{ paddingRight: '0' }}>10 g</Gram>
+          <Gram style={{ paddingRight: '0' }}>{diet.totalFat} g</Gram>
         </NutritionWrapper>
         <ImageBox>
-          <Image src="/images/salad.png" alt="salad" />
+          <Image src={diet.dietImg} alt="salad" />
           <ImageIcon>
             <IconButton iconName="photo" onClick={registPhoto} />
           </ImageIcon>

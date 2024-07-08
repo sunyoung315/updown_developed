@@ -37,11 +37,7 @@ const DietDetailPage = () => {
   };
 
   const editDiet = () => {
-    if (food?.method === false) {
-      navigator(`/diet/edit/${foodId}`, { state: { food } });
-    } else {
-      navigator(`/diet/edit/sc/${foodId}`, { state: { food } });
-    }
+    navigator(`/diet/edit/${foodId}`, { state: { food } });
   };
 
   return (

@@ -134,7 +134,7 @@ export type infoProps = {
 };
 
 type food = {
-  foodId: number;
+  foodId?: number;
   foodName: string;
   brandName: string;
   foodIntake: number;

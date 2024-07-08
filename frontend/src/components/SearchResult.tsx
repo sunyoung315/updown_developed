@@ -39,7 +39,7 @@ const SearchResult = (searchResultProps: searchResultProps) => {
         foodIntake: 100,
         ...result,
       };
-      navigator(`/diet/regist/sc`, { state: { category, foodInfo } });
+      navigator(`/diet/regist`, { state: { category, foodInfo } });
     } else if (type === 'exercise') {
       // navigator(`/exercise/regist/sc/${result.exerciseInfoId}`);
     }

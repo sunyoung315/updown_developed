@@ -5,8 +5,6 @@ import {
   DietEditPage,
   DietPage,
   DietRegistPage,
-  DietScEditPage,
-  DietScRegistPage,
   DietSearchPage,
 } from './diet';
 
@@ -20,7 +18,5 @@ export {
   DietEditPage,
   DietPage,
   DietRegistPage,
-  DietScEditPage,
-  DietScRegistPage,
   DietSearchPage,
 };
