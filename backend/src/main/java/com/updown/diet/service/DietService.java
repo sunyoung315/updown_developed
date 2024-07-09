@@ -28,4 +28,6 @@ public interface DietService {
     FoodDetails searchFood(Member member, Integer foodId);
 
     void checkIsFast(Member member, IsFastCheck isFastCheck);
+
+    void deleteFood(Member member, Integer foodId);
 }

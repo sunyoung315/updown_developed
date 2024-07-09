@@ -106,6 +106,13 @@ public class DietController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
+    @DeleteMapping("/food")
+    public ResponseEntity<?> deleteFood(@AuthenticationPrincipal Member member, @RequestParam Integer foodId){
+        dietService.deleteFood(member, foodId);
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * 음식 검색
      * @param category

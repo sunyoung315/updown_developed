@@ -129,7 +129,7 @@ public class DietServiceImpl implements DietService {
         List<Diet> diets = dietRepository.findByMemberAndRegDate(member, regDate);
         List<DietDayRes> dietList = new ArrayList<>();
 
-        for(Diet diet : diets){
+        for (Diet diet : diets) {
             DietDayRes dietDayRes = DietDayRes.builder()
                     .dietId(diet.getDietId())
                     .category(diet.getCategory())
@@ -146,6 +146,7 @@ public class DietServiceImpl implements DietService {
 
     /**
      * 식사별 식단 리스트 조회
+     *
      * @param member
      * @param dietId
      * @return
@@ -171,7 +172,7 @@ public class DietServiceImpl implements DietService {
         List<Integer> foodIdList = foodRepository.findByDietId(dietId); // foodId가져오기
         List<FoodListRes> foodList = new ArrayList<>();
 
-        for(Integer foodId : foodIdList){
+        for (Integer foodId : foodIdList) {
             Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
             FoodListRes foodListRes = FoodListRes.builder()
                     .foodId(foodId)
@@ -194,6 +195,7 @@ public class DietServiceImpl implements DietService {
 
     /**
      * 식단 상세 조회
+     *
      * @param member
      * @param foodId
      * @return
@@ -222,14 +224,15 @@ public class DietServiceImpl implements DietService {
 
     /**
      * 단식 여부 등록
+     *
      * @param member
      * @param isFastCheck
      */
     @Override
     public void checkIsFast(Member member, IsFastCheck isFastCheck) {
         // 멤버랑 오늘날짜, 카테고리에 해당하는 diet가 없다면 만들고
-        Optional<Diet> diet = dietRepository.findByMemberAndRegDateAndCategory(member,isFastCheck.getRegDate(),isFastCheck.getCategory());
-        if(diet.isEmpty()){
+        Optional<Diet> diet = dietRepository.findByMemberAndRegDateAndCategory(member, isFastCheck.getRegDate(), isFastCheck.getCategory());
+        if (diet.isEmpty()) {
             Diet newDiet = Diet.builder()
                     .member(member)
                     .isFast(true)
@@ -238,10 +241,33 @@ public class DietServiceImpl implements DietService {
                     .build();
 
             dietRepository.save(newDiet);
-        }
-        else{ // 있다면 삭제
+        } else { // 있다면 삭제
             dietRepository.delete(diet.get());
         }
+    }
+
+    /**
+     * 음식 삭제
+     *
+     * @param member
+     * @param foodId
+     */
+    @Override
+    public void deleteFood(Member member, Integer foodId) {
+        Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
+        int dietId = food.getDiet().getDietId();
+        Diet diet = dietRepository.findById(dietId).get();
+
+        diet.setDietTotalIntake(diet.getDietTotalIntake() - food.getFoodIntake());
+        diet.setDietTotalCalories(diet.getDietTotalCalories() - food.getCalories());
+        // 만약 해당 음식을 삭제했을 때, 해당 식단의 섭취량이 0이라면 해당 식단 삭제
+        if (diet.getDietTotalIntake() == 0) {
+            dietRepository.delete(diet);
+            return;
+        } else { // 음식이 남아있다면 식단 저장
+            dietRepository.save(diet);
+        }
+        foodRepository.delete(food); // 음식 삭제
     }
 
 }
