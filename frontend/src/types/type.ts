@@ -33,7 +33,7 @@ export type dietProps = {
   regDate?: string;
 };
 
-type foodProps = {
+export type foodInfo = {
   foodId: number;
   foodName: string;
   brandName?: string;
@@ -42,7 +42,7 @@ type foodProps = {
   method?: boolean;
 };
 
-type exerciseProps = {
+export type exerciseInfo = {
   exerciseId: number;
   exerciseName: string;
   exerciseTime: number;
@@ -59,12 +59,12 @@ type commonProps = {
 
 type dietCommonProps = commonProps & {
   type: 'diet';
-  info: foodProps;
+  info: foodInfo;
 };
 
 type exerciseCommonProps = commonProps & {
   type: 'exercise';
-  info: exerciseProps;
+  info: exerciseInfo;
 };
 
 export type boxProps = dietCommonProps | exerciseCommonProps;
@@ -91,7 +91,7 @@ export type inputProps = {
   isBig?: boolean;
 };
 
-export type NutritionProps = {
+export type nutritionProps = {
   totalFoodIntake: number;
   totalCalories: number;
   totalCarbohydrate: number;
@@ -106,15 +106,6 @@ export type NutritionProps = {
   totalPotassium: number;
 };
 
-export type Food = {
-  foodId: number;
-  foodName: string;
-  brandName: string;
-  foodIntake: number;
-  calories: number;
-  method: boolean;
-};
-
 export type headerProps = {
   iconName: keyof typeof iconPaths;
   onClick?: () => void;
@@ -124,7 +115,7 @@ export type headerProps = {
   placeholder?: string;
   onChange?: React.Dispatch<React.SetStateAction<string>>;
   searchFood?: () => void;
-  nutrition?: NutritionProps;
+  nutrition?: nutritionProps;
 };
 
 export type iconButtonProps = {
@@ -183,12 +174,12 @@ export type infoProps = {
   ntr?: boolean;
 };
 
-type food = {
+export type food = {
   foodId?: number;
   foodName: string;
   brandName: string;
   foodIntake: number;
-  foodCalories: number;
+  calories: number;
   carbohydrate: number;
   sugars: number;
   dietaryFiber: number;

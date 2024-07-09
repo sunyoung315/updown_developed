@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import useAxios from '@/util/http-commons';
 import { Box, IconButton } from '@/components';
 import { Button, Header } from '@/components';
-import { NutritionProps, Food } from '@/types/type';
+import { nutritionProps, foodInfo } from '@/types/type';
+import { httpStatusCode } from '@/util/http-status';
 import styled from 'styled-components';
 
 const SummaryWrapper = styled.div`
@@ -100,12 +101,12 @@ const DietPage = () => {
   const navigator = useNavigate();
 
   const location = useLocation();
-  const dietId = location.state.dietId;
+  const dietId = location.state.dietId || 0;
   const category = decodeURI(location.pathname.split('/')[2]);
 
   const [dietImg, setDietImg] = useState<string>();
-  const [nutrition, setNutrition] = useState<NutritionProps>();
-  const [foodList, setFoodList] = useState<Food[]>();
+  const [nutrition, setNutrition] = useState<nutritionProps>();
+  const [foodList, setFoodList] = useState<foodInfo[]>();
 
   // 식사별 식단 리스트 조회
   const getDietInfo = async () => {
@@ -113,6 +114,10 @@ const DietPage = () => {
       const response = await useAxios.get(`/diet/${category}`, {
         params: { dietId },
       });
+
+      // 아직 등록되지 않은 식단인 경우
+      if (response.status === httpStatusCode.NOCONTENT) return;
+
       setDietImg(response.data.dietImg);
       setNutrition(response.data.nutrition);
       setFoodList(response.data.foodList);
@@ -177,7 +182,7 @@ const DietPage = () => {
                 : '간식'}{' '}
           메뉴 <Count>{foodList?.length || 0}</Count>
         </Category>
-        {foodList?.map(food => (
+        {foodList?.map((food: foodInfo) => (
           <Box type="diet" info={food} key={food.foodId} />
         ))}
         <ButtonWrapper>

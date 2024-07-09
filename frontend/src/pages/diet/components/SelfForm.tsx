@@ -33,20 +33,28 @@ const Br = styled.div`
 const SelfForm = (formProps: formProps) => {
   const { food, buttonName, category, foodId } = formProps;
 
-  const [foodName, setFoodName] = useState(food.foodName);
-  const [brandName, setBrandName] = useState(food.brandName);
-  const [foodIntake, setFoodIntake] = useState(food.foodIntake);
-  const [calories, setCalories] = useState(food.foodCalories);
-  const [carbohydrate, setCarbohydrate] = useState(food.carbohydrate);
-  const [sugars, setSugars] = useState(food.sugars);
-  const [dietaryFiber, setDietaryFiber] = useState(food.dietaryFiber);
-  const [protein, setProtein] = useState(food.protein);
-  const [fat, setFat] = useState(food.fat);
-  const [saturatedFat, setSaturatedFat] = useState(food.saturatedFat);
-  const [transFat, setTransFat] = useState(food.transFat);
-  const [cholesterol, setCholesterol] = useState(food.cholesterol);
-  const [sodium, setSodium] = useState(food.sodium);
-  const [potassium, setPotassium] = useState(food.potassium);
+  const [foodName, setFoodName] = useState<string>(food?.foodName || '');
+  const [brandName, setBrandName] = useState<string>(food?.brandName || '');
+  const [foodIntake, setFoodIntake] = useState<number>(food?.foodIntake || 0);
+  const [calories, setCalories] = useState<number>(food?.calories || 0);
+  const [carbohydrate, setCarbohydrate] = useState<number>(
+    food?.carbohydrate || 0,
+  );
+  const [sugars, setSugars] = useState<number>(food?.sugars || 0);
+  const [dietaryFiber, setDietaryFiber] = useState<number>(
+    food?.dietaryFiber || 0,
+  );
+  const [protein, setProtein] = useState<number>(food?.protein || 0);
+  const [fat, setFat] = useState<number>(food?.fat || 0);
+  const [saturatedFat, setSaturatedFat] = useState<number>(
+    food?.saturatedFat || 0,
+  );
+  const [transFat, setTransFat] = useState<number>(food?.transFat || 0);
+  const [cholesterol, setCholesterol] = useState<number>(
+    food?.cholesterol || 0,
+  );
+  const [sodium, setSodium] = useState<number>(food?.sodium || 0);
+  const [potassium, setPotassium] = useState<number>(food?.potassium || 0);
 
   const newFood = {
     foodName,

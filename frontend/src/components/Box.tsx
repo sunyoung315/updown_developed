@@ -55,7 +55,7 @@ const Box = (boxProps: boxProps) => {
   const navigator = useNavigate();
   const goFoodDetail = () => {
     if (type === 'diet') {
-      navigator(`/diet/detail/${info.foodId}`, { state: { food: info } });
+      navigator(`/diet/detail/${info.foodId}`);
     } else if (type === 'exercise') {
       // navigator(`/exercise/${info.exerciseId}`);
     }
