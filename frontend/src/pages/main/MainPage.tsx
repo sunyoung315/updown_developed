@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Header, DailyRecord, DailyDiet } from './components';
+import { Header, DailyRecord, DailyDiet, DailyWeight } from './components';
 import styled from 'styled-components';
 
 const ContentsWrapper = styled.div`
@@ -12,12 +12,24 @@ const MainPage = () => {
 
   const [date, setDate] = useState(today);
 
+  const year = new Date(date).getFullYear();
+  const month = new Date(date).getMonth();
+  const day = new Date(date).getDate();
+
+  const regDate =
+    year.toString() +
+    '-' +
+    (month < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) +
+    '-' +
+    (day < 10 ? '0' + day.toString() : day.toString());
+
   return (
     <>
       <Header date={date} setDate={setDate} />
       <ContentsWrapper>
         <DailyRecord />
-        <DailyDiet date={date} />
+        <DailyDiet regDate={regDate} />
+        <DailyWeight regDate={regDate} />
       </ContentsWrapper>
     </>
   );

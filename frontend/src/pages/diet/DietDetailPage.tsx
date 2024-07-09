@@ -117,7 +117,7 @@ const DietDetailPage = () => {
         <Hr />
         <Info title="칼륨" content={food.potassium} unit="mg" />
         <Br />
-        <Button buttonName="수정하기" onClick={editDiet} />
+        <Button buttonName="수정하기" onClick={editDiet} color="orange" />
       </InfoWrapper>
     </DietDetailWrapper>
   );

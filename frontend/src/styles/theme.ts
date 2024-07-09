@@ -5,6 +5,7 @@ const theme = {
   darkpink: '#DE8791',
   yellow: '#FBDD6B',
   orange: '#F4B24E',
+  lightgreen: '#E4F5E3',
   green: '#B8DEB5',
   darkgreen: '#7FA17D',
   skyblue: '#A4CCD6',

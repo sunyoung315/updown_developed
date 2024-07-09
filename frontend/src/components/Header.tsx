@@ -33,14 +33,6 @@ const Blank = styled.div<{ $search: boolean | undefined }>`
   height: 1.7rem;
 `;
 
-const ModalTitle = styled.div`
-  font-size: 1.63rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-`;
-
 const Total = styled.div`
   display: flex;
   justify-content: space-between;
@@ -112,11 +104,11 @@ const Header = (headerProps: headerProps) => {
       {nutritionButton && (
         <>
           <NutritionButton onClick={openModal}>영양 성분 상세</NutritionButton>
-          <BottomSheet isOpen={isModalOpen} onClose={closeModal}>
-            <ModalTitle>
-              <div>아침 영양 성분 상세</div>
-              <IconButton iconName="close" onClick={closeModal} size={1.6} />
-            </ModalTitle>
+          <BottomSheet
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            title="아침 영양 성분 상세"
+          >
             <Total>
               <span
                 style={{ fontSize: '1.25rem' }}

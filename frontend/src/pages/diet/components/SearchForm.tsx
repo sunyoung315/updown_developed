@@ -191,7 +191,7 @@ const SearchForm = (formProps: formProps) => {
       <Hr />
       <Info title="칼륨" content={potassium} unit="mg" />
       <Br />
-      <Button buttonName={buttonName} onClick={handleClick} />
+      <Button buttonName={buttonName} onClick={handleClick} color="orange" />
     </InputWrapper>
   );
 };

@@ -200,10 +200,12 @@ const DietPage = () => {
           <Button
             buttonName="검색"
             onClick={() => navigator('/diet/search', { state: { category } })}
+            color="orange"
           />
           <Button
             buttonName="직접 등록"
             onClick={() => navigator('/diet/regist', { state: { category } })}
+            color="orange"
           />
         </ButtonWrapper>
       </FoodListWrapper>

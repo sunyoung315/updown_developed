@@ -1,4 +1,5 @@
 import { bottomSheetProps } from '@/types/type';
+import { IconButton } from '@/components';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
@@ -39,8 +40,16 @@ const Modal = styled.div`
   z-index: 15;
 `;
 
+const ModalTitle = styled.div`
+  font-size: 1.63rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+`;
+
 const BottomSheet = (bottomSheetProps: bottomSheetProps) => {
-  const { isOpen, onClose, children } = bottomSheetProps;
+  const { isOpen, onClose, title, children } = bottomSheetProps;
   const portalElement = document.getElementById('modal') as HTMLElement;
 
   if (!isOpen) return null;
@@ -48,7 +57,13 @@ const BottomSheet = (bottomSheetProps: bottomSheetProps) => {
   return createPortal(
     <ModalWraper>
       <BackDrop onClick={onClose}></BackDrop>
-      <Modal>{children}</Modal>
+      <Modal>
+        <ModalTitle>
+          <div>{title}</div>
+          <IconButton iconName="close" onClick={onClose} size={1.6} />
+        </ModalTitle>
+        {children}
+      </Modal>
     </ModalWraper>,
     portalElement,
   );
