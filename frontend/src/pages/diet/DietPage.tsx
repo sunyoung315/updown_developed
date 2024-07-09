@@ -123,7 +123,9 @@ const DietPage = () => {
         setNutrition(response.data.nutrition);
         setFoodList(response.data.foodList);
       } else if (response.status === httpStatusCode.NOCONTENT) {
-        setFoodList([]);
+        setFoodList(undefined);
+        setDietImg(undefined);
+        setNutrition(undefined);
       }
     } catch (err) {
       console.log('식사별 식단 리스트 조회 에러:', err);
