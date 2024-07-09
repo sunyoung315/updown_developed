@@ -91,6 +91,30 @@ export type inputProps = {
   isBig?: boolean;
 };
 
+export type NutritionProps = {
+  totalFoodIntake: number;
+  totalCalories: number;
+  totalCarbohydrate: number;
+  totalDietaryFiber: number;
+  totalSugars: number;
+  totalProtein: number;
+  totalFat: number;
+  totalSaturatedFat: number;
+  totalTransFat: number;
+  totalCholesterol: number;
+  totalSodium: number;
+  totalPotassium: number;
+};
+
+export type Food = {
+  foodId: number;
+  foodName: string;
+  brandName: string;
+  foodIntake: number;
+  calories: number;
+  method: boolean;
+};
+
 export type headerProps = {
   iconName: keyof typeof iconPaths;
   onClick?: () => void;
@@ -100,6 +124,7 @@ export type headerProps = {
   placeholder?: string;
   onChange?: React.Dispatch<React.SetStateAction<string>>;
   searchFood?: () => void;
+  nutrition?: NutritionProps;
 };
 
 export type iconButtonProps = {

@@ -56,31 +56,13 @@ const Header = (headerProps: headerProps) => {
     placeholder,
     onChange,
     searchFood,
+    nutrition,
   } = headerProps;
 
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-
-  const food = {
-    foodId: 11,
-    foodName: '마라탕',
-    brandName: '춘리마라탕',
-    foodIntake: 700,
-    calories: 1000,
-    carbohydrate: 10,
-    sugars: 2,
-    dietaryFiber: 1,
-    protein: 1.4,
-    fat: 20,
-    saturatedFat: 15,
-    transFat: 2,
-    cholesterol: 15,
-    sodium: 2000,
-    potassium: 400,
-    method: true,
-  };
 
   return (
     <HeaderWrapper>
@@ -112,46 +94,56 @@ const Header = (headerProps: headerProps) => {
             <Total>
               <span
                 style={{ fontSize: '1.25rem' }}
-              >{`총 섭취량 ${food.foodIntake}g`}</span>
+              >{`총 섭취량 ${nutrition?.totalFoodIntake || 0}g`}</span>
               <span
                 style={{ fontSize: '1.8rem' }}
-              >{`${food.calories} kcal`}</span>
+              >{`${nutrition?.totalCalories || 0} kcal`}</span>
             </Total>
             <Hr />
             <Info
               title="탄수화물"
-              content={food.carbohydrate}
+              content={nutrition?.totalCarbohydrate || 0}
               unit="g"
               ntr={true}
             />
             <Info
               title="당"
-              content={food.sugars}
+              content={nutrition?.totalSugars || 0}
               titleColor="grey"
               unit="g"
               ntr={true}
             />
             <Info
               title="식이섬유"
-              content={food.dietaryFiber}
+              content={nutrition?.totalDietaryFiber || 0}
               titleColor="grey"
               unit="g"
               ntr={true}
             />
             <Hr />
-            <Info title="단백질" content={food.protein} unit="g" ntr={true} />
+            <Info
+              title="단백질"
+              content={nutrition?.totalProtein || 0}
+              unit="g"
+              ntr={true}
+            />
             <Hr />
-            <Info title="지방" content={food.fat} unit="g" ntr={true} />
+            <Info
+              title="지방"
+              content={nutrition?.totalFat || 0}
+              unit="g"
+              ntr={true}
+            />
             <Info
               title="포화지방"
-              content={food.transFat}
+              content={nutrition?.totalSaturatedFat || 0}
               titleColor="grey"
               unit="g"
               ntr={true}
             />
             <Info
               title="트랜스지방"
-              content={food.saturatedFat}
+              content={nutrition?.totalTransFat || 0}
               titleColor="grey"
               unit="g"
               ntr={true}
@@ -159,14 +151,24 @@ const Header = (headerProps: headerProps) => {
             <Hr />
             <Info
               title="콜레스테롤"
-              content={food.cholesterol}
+              content={nutrition?.totalCholesterol || 0}
               unit="mg"
               ntr={true}
             />
             <Hr />
-            <Info title="나트륨" content={food.sodium} unit="mg" ntr={true} />
+            <Info
+              title="나트륨"
+              content={nutrition?.totalSodium || 0}
+              unit="mg"
+              ntr={true}
+            />
             <Hr />
-            <Info title="칼륨" content={food.potassium} unit="mg" ntr={true} />
+            <Info
+              title="칼륨"
+              content={nutrition?.totalPotassium || 0}
+              unit="mg"
+              ntr={true}
+            />
           </BottomSheet>
         </>
       )}

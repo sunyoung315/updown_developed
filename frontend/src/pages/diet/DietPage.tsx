@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import useAxios from '@/util/http-commons';
+import useAxios from '@/util/http-commons';
 import { Box, IconButton } from '@/components';
 import { Button, Header } from '@/components';
-import FoodImage from '@/assets/images/마라탕.png';
+import { NutritionProps, Food } from '@/types/type';
 import styled from 'styled-components';
 
 const SummaryWrapper = styled.div`
@@ -102,54 +103,27 @@ const DietPage = () => {
   const dietId = location.state.dietId;
   const category = decodeURI(location.pathname.split('/')[2]);
 
-  // const foodList = useAxios.get(`/diet/${category}`, {data: dietId});
-  const foodList = [
-    {
-      foodId: 11,
-      foodName: '마라탕',
-      brandName: '춘리마라탕',
-      foodIntake: 700,
-      calories: 1000,
-      carbohydrate: 10,
-      sugars: 2,
-      dietaryFiber: 1,
-      protein: 1.4,
-      fat: 20,
-      saturatedFat: 15,
-      transFat: 2,
-      cholesterol: 15,
-      sodium: 2000,
-      potassium: 400,
-      method: true,
-    },
-    {
-      foodId: 22,
-      foodName: '로티셰리바베큐 샌드위치',
-      brandName: '서브웨이',
-      foodIntake: 300,
-      calories: 410,
-      carbohydrate: 10,
-      sugars: 2,
-      dietaryFiber: 1,
-      protein: 1.4,
-      fat: 20,
-      saturatedFat: 15,
-      transFat: 2,
-      cholesterol: 15,
-      sodium: 2000,
-      potassium: 400,
-      method: false,
-    },
-  ];
+  const [dietImg, setDietImg] = useState<string>();
+  const [nutrition, setNutrition] = useState<NutritionProps>();
+  const [foodList, setFoodList] = useState<Food[]>();
 
-  const diet = {
-    dietImg: FoodImage,
-    totalCalories: 1410,
-    totalCarbohydrate: 20,
-    totalProtein: 2.8,
-    totalFat: 40,
-    foodList,
+  // 식사별 식단 리스트 조회
+  const getDietInfo = async () => {
+    try {
+      const response = await useAxios.get(`/diet/${category}`, {
+        params: { dietId },
+      });
+      setDietImg(response.data.dietImg);
+      setNutrition(response.data.nutrition);
+      setFoodList(response.data.foodList);
+    } catch (err) {
+      console.log('식사별 식단 리스트 조회 에러:', err);
+    }
   };
+
+  useEffect(() => {
+    getDietInfo();
+  }, []);
 
   const goMain = () => {
     navigator('/main');
@@ -162,21 +136,31 @@ const DietPage = () => {
   return (
     <>
       <SummaryWrapper>
-        <Header iconName="back" onClick={goMain} nutritionButton={true} />
+        <Header
+          iconName="back"
+          onClick={goMain}
+          nutritionButton={true}
+          nutrition={nutrition}
+        />
         <div>
-          <Calorie>{diet.totalCalories} Kcal </Calorie>
+          <Calorie>{nutrition?.totalCalories || 0} Kcal </Calorie>
           <Title> 먹었어요</Title>
         </div>
         <NutritionWrapper>
           <Nutrition>탄</Nutrition>
-          <Gram>{diet.totalCarbohydrate} g</Gram>
+          <Gram>{nutrition?.totalCarbohydrate || 0} g</Gram>
           <Nutrition>단</Nutrition>
-          <Gram>{diet.totalProtein} g</Gram>
+          <Gram>{nutrition?.totalProtein || 0} g</Gram>
           <Nutrition>지</Nutrition>
-          <Gram style={{ paddingRight: '0' }}>{diet.totalFat} g</Gram>
+          <Gram style={{ paddingRight: '0' }}>
+            {nutrition?.totalFat || 0} g
+          </Gram>
         </NutritionWrapper>
         <ImageBox>
-          <Image src={diet.dietImg} alt="salad" />
+          <Image
+            src={dietImg ? dietImg : `/images/${category}.png`}
+            alt="dietImg"
+          />
           <ImageIcon>
             <IconButton iconName="photo" onClick={registPhoto} />
           </ImageIcon>
@@ -191,9 +175,9 @@ const DietPage = () => {
               : category == 'dinner'
                 ? '저녁'
                 : '간식'}{' '}
-          메뉴 <Count>{foodList.length}</Count>
+          메뉴 <Count>{foodList?.length || 0}</Count>
         </Category>
-        {foodList.map(food => (
+        {foodList?.map(food => (
           <Box type="diet" info={food} key={food.foodId} />
         ))}
         <ButtonWrapper>
