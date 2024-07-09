@@ -14,5 +14,8 @@ import java.util.Optional;
 @EnableJpaRepositories
 public interface DietRepository extends JpaRepository<Diet, Integer> {
     Optional<Diet> findByMemberAndRegDateAndCategory(Member member, LocalDate regDate, DietCategory category);
+
+    Optional<Diet> findByMemberAndDietIdAndCategory(Member member, Integer dietId, DietCategory category);
+
     List<Diet> findByMemberAndRegDate(Member member, LocalDate regDate);
 }

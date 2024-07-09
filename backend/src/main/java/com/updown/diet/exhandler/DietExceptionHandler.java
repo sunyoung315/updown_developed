@@ -1,5 +1,7 @@
 package com.updown.diet.exhandler;
 
+import com.updown.diet.exception.DietNotFoundException;
+import com.updown.diet.exception.FoodNotFoundException;
 import com.updown.diet.exception.NotInsertFoodException;
 import com.updown.member.exception.NotFoundMemberException;
 import com.updown.member.exception.NotUpdateMyInfoException;
@@ -35,4 +37,25 @@ public class DietExceptionHandler {
         return ResponseEntity.badRequest().body(errorMessage.toString());
     }
 
+    @ExceptionHandler(DietNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<String> DietNotFoundExceptionHandler(DietNotFoundException e) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        makeErrorMessage(errorMessage, e);
+
+        errorMessage.append("해당 식단이 존재하지 않습니다.");
+        return ResponseEntity.badRequest().body(errorMessage.toString());
+    }
+
+    @ExceptionHandler(FoodNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<String> FoodNotFoundExceptionHandler(FoodNotFoundException e) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        makeErrorMessage(errorMessage, e);
+
+        errorMessage.append("해당 음식이 존재하지 않습니다.");
+        return ResponseEntity.badRequest().body(errorMessage.toString());
+    }
 }

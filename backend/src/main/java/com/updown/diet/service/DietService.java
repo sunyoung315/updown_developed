@@ -2,6 +2,7 @@ package com.updown.diet.service;
 
 import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.res.DayDietRes;
+import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
@@ -19,4 +20,6 @@ public interface DietService {
     void updateDiet(Member member, Integer foodId, Food food);
 
     List<DayDietRes> searchDayDiet(Member member, LocalDate regDate);
+
+    DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId);
 }

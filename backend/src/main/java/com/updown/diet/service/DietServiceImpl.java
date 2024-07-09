@@ -1,11 +1,12 @@
 package com.updown.diet.service;
 
 import com.updown.diet.dto.req.InsertFoodReq;
-import com.updown.diet.dto.res.DayDietRes;
-import com.updown.diet.dto.res.DietSearchRes;
+import com.updown.diet.dto.res.*;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
+import com.updown.diet.exception.DietNotFoundException;
+import com.updown.diet.exception.FoodNotFoundException;
 import com.updown.diet.exception.NotInsertFoodException;
 import com.updown.diet.repository.DietRepository;
 import com.updown.diet.repository.FoodRepository;
@@ -142,6 +143,53 @@ public class DietServiceImpl implements DietService {
         }
 
         return dietList;
+    }
+
+    /**
+     * 식사별 식단 리스트 조회
+     * @param member
+     * @param dietId
+     * @return
+     */
+    @Override
+    public DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId) {
+        Diet diet = dietRepository.findByMemberAndDietIdAndCategory(member, dietId, category).orElseThrow(DietNotFoundException::new);
+        Nutrition nutrition = Nutrition.builder()
+                .totalCalories(diet.getDietTotalCalories())
+                .totalProtein(foodRepository.findProteinByDiet(dietId))
+                .totalSugars(foodRepository.findSugarsByDiet(dietId))
+                .totalDietaryFiber(foodRepository.findDietaryFiberByDiet(dietId))
+                .totalCholesterol(foodRepository.findCholesterolByDiet(dietId))
+                .totalPotassium(foodRepository.findPotassiumByDiet(dietId))
+                .totalFat(foodRepository.findFatByDiet(dietId))
+                .totalTransFat(foodRepository.findTransFatByDiet(dietId))
+                .totalSaturatedFat(foodRepository.findSaturatedFatByDiet(dietId))
+                .totalSodium(foodRepository.findSodiumByDiet(dietId))
+                .totalCarbohydrate(foodRepository.findCarbohydrateByDiet(dietId))
+                .build();
+
+        List<Integer> foodIdList = foodRepository.findByDietId(dietId); // foodId가져오기
+        List<FoodListRes> foodList = new ArrayList<>();
+
+        for(Integer foodId : foodIdList){
+            Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
+            FoodListRes foodListRes = FoodListRes.builder()
+                    .foodId(foodId)
+                    .foodName(food.getFoodName())
+                    .brandName(food.getBrandName())
+                    .foodIntake(food.getFoodIntake())
+                    .calories(food.getCalories())
+                    .method(food.getMethod())
+                    .build();
+
+            foodList.add(foodListRes);
+        }
+
+        return DietCategoryRes.builder()
+                .dietImg(diet.getDietImg())
+                .nutrition(nutrition)
+                .foodList(foodList)
+                .build();
     }
 
 }

@@ -26,6 +26,9 @@ public class Food {
     @Column(name = "food_name")
     private String foodName;
 
+    @Column(name = "brand_name")
+    private String brandName;
+
     @Column(name = "food_intake", nullable = false)
     private float foodIntake;
 
@@ -52,6 +55,15 @@ public class Food {
 
     @Column(name = "trans_fat", nullable = false)
     private float transFat;
+
+    @Column(name = "cholesterol", nullable = false)
+    private float cholesterol;
+
+    @Column(name = "sodium", nullable = false)
+    private float sodium;
+
+    @Column(name = "potassium", nullable = false)
+    private float potassium;
 
     // 0: 직접, 1: 검색
     @Column(name = "method")

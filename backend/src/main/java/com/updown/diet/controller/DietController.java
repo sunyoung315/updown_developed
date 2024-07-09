@@ -3,6 +3,7 @@ package com.updown.diet.controller;
 import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.req.UpdateFoodReq;
 import com.updown.diet.dto.res.DayDietRes;
+import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
@@ -49,6 +50,19 @@ public class DietController {
     public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestParam LocalDate regDate){
         List<DayDietRes> dietList = dietService.searchDayDiet(member, regDate);
         return ResponseEntity.ok().body(dietList);
+    }
+
+    /**
+     * 식사별 식단 리스트 조회
+     * @param member
+     * @param dietId
+     * @return
+     */
+    @Transactional
+    @GetMapping("/{category}")
+    public ResponseEntity<?> searchCategoryDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestParam Integer dietId){
+        DietCategoryRes dietCategoryRes = dietService.searchCategoryDiet(category, member, dietId);
+        return ResponseEntity.ok().body(dietCategoryRes);
     }
 
     /**
