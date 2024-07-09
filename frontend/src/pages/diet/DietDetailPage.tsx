@@ -33,6 +33,8 @@ const DietDetailPage = () => {
   const location = useLocation();
 
   const foodId = location.pathname.substring(13);
+  const category = location.state.category;
+  const dietId = location.state.dietId;
 
   const [food, setFood] = useState<food>();
 
@@ -51,11 +53,11 @@ const DietDetailPage = () => {
   }, []);
 
   const goBack = () => {
-    navigator(-1);
+    navigator(`/diet/${category}`, { state: { dietId } });
   };
 
   const editDiet = () => {
-    navigator(`/diet/edit/${foodId}`, { state: { food } });
+    navigator(`/diet/edit/${foodId}`, { state: { food, category, dietId } });
   };
 
   return (

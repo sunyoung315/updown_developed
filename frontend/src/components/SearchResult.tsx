@@ -26,7 +26,7 @@ const Info = styled.div`
 `;
 
 const SearchResult = (searchResultProps: searchResultProps) => {
-  const { result, type, category } = searchResultProps;
+  const { result, type, category, dietId } = searchResultProps;
 
   const navigator = useNavigate();
   const regist = () => {
@@ -35,11 +35,11 @@ const SearchResult = (searchResultProps: searchResultProps) => {
       const foodInfo = {
         foodId: result.foodInfoId,
         foodName: result.foodInfoName,
-        foodCalories: result.foodInfoCalories,
+        calories: result.foodInfoCalories,
         foodIntake: 100,
         ...result,
       };
-      navigator(`/diet/regist`, { state: { category, foodInfo } });
+      navigator(`/diet/regist`, { state: { category, foodInfo, dietId } });
     } else if (type === 'exercise') {
       // navigator(`/exercise/regist/sc/${result.exerciseInfoId}`);
     }

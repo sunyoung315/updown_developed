@@ -12,13 +12,12 @@ const DietEditPage = () => {
 
   const location = useLocation();
   const food = location.state.food;
-  // method => false: 직접 등록 / true: 검색 등록
-  const foodId = food.method
-    ? Number(location.pathname.substring(14))
-    : Number(location.pathname.substring(11));
+  const category = location.state.category;
+  const dietId = location.state.dietId;
+  const foodId = Number(location.pathname.substring(11));
 
   const goBack = () => {
-    navigator(-1);
+    navigator(`/diet/detail/${foodId}`, { state: { category, dietId } });
   };
 
   return (

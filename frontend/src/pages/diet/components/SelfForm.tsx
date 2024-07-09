@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Input } from '@/components';
 import { formProps } from '@/types/type';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
-import { useState } from 'react';
 import styled from 'styled-components';
 
 const InputWrapper = styled.div`
@@ -76,6 +77,8 @@ const SelfForm = (formProps: formProps) => {
 
   const regDate = localStorage.getItem('date');
 
+  const navigator = useNavigate();
+
   const handleClick = async () => {
     if (buttonName === '등록하기') {
       try {
@@ -85,15 +88,23 @@ const SelfForm = (formProps: formProps) => {
           regDate,
         });
         if (response.status === httpStatusCode.OK) {
-          console.log('식단 등록 성공');
+          const dietId = response.data;
+          navigator(`/diet/${category}`, { state: { dietId } });
         }
       } catch (error) {
         console.log('식단 등록 에러: ', error);
       }
     } else if (buttonName === '수정완료') {
-      // foodId & newInfo 보내기
-      console.log('newInfo', newFood);
-      console.log('foodId', foodId);
+      try {
+        const response = await useAxios.put(`/diet/${foodId}`, newFood);
+        console.log(response);
+        if (response.status === httpStatusCode.OK) {
+          console.log('식단 수정 성공');
+          navigator(`/diet/detail/${foodId}`);
+        }
+      } catch (err) {
+        console.log('식단 수정 에러: ', err);
+      }
     }
   };
 

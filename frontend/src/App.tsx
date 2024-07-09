@@ -46,6 +46,9 @@ function App() {
       }
     };
 
+    // 페이지 이동했을 때 스크롤 제일 위로 이동
+    window.scrollTo(0, 0);
+
     refresh();
   }, [location.pathname]);
 

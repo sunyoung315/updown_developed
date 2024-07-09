@@ -29,7 +29,7 @@ type diet = {
 
 export type dietProps = {
   diet?: diet;
-  title: string;
+  category: string;
   regDate?: string;
 };
 
@@ -55,6 +55,9 @@ export type exerciseInfo = {
 
 type commonProps = {
   type: 'diet' | 'exercise';
+  setIsDelted: React.Dispatch<React.SetStateAction<boolean>>;
+  dietId?: number;
+  category?: string;
 };
 
 type dietCommonProps = commonProps & {
@@ -147,6 +150,7 @@ type exerciseResult = {
 type commonResultProps = {
   type: 'diet' | 'exercise';
   category: string;
+  dietId?: number;
 };
 
 type dietSearchResultProps = commonResultProps & {

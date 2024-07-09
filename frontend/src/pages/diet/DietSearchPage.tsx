@@ -16,9 +16,10 @@ const DietSearchPage = () => {
   const location = useLocation();
 
   const category = location.state.category;
+  const dietId = location.state.dietId;
 
   const goBack = () => {
-    navigator(-1);
+    navigator(`/diet/${category}`, { state: { dietId } });
   };
 
   const [foodName, setFoodName] = useState('');
@@ -64,6 +65,7 @@ const DietSearchPage = () => {
             type="diet"
             category={category}
             key={food.foodInfoId}
+            dietId={dietId}
           />
         ))}
       </FoodList>

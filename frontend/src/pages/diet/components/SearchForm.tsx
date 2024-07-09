@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const InputWrapper = styled.div`
   padding: 0.5rem 2rem 1rem 2rem;
@@ -28,7 +29,7 @@ const SearchForm = (formProps: formProps) => {
   const { food, buttonName, category, foodId } = formProps;
 
   const [foodIntake, setFoodIntake] = useState(food.foodIntake);
-  const [calories, setCalories] = useState(food.foodCalories);
+  const [calories, setCalories] = useState(food.calories);
   const [carbohydrate, setCarbohydrate] = useState(food.carbohydrate);
   const [sugars, setSugars] = useState(food.sugars);
   const [dietaryFiber, setDietaryFiber] = useState(food.dietaryFiber);
@@ -55,13 +56,12 @@ const SearchForm = (formProps: formProps) => {
     cholesterol,
     sodium,
     potassium,
-    method: true, // 검색 등록
+    method: true,
   };
 
   useEffect(() => {
     setCalories(
-      Math.round((food.foodCalories / food.foodIntake) * foodIntake * 100) /
-        100,
+      Math.round((food.calories / food.foodIntake) * foodIntake * 100) / 100,
     );
     setCarbohydrate(
       Math.round((food.carbohydrate / food.foodIntake) * foodIntake * 100) /
@@ -98,24 +98,35 @@ const SearchForm = (formProps: formProps) => {
 
   const regDate = localStorage.getItem('date');
 
+  const navigator = useNavigate();
+
   const handleClick = async () => {
     if (buttonName === '등록하기') {
       try {
-        console.log(category);
         const response = await useAxios.post(`/diet/${category}`, {
           food: newInfo,
           regDate,
         });
         if (response.status === httpStatusCode.OK) {
           console.log('식단 등록 성공');
+          const dietId = response.data;
+          navigator(`/diet/${category}`, { state: { dietId } });
         }
-      } catch (error) {
-        console.log('식단 등록 에러: ', error);
+      } catch (err) {
+        console.log('식단 등록 에러: ', err);
       }
     } else if (buttonName === '수정완료') {
-      // foodId & newInfo 보내기
-      console.log('newInfo', newInfo);
-      console.log('foodId', foodId);
+      try {
+        console.log(newInfo);
+        const response = await useAxios.put(`/diet/${foodId}`, newInfo);
+        console.log(response);
+        if (response.status === httpStatusCode.OK) {
+          console.log('식단 수정 성공');
+          navigator(`/diet/detail/${foodId}`);
+        }
+      } catch (err) {
+        console.log('식단 수정 에러: ', err);
+      }
     }
   };
 

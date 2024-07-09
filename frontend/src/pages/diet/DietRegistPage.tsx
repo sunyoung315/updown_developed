@@ -12,17 +12,18 @@ const DietRegistPage = () => {
 
   const location = useLocation();
   const category = location.state.category;
+  const dietId = location.state.dietId;
   const foodInfo = location.state.foodInfo;
 
   const goBack = () => {
-    navigator(-1);
+    navigator(`/diet/${category}`, { state: { dietId } });
   };
 
   const food = {
     foodName: '',
     brandName: '',
     foodIntake: 0,
-    foodCalories: 0,
+    calories: 0,
     carbohydrate: 0,
     sugars: 0,
     dietaryFiber: 0,

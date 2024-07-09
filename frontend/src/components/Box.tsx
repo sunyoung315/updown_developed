@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@/components';
 import { boxProps } from '@/types/type';
 import styled from 'styled-components';
+import useAxios from '@/util/http-commons';
+import { httpStatusCode } from '@/util/http-status';
 
 const BoxWrapper = styled.div`
   width: 100%;
@@ -50,23 +52,33 @@ const Calorie = styled.span`
 `;
 
 const Box = (boxProps: boxProps) => {
-  const { type, info } = boxProps;
+  const { type, info, setIsDelted, dietId, category } = boxProps;
 
   const navigator = useNavigate();
   const goFoodDetail = () => {
     if (type === 'diet') {
-      navigator(`/diet/detail/${info.foodId}`);
+      navigator(`/diet/detail/${info.foodId}`, { state: { category, dietId } });
     } else if (type === 'exercise') {
       // navigator(`/exercise/${info.exerciseId}`);
     }
   };
 
-  const deleteInfo = (
+  const deleteInfo = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation(); // 이벤트 전파 중단
     if (type === 'diet') {
-      console.log('음식 삭제');
+      try {
+        const response = await useAxios.delete('/diet/food', {
+          params: { foodId: info.foodId },
+        });
+        if (response.status === httpStatusCode.OK) {
+          console.log('식단 삭제 성공');
+          setIsDelted(true);
+        }
+      } catch (err) {
+        console.log('식단 삭제 에러:', err);
+      }
     } else if (type === 'exercise') {
       console.log('운동 삭제');
     }

@@ -5,8 +5,9 @@ import CheckIcon from '@/assets/icons/check-icon.svg';
 import PlusIcon from '@/assets/icons/plus-icon.svg';
 import YlCheckIcon from '@/assets/icons/yl-check-icon.svg';
 import WhCheckIcon from '@/assets/icons/wh-check-icon.svg';
-import FoodImage from '@/assets/images/마라탕.png';
 import styled from 'styled-components';
+import useAxios from '@/util/http-commons';
+import { httpStatusCode } from '@/util/http-status';
 
 const OneDietWrapper = styled.div`
   width: 100%;
@@ -50,22 +51,39 @@ const Calories = styled.div`
 
 const OneDiet = (dietProps: dietProps) => {
   const { diet } = dietProps || {};
-  const { title, regDate } = dietProps;
+  const { category, regDate } = dietProps;
 
   const [fast, setFast] = useState(diet?.isFast);
 
   const navigator = useNavigate();
 
   const goDietDetails = () => {
-    navigator(`/diet/${title}`, { state: { dietId: diet?.dietId } });
+    navigator(`/diet/${category}`, { state: { dietId: diet?.dietId } });
   };
 
-  const registFasting = () => {
+  const registFasting = async () => {
     setFast(!fast);
-    // 단식 등록 axios
+
+    try {
+      //////
+      //////
+      /////
+      // isFast 버튼 바뀌는지 확인 필요!!!!
+      const response = await useAxios.post('/diet/isFast', {
+        regDate,
+        category,
+      });
+      if (response.status === httpStatusCode.OK) {
+        console.log('단식 등록 성공');
+        setFast(true);
+      }
+    } catch (err) {
+      console.log('단식 등록 에러', err);
+    }
   };
 
   useEffect(() => {
+    console.log(diet);
     setFast(diet?.isFast);
   }, [regDate]);
 
@@ -73,11 +91,11 @@ const OneDiet = (dietProps: dietProps) => {
     <OneDietWrapper>
       <CategoryWrapper>
         <Category>
-          {title == 'breakfast'
+          {category == 'breakfast'
             ? '아침'
-            : title == 'lunch'
+            : category == 'lunch'
               ? '점심'
-              : title == 'dinner'
+              : category == 'dinner'
                 ? '저녁'
                 : '간식'}
         </Category>
@@ -89,10 +107,12 @@ const OneDiet = (dietProps: dietProps) => {
           )}
         </button>
       </CategoryWrapper>
-      {diet && !diet.isFast && diet.dietImg ? (
+      {diet && !fast && diet.dietImg ? (
         <DietImg src={diet?.dietImg} />
       ) : (
-        <DietImg src={fast ? `/images/fasting.png` : `/images/${title}.png`} />
+        <DietImg
+          src={fast ? `/images/fasting.png` : `/images/${category}.png`}
+        />
       )}
       {diet && !diet?.isFast ? (
         <Calories>{diet?.totalCalories} kcal</Calories>

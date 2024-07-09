@@ -39,6 +39,8 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
         params: { regDate },
       });
       setTodayDiet(response.data);
+
+      console.log(response.data);
     } catch (err) {
       console.log('일별 식단 정보 조회 에러:', err);
     }
@@ -57,10 +59,10 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
     <DailyDietWrapper>
       <TitleWrapper>식단</TitleWrapper>
       <DietWrapper>
-        <OneDiet diet={breakfast} title="breakfast" regDate={regDate} />
-        <OneDiet diet={lunch} title="lunch" regDate={regDate} />
-        <OneDiet diet={dinner} title="dinner" regDate={regDate} />
-        <OneDiet diet={snack} title="snack" regDate={regDate} />
+        <OneDiet diet={breakfast} category="breakfast" regDate={regDate} />
+        <OneDiet diet={lunch} category="lunch" regDate={regDate} />
+        <OneDiet diet={dinner} category="dinner" regDate={regDate} />
+        <OneDiet diet={snack} category="snack" regDate={regDate} />
       </DietWrapper>
     </DailyDietWrapper>
   );

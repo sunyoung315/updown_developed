@@ -107,6 +107,7 @@ const DietPage = () => {
   const [dietImg, setDietImg] = useState<string>();
   const [nutrition, setNutrition] = useState<nutritionProps>();
   const [foodList, setFoodList] = useState<foodInfo[]>();
+  const [isDeleted, setIsDelted] = useState<boolean>(false);
 
   // 식사별 식단 리스트 조회
   const getDietInfo = async () => {
@@ -116,11 +117,14 @@ const DietPage = () => {
       });
 
       // 아직 등록되지 않은 식단인 경우
-      if (response.status === httpStatusCode.NOCONTENT) return;
-
-      setDietImg(response.data.dietImg);
-      setNutrition(response.data.nutrition);
-      setFoodList(response.data.foodList);
+      if (response.status === httpStatusCode.OK) {
+        console.log('식사별 식단 리스트 조회 성공');
+        setDietImg(response.data.dietImg);
+        setNutrition(response.data.nutrition);
+        setFoodList(response.data.foodList);
+      } else if (response.status === httpStatusCode.NOCONTENT) {
+        setFoodList([]);
+      }
     } catch (err) {
       console.log('식사별 식단 리스트 조회 에러:', err);
     }
@@ -128,7 +132,8 @@ const DietPage = () => {
 
   useEffect(() => {
     getDietInfo();
-  }, []);
+    setIsDelted(false);
+  }, [isDeleted]);
 
   const goMain = () => {
     navigator('/main');
@@ -183,17 +188,28 @@ const DietPage = () => {
           메뉴 <Count>{foodList?.length || 0}</Count>
         </Category>
         {foodList?.map((food: foodInfo) => (
-          <Box type="diet" info={food} key={food.foodId} />
+          <Box
+            type="diet"
+            info={food}
+            key={food.foodId}
+            setIsDelted={setIsDelted}
+            dietId={dietId}
+            category={category}
+          />
         ))}
         <ButtonWrapper>
           <Button
             buttonName="검색"
-            onClick={() => navigator('/diet/search', { state: { category } })}
+            onClick={() =>
+              navigator('/diet/search', { state: { category, dietId } })
+            }
             color="orange"
           />
           <Button
             buttonName="직접 등록"
-            onClick={() => navigator('/diet/regist', { state: { category } })}
+            onClick={() =>
+              navigator('/diet/regist', { state: { category, dietId } })
+            }
             color="orange"
           />
         </ButtonWrapper>
