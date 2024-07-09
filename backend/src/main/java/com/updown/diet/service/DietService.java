@@ -4,6 +4,7 @@ import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
+import com.updown.diet.dto.res.FoodDetails;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
 import com.updown.member.entity.Member;
@@ -22,5 +23,5 @@ public interface DietService {
 
     DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId);
 
-    Food searchFood(Member member, Integer foodId);
+    FoodDetails searchFood(Member member, Integer foodId);
 }

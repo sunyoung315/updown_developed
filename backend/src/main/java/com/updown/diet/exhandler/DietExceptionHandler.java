@@ -27,7 +27,6 @@ public class DietExceptionHandler {
     }
 
     @ExceptionHandler(NotInsertFoodException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<String> NotInsertFoodExceptionHandler(NotInsertFoodException e) {
         StringBuilder errorMessage = new StringBuilder();
 
@@ -38,24 +37,24 @@ public class DietExceptionHandler {
     }
 
     @ExceptionHandler(DietNotFoundException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     protected ResponseEntity<String> DietNotFoundExceptionHandler(DietNotFoundException e) {
         StringBuilder errorMessage = new StringBuilder();
 
         makeErrorMessage(errorMessage, e);
 
-        errorMessage.append("해당 식단이 존재하지 않습니다.");
-        return ResponseEntity.badRequest().body(errorMessage.toString());
+//        errorMessage.append("해당 식단이 존재하지 않습니다.");
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage.toString());
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(FoodNotFoundException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     protected ResponseEntity<String> FoodNotFoundExceptionHandler(FoodNotFoundException e) {
         StringBuilder errorMessage = new StringBuilder();
 
         makeErrorMessage(errorMessage, e);
 
-        errorMessage.append("해당 음식이 존재하지 않습니다.");
-        return ResponseEntity.badRequest().body(errorMessage.toString());
+//        errorMessage.append("해당 음식이 존재하지 않습니다.");
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage.toString());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -4,6 +4,7 @@ import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
+import com.updown.diet.dto.res.FoodDetails;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
 import com.updown.diet.service.DietService;
@@ -66,8 +67,8 @@ public class DietController {
     @Transactional
     @GetMapping("/food")
     public ResponseEntity<?> searchFood(@AuthenticationPrincipal Member member, @RequestParam Integer foodId){
-        Food food = dietService.searchFood(member, foodId);
-        return ResponseEntity.ok().body(food);
+        FoodDetails foodDetails = dietService.searchFood(member, foodId);
+        return ResponseEntity.ok().body(foodDetails);
     }
 
     /**

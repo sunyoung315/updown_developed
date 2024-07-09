@@ -199,9 +199,25 @@ public class DietServiceImpl implements DietService {
      * @return
      */
     @Override
-    public Food searchFood(Member member, Integer foodId) {
+    public FoodDetails searchFood(Member member, Integer foodId) {
         Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
-        return food;
+        return FoodDetails.builder()
+                .foodName(food.getFoodName())
+                .brandName(food.getBrandName())
+                .foodIntake(food.getFoodIntake())
+                .foodCalories(food.getCalories())
+                .carbohydrate(food.getCarbohydrate())
+                .sugars(food.getSugars())
+                .dietaryFiber(food.getDietaryFiber())
+                .protein(food.getProtein())
+                .fat(food.getFat())
+                .saturatedFat(food.getSaturatedFat())
+                .transFat(food.getTransFat())
+                .cholesterol(food.getCholesterol())
+                .sodium(food.getSodium())
+                .potassium(food.getPotassium())
+                .method(food.getMethod())
+                .build();
     }
 
 }
