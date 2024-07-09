@@ -11,7 +11,7 @@ public class FoodDetails {
     private String foodName;
     private String brandName;
     private float foodIntake;
-    private float foodCalories;
+    private float calories;
     private float carbohydrate;
     private float sugars;
     private float dietaryFiber;

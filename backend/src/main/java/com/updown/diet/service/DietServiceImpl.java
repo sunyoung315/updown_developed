@@ -207,7 +207,7 @@ public class DietServiceImpl implements DietService {
                 .foodName(food.getFoodName())
                 .brandName(food.getBrandName())
                 .foodIntake(food.getFoodIntake())
-                .foodCalories(food.getCalories())
+                .calories(food.getCalories())
                 .carbohydrate(food.getCarbohydrate())
                 .sugars(food.getSugars())
                 .dietaryFiber(food.getDietaryFiber())
