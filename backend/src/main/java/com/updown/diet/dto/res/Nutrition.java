@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Nutrition {
+    private float totalFoodIntake;
     private float totalCalories;
     private float totalProtein;
     private float totalCarbohydrate;

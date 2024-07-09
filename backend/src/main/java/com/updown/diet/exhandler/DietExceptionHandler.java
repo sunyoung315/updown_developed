@@ -38,7 +38,7 @@ public class DietExceptionHandler {
     }
 
     @ExceptionHandler(DietNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     protected ResponseEntity<String> DietNotFoundExceptionHandler(DietNotFoundException e) {
         StringBuilder errorMessage = new StringBuilder();
 
@@ -49,7 +49,7 @@ public class DietExceptionHandler {
     }
 
     @ExceptionHandler(FoodNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     protected ResponseEntity<String> FoodNotFoundExceptionHandler(FoodNotFoundException e) {
         StringBuilder errorMessage = new StringBuilder();
 

@@ -14,7 +14,6 @@ import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,12 +125,12 @@ public class DietServiceImpl implements DietService {
      * @return
      */
     @Override
-    public List<DayDietRes> searchDayDiet(Member member, LocalDate regDate) {
+    public List<DietDayRes> searchDayDiet(Member member, LocalDate regDate) {
         List<Diet> diets = dietRepository.findByMemberAndRegDate(member, regDate);
-        List<DayDietRes> dietList = new ArrayList<>();
+        List<DietDayRes> dietList = new ArrayList<>();
 
         for(Diet diet : diets){
-            DayDietRes dayDietRes = DayDietRes.builder()
+            DietDayRes dietDayRes = DietDayRes.builder()
                     .dietId(diet.getDietId())
                     .category(diet.getCategory())
                     .dietImg(diet.getDietImg())
@@ -139,7 +138,7 @@ public class DietServiceImpl implements DietService {
                     .isFast(diet.getIsFast())
                     .build();
 
-            dietList.add(dayDietRes);
+            dietList.add(dietDayRes);
         }
 
         return dietList;
@@ -155,6 +154,7 @@ public class DietServiceImpl implements DietService {
     public DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId) {
         Diet diet = dietRepository.findByMemberAndDietIdAndCategory(member, dietId, category).orElseThrow(DietNotFoundException::new);
         Nutrition nutrition = Nutrition.builder()
+                .totalFoodIntake(diet.getDietTotalIntake())
                 .totalCalories(diet.getDietTotalCalories())
                 .totalProtein(foodRepository.findProteinByDiet(dietId))
                 .totalSugars(foodRepository.findSugarsByDiet(dietId))
@@ -190,6 +190,18 @@ public class DietServiceImpl implements DietService {
                 .nutrition(nutrition)
                 .foodList(foodList)
                 .build();
+    }
+
+    /**
+     * 식단 상세 조회
+     * @param member
+     * @param foodId
+     * @return
+     */
+    @Override
+    public Food searchFood(Member member, Integer foodId) {
+        Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
+        return food;
     }
 
 }

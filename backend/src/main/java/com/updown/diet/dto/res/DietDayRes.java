@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class DayDietRes {
+public class DietDayRes {
 
     private int dietId;
     private DietCategory category;

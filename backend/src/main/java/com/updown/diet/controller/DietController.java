@@ -1,8 +1,7 @@
 package com.updown.diet.controller;
 
 import com.updown.diet.dto.req.InsertFoodReq;
-import com.updown.diet.dto.req.UpdateFoodReq;
-import com.updown.diet.dto.res.DayDietRes;
+import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
 import com.updown.diet.entity.DietCategory;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class DietController {
     @Transactional
     @GetMapping
     public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestParam LocalDate regDate){
-        List<DayDietRes> dietList = dietService.searchDayDiet(member, regDate);
+        List<DietDayRes> dietList = dietService.searchDayDiet(member, regDate);
         return ResponseEntity.ok().body(dietList);
     }
 
@@ -63,6 +61,13 @@ public class DietController {
     public ResponseEntity<?> searchCategoryDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestParam Integer dietId){
         DietCategoryRes dietCategoryRes = dietService.searchCategoryDiet(category, member, dietId);
         return ResponseEntity.ok().body(dietCategoryRes);
+    }
+
+    @Transactional
+    @GetMapping("/food")
+    public ResponseEntity<?> searchFood(@AuthenticationPrincipal Member member, @RequestParam Integer foodId){
+        Food food = dietService.searchFood(member, foodId);
+        return ResponseEntity.ok().body(food);
     }
 
     /**
