@@ -2,7 +2,6 @@ package com.updown.diet.controller;
 
 import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.req.IsFastCheck;
-import com.updown.diet.dto.req.UpdateFoodReq;
 import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
@@ -96,13 +95,13 @@ public class DietController {
      * 음식 수정
      * @param foodId
      * @param member
-     * @param updateFoodReq
+     * @param food
      * @return
      */
     @Transactional
     @PutMapping("/{foodId}")
-    public ResponseEntity<?> updateDiet(@PathVariable("foodId") Integer foodId, @AuthenticationPrincipal Member member, @RequestBody UpdateFoodReq updateFoodReq){
-        dietService.updateDiet(member, foodId, updateFoodReq);
+    public ResponseEntity<?> updateDiet(@PathVariable("foodId") Integer foodId, @AuthenticationPrincipal Member member, @RequestBody Food food){
+        dietService.updateDiet(member, foodId, food);
         return ResponseEntity.ok().build();
     }
 

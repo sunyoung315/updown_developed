@@ -2,7 +2,6 @@ package com.updown.diet.service;
 
 import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.req.IsFastCheck;
-import com.updown.diet.dto.req.UpdateFoodReq;
 import com.updown.diet.dto.res.*;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.DietCategory;
@@ -84,24 +83,28 @@ public class DietServiceImpl implements DietService {
      *
      * @param member
      * @param foodId
-     * @param updateFoodReq
+     * @param food
      */
     @Override
-    public void updateDiet(Member member, Integer foodId, UpdateFoodReq updateFoodReq) {
+    public void updateDiet(Member member, Integer foodId, Food food) {
 
         //foodId로 food 찾아서 update
         Food originFood = foodRepository.findByFoodId(foodId).orElseThrow(NotInsertFoodException::new);
-        originFood.setFoodName(updateFoodReq.getFoodName());
-        originFood.setBrandName(updateFoodReq.getBrandName());
-        originFood.setFoodIntake(updateFoodReq.getFoodIntake());
-        originFood.setCalories(updateFoodReq.getCalories());
-        originFood.setCarbohydrate(updateFoodReq.getCarbohydrate());
-        originFood.setDietaryFiber(updateFoodReq.getDietaryFiber());
-        originFood.setSugars(updateFoodReq.getSugars());
-        originFood.setProtein(updateFoodReq.getProtein());
-        originFood.setFat(updateFoodReq.getFat());
-        originFood.setSaturatedFat(updateFoodReq.getSaturatedFat());
-        originFood.setTransFat(updateFoodReq.getTransFat());
+
+        originFood.setFoodName(food.getFoodName());
+        originFood.setBrandName(food.getBrandName());
+        originFood.setFoodIntake(food.getFoodIntake());
+        originFood.setCalories(food.getCalories());
+        originFood.setCarbohydrate(food.getCarbohydrate());
+        originFood.setDietaryFiber(food.getDietaryFiber());
+        originFood.setSugars(food.getSugars());
+        originFood.setProtein(food.getProtein());
+        originFood.setFat(food.getFat());
+        originFood.setSaturatedFat(food.getSaturatedFat());
+        originFood.setTransFat(food.getTransFat());
+        originFood.setCholesterol(food.getCholesterol());
+        originFood.setSodium(food.getSodium());
+        originFood.setPotassium(food.getPotassium());
 
         foodRepository.save(originFood);
 
