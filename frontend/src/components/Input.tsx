@@ -2,7 +2,7 @@ import { inputProps } from '@/types/type';
 import theme from '@/styles/theme';
 import styled from 'styled-components';
 
-const InputWrapper = styled.div<{ $inputdir: string }>`
+const InputWrapper = styled.div<{ $inputdir?: string }>`
   display: ${props => (props.$inputdir === 'row' ? 'flex' : 'grid')};
   grid-template-columns: ${props =>
     props.$inputdir === 'column' ? 'repeat(2, 1fr)' : 'none'};
@@ -15,24 +15,31 @@ const InputName = styled.span`
   font-size: 1.13rem;
 `;
 
-const InputLabel = styled.label`
+const InputLabel = styled.label<{ $isbig?: boolean }>`
   background-color: ${props => props.theme.lightgrey};
+  width: ${props => (props?.$isbig ? '15rem' : '100%')};
   border-radius: 0.5rem;
-  height: 2.94rem;
+  height: ${props => (props?.$isbig ? '5.5rem' : '2.94rem')};
   display: flex;
   align-items: center;
-  padding: 0 0.7rem;
+  padding: ${props => (props?.$isbig ? '0 1.5rem' : '0 0.7rem')};
 `;
 
-const InputBox = styled.input<{ $inputnamecolor?: keyof typeof theme }>`
+const InputBox = styled.input<{
+  $inputnamecolor?: keyof typeof theme;
+  $isbig?: boolean;
+}>`
   width: 100%;
-  font-size: 1.25rem;
+  font-size: ${props => (props?.$isbig ? '3.75rem' : '1.25rem')};
   color: ${props =>
     theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
 `;
 
-const UnitWrapper = styled.span<{ $inputnamecolor?: keyof typeof theme }>`
-  font-size: 1.25rem;
+const UnitWrapper = styled.span<{
+  $inputnamecolor?: keyof typeof theme;
+  $isbig?: boolean;
+}>`
+  font-size: ${props => (props?.$isbig ? '2.8rem' : '1.25rem')};
   padding-left: 0.5rem;
   color: ${props =>
     theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
@@ -50,6 +57,7 @@ const Input = (inputProps: inputProps) => {
     starColor,
     onChange,
     value,
+    isBig,
   } = inputProps;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +86,7 @@ const Input = (inputProps: inputProps) => {
           </span>
         )}
       </InputName>
-      <InputLabel htmlFor="input">
+      <InputLabel htmlFor="input" $isbig={isBig}>
         <InputBox
           type={inputType === 'text' ? 'text' : 'number'}
           id="input"
@@ -86,9 +94,12 @@ const Input = (inputProps: inputProps) => {
           onChange={handleChange}
           value={value}
           $inputnamecolor={inputNameColor}
+          $isbig={isBig}
         />
         {unit && (
-          <UnitWrapper $inputnamecolor={inputNameColor}>{unit}</UnitWrapper>
+          <UnitWrapper $inputnamecolor={inputNameColor} $isbig={isBig}>
+            {unit}
+          </UnitWrapper>
         )}
       </InputLabel>
     </InputWrapper>

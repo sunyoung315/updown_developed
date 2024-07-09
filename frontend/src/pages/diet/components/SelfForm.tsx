@@ -216,7 +216,7 @@ const SelfForm = (formProps: formProps) => {
         value={potassium}
       />
       <Br />
-      <Button buttonName={buttonName} onClick={handleClick} />
+      <Button buttonName={buttonName} onClick={handleClick} color="orange" />
     </InputWrapper>
   );
 };

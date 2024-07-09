@@ -94,7 +94,7 @@ const Box = (boxProps: boxProps) => {
           </SubInfo>
         </MainInfo>
         <Calorie>
-          {type === 'diet' ? info.foodCalories : info.exerciseBurned} Kcal
+          {type === 'diet' ? info.calories : info.exerciseBurned} Kcal
         </Calorie>
       </Infos>
     </BoxWrapper>

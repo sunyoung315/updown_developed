@@ -30,6 +30,7 @@ type diet = {
 export type dietProps = {
   diet?: diet;
   title: string;
+  regDate?: string;
 };
 
 type foodProps = {
@@ -71,12 +72,15 @@ export type boxProps = dietCommonProps | exerciseCommonProps;
 export type buttonProps = {
   buttonName?: string;
   onClick?: () => void;
+  color: keyof typeof theme;
+  size?: number;
+  radius?: number;
 };
 
 export type inputProps = {
-  inputDir: string;
+  inputDir?: string;
   inputType?: string;
-  inputName: string;
+  inputName?: string;
   inputNameColor?: keyof typeof theme;
   placeholder?: string;
   isRequired?: boolean;
@@ -84,6 +88,7 @@ export type inputProps = {
   unit?: string;
   onChange: React.Dispatch<React.SetStateAction<any>>;
   value?: string | number;
+  isBig?: boolean;
 };
 
 export type headerProps = {
@@ -182,4 +187,5 @@ export type bottomSheetProps = {
   isOpen?: boolean;
   onClose?: () => void;
   children?: React.ReactNode;
+  title?: string;
 };

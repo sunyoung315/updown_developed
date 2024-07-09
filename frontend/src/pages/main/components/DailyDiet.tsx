@@ -30,22 +30,11 @@ const DietWrapper = styled.div`
   padding-right: 1.3rem;
 `;
 
-const DailyDiet = ({ date }: { date: Date }) => {
+const DailyDiet = ({ regDate }: { regDate: string }) => {
   const [todayDiet, setTodayDiet] = useState<Diet[]>([]);
 
   const getTodayDiet = async () => {
     try {
-      const year = new Date(date).getFullYear();
-      const month = new Date(date).getMonth();
-      const day = new Date(date).getDate();
-
-      const regDate =
-        year.toString() +
-        '-' +
-        (month < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) +
-        '-' +
-        (day < 10 ? '0' + day.toString() : day.toString());
-
       const response = await useAxios.get('/diet', {
         params: { regDate },
       });
@@ -57,7 +46,7 @@ const DailyDiet = ({ date }: { date: Date }) => {
 
   useEffect(() => {
     getTodayDiet();
-  }, [date]);
+  }, [regDate]);
 
   const breakfast = todayDiet?.find(diet => diet.category === 'breakfast');
   const lunch = todayDiet?.find(diet => diet.category === 'lunch');
@@ -68,10 +57,10 @@ const DailyDiet = ({ date }: { date: Date }) => {
     <DailyDietWrapper>
       <TitleWrapper>식단</TitleWrapper>
       <DietWrapper>
-        <OneDiet diet={breakfast} title="breakfast" />
-        <OneDiet diet={lunch} title="lunch" />
-        <OneDiet diet={dinner} title="dinner" />
-        <OneDiet diet={snack} title="snack" />
+        <OneDiet diet={breakfast} title="breakfast" regDate={regDate} />
+        <OneDiet diet={lunch} title="lunch" regDate={regDate} />
+        <OneDiet diet={dinner} title="dinner" regDate={regDate} />
+        <OneDiet diet={snack} title="snack" regDate={regDate} />
       </DietWrapper>
     </DailyDietWrapper>
   );

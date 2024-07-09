@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { dietProps } from '@/types/type';
 import CheckIcon from '@/assets/icons/check-icon.svg';
@@ -50,7 +50,7 @@ const Calories = styled.div`
 
 const OneDiet = (dietProps: dietProps) => {
   const { diet } = dietProps || {};
-  const { title } = dietProps;
+  const { title, regDate } = dietProps;
 
   const [fast, setFast] = useState(diet?.isFast);
 
@@ -64,6 +64,10 @@ const OneDiet = (dietProps: dietProps) => {
     setFast(!fast);
     // 단식 등록 axios
   };
+
+  useEffect(() => {
+    setFast(diet?.isFast);
+  }, [regDate]);
 
   return (
     <OneDietWrapper>
