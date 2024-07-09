@@ -46,3 +46,18 @@ spring:
             authorization-grant-type: authorization_code
             client-name: kakao
             scope: account_email
+
+#cloud:
+#  aws:
+#    s3:
+#      bucket: ykk-s3-bucket
+#    credentials:
+#      accessKey:
+#      secretKey:
+#    region:
+#      static: ap-northeast-2
+#      auto: false
+#    stack:
+#      auto: false
+
+
