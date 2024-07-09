@@ -14,6 +14,6 @@ public class DietDayRes {
     private DietCategory category;
     private String dietImg;
     private float totalCalories;
-    boolean isFast;
+    private Boolean isFast;
 
 }

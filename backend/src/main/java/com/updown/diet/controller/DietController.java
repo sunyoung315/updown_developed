@@ -86,7 +86,7 @@ public class DietController {
      * @return
      */
     @Transactional
-    @PostMapping("isFast")
+    @PostMapping("/isFast")
     public ResponseEntity<?> checkIsFast(@AuthenticationPrincipal Member member, @RequestBody IsFastCheck isFastCheck){
         dietService.checkIsFast(member, isFastCheck);
         return ResponseEntity.ok().build();
