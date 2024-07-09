@@ -10,6 +10,7 @@ import java.sql.Date;
 @Setter
 public class UpdateFoodReq {
     private String foodName;
+    private String brandName;
     private float foodIntake;
     private float calories;
     private float carbohydrate;
@@ -19,5 +20,4 @@ public class UpdateFoodReq {
     private float fat;
     private float saturatedFat;
     private float transFat;
-    private Integer dietId;
 }

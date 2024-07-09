@@ -2,6 +2,7 @@ package com.updown.diet.controller;
 
 import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.req.IsFastCheck;
+import com.updown.diet.dto.req.UpdateFoodReq;
 import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
@@ -78,6 +79,12 @@ public class DietController {
         return ResponseEntity.ok().body(foodDetails);
     }
 
+    /**
+     * 단식 여부 체크
+     * @param member
+     * @param isFastCheck
+     * @return
+     */
     @Transactional
     @PostMapping("isFast")
     public ResponseEntity<?> checkIsFast(@AuthenticationPrincipal Member member, @RequestBody IsFastCheck isFastCheck){
@@ -89,13 +96,13 @@ public class DietController {
      * 음식 수정
      * @param foodId
      * @param member
-     * @param food
+     * @param updateFoodReq
      * @return
      */
     @Transactional
     @PutMapping("/{foodId}")
-    public ResponseEntity<?> updateDiet(@PathVariable("foodId") Integer foodId, @AuthenticationPrincipal Member member, @RequestBody Food food){
-        dietService.updateDiet(member, foodId, food);
+    public ResponseEntity<?> updateDiet(@PathVariable("foodId") Integer foodId, @AuthenticationPrincipal Member member, @RequestBody UpdateFoodReq updateFoodReq){
+        dietService.updateDiet(member, foodId, updateFoodReq);
         return ResponseEntity.ok().build();
     }
 
