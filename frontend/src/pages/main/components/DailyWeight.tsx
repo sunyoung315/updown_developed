@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '@/util/http-commons';
 import { Button, Input } from '@/components';
 import BottomSheet from '@/components/BottomSheet';
-import { Line } from 'react-chartjs-2';
+import { Chart, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -58,9 +58,9 @@ const ModalContent = styled.div`
 `;
 
 const ChartWrapper = styled.div`
-  width: 17.56rem;
-  height: 12.56rem;
-  backgroundcolor: ${props => props.theme.lightgreen};
+  width: 19rem;
+  height: 13rem;
+  background-color: ${props => props.theme.lightgreen};
   margin: 1rem;
 `;
 
@@ -71,16 +71,19 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
     { weight: 53.3, regDate: '2024-07-10' },
     { weight: 56.9, regDate: '2024-07-11' },
     { weight: 54.1, regDate: '2024-07-12' },
-    { weight: 50.2, regDate: '2024-07-13' },
+    { weight: 52.2, regDate: '2024-07-13' },
+    { weight: 50.2, regDate: '2024-07-14' },
   ];
 
   // 오늘 날짜의 정보만 추출
   const todayInfo = weightList.find(w => w.regDate === regDate);
-  // chart에 쓰기 위해 weightInfoList의 key를 x, y로 변경
-  const chartInfo = weightList.map(w => ({
-    x: w.weight,
-    y: w.regDate,
-  }));
+
+  // chart에 들어갈 정보
+  const xInfo = weightList.map(w => {
+    const [yyyy, mm, dd] = w.regDate.split('-');
+    return [`${yyyy}.`, `${mm}.${dd}`];
+  });
+  const yInfo = weightList.map(w => w.weight);
 
   const [isOpen, setIsOpen] = useState(false);
   const [weight, setWeight] = useState(todayInfo?.weight || 0);
@@ -102,13 +105,62 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
   const data = {
+    labels: xInfo,
     datasets: [
       {
+        pointBackgroundColor: theme['darkgreen'],
+        pointBorderWidth: 1,
         borderColor: theme['darkgreen'],
-        borderWidth: 2,
-        data: chartInfo,
+        borderWidth: 1.5,
+        data: yInfo,
       },
     ],
+  };
+
+  const options = {
+    responsive: false,
+    scales: {
+      x: {
+        grid: {
+          color: theme['green'],
+          width: 0.5,
+        },
+        border: {
+          display: true,
+          color: theme['darkgreen'],
+          width: 1.5,
+        },
+        ticks: {
+          color: theme['black'],
+          font: {
+            size: 9.5,
+            family: 'omyudapretty',
+          },
+        },
+      },
+      y: {
+        grid: {
+          color: theme['green'],
+          width: 0.5,
+        },
+        border: {
+          display: true,
+          color: theme['darkgreen'],
+          width: 1.5,
+        },
+        ticks: {
+          color: theme['black'],
+          font: {
+            size: 10,
+            family: 'omyudapretty',
+          },
+        },
+        afterDataLimits: (scale: { max: number; min: number }) => {
+          scale.max = scale.max + 2;
+          scale.min = scale.min - 2;
+        },
+      },
+    },
   };
 
   return (
@@ -121,7 +173,11 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
           <Unit> kg</Unit>
         </Weight>
         <ChartWrapper>
-          <Line data={data} />
+          <Line
+            data={data}
+            options={options}
+            style={{ height: '13rem', width: '19rem' }}
+          />
         </ChartWrapper>
         <Button
           buttonName="기록하기"
