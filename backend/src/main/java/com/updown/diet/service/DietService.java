@@ -16,7 +16,7 @@ import java.util.List;
 public interface DietService {
     DietSearchRes searchFood(String category, Member member, String searchStr);
 
-    void insertDiet(DietCategory category, Member member, InsertFoodReq insertFoodReq);
+    Integer insertDiet(DietCategory category, Member member, InsertFoodReq insertFoodReq);
 
     void updateDiet(Member member, Integer foodId, Food food);
 

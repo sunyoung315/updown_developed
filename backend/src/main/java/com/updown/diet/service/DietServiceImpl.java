@@ -37,17 +37,16 @@ public class DietServiceImpl implements DietService {
      *
      * @param category
      * @param member
+     * @return
      */
     @Override
-    public void insertDiet(DietCategory category, Member member, InsertFoodReq insertFoodReq) {
+    public Integer insertDiet(DietCategory category, Member member, InsertFoodReq insertFoodReq) {
         try {
-            // 해당 날짜와 카테고리에 맞는 식단 가져오기
-            Optional<Diet> optionalDiet = dietRepository.findByMemberAndRegDateAndCategory(member, insertFoodReq.getRegDate(), category);
             Diet diet;
 
             // 식단이 존재하면 가져오고, 그렇지 않으면 새로운 식단 생성
-            if (optionalDiet.isPresent()) {
-                diet = optionalDiet.get();
+            if (dietRepository.findByMemberAndRegDateAndCategory(member, insertFoodReq.getRegDate(), category).isPresent()) {
+                diet = dietRepository.findByMemberAndRegDateAndCategory(member, insertFoodReq.getRegDate(), category).get();
             } else {
                 diet = Diet.builder()
                         .member(member)
@@ -71,6 +70,8 @@ public class DietServiceImpl implements DietService {
             diet.setDietTotalCalories(diet.getDietTotalCalories() + food.getCalories());
             diet.setDietTotalIntake(diet.getDietTotalIntake() + food.getFoodIntake());
             dietRepository.save(diet);
+
+            return diet.getDietId();
 
         } catch (Exception e) {
             throw new NotInsertFoodException(e);

@@ -35,8 +35,8 @@ public class DietController {
     @Transactional
     @PostMapping("/{category}")
     public ResponseEntity<?> insertDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestBody InsertFoodReq insertFoodReq){
-        dietService.insertDiet(category, member, insertFoodReq);
-        return ResponseEntity.ok().build();
+        Integer dietId = dietService.insertDiet(category, member, insertFoodReq);
+        return ResponseEntity.ok().body(dietId);
     }
 
     /**
