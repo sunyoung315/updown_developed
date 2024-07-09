@@ -2,6 +2,7 @@ package com.updown.diet.repository;
 
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.Food;
+import com.updown.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

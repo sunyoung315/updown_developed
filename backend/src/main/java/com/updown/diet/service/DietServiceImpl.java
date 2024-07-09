@@ -1,6 +1,7 @@
 package com.updown.diet.service;
 
 import com.updown.diet.dto.req.InsertFoodReq;
+import com.updown.diet.dto.req.IsFastCheck;
 import com.updown.diet.dto.res.*;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.DietCategory;
@@ -218,6 +219,30 @@ public class DietServiceImpl implements DietService {
                 .potassium(food.getPotassium())
                 .method(food.getMethod())
                 .build();
+    }
+
+    /**
+     * 단식 여부 등록
+     * @param member
+     * @param isFastCheck
+     */
+    @Override
+    public void checkIsFast(Member member, IsFastCheck isFastCheck) {
+        // 멤버랑 오늘날짜, 카테고리에 해당하는 diet가 없다면 만들고
+        Optional<Diet> diet = dietRepository.findByMemberAndRegDateAndCategory(member,isFastCheck.getRegDate(),isFastCheck.getCategory());
+        if(diet.isEmpty()){
+            Diet newDiet = Diet.builder()
+                    .member(member)
+                    .isFast(true)
+                    .regDate(isFastCheck.getRegDate())
+                    .category(isFastCheck.getCategory())
+                    .build();
+
+            dietRepository.save(newDiet);
+        }
+        else{ // 있다면 삭제
+            dietRepository.delete(diet.get());
+        }
     }
 
 }
