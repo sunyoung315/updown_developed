@@ -1,6 +1,7 @@
 package com.updown.auth.service;
 
 import com.updown.auth.dto.req.SignUpReq;
+import com.updown.auth.exception.MemberExistException;
 import com.updown.auth.jwt.JwtTokenProvider;
 import com.updown.auth.redis.RedisPrefix;
 import com.updown.auth.redis.RedisService;
@@ -63,6 +64,11 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public void signUp(SignUpReq signUpReq, String refreshToken) {
         String email = jwtTokenProvider.getEmailFromToken(refreshToken);
+
+        // 만약 해당 이메일이 있다면 예외처리
+        if(memberRepository.findByEmail(email).isPresent()){
+            throw new MemberExistException();
+        }
 
         Member member = Member.builder()
                 .email(email)
