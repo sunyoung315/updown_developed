@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -57,6 +59,7 @@ public class AuthController {
      * @param
      * @return
      */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpReq signUpReq, @CookieValue(value = "refreshToken") String refreshToken){
         authService.signUp(signUpReq, refreshToken);
