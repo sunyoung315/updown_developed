@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { dietProps } from '@/types/type';
 import CheckIcon from '@/assets/icons/check-icon.svg';
@@ -51,9 +50,7 @@ const Calories = styled.div`
 
 const OneDiet = (dietProps: dietProps) => {
   const { diet } = dietProps || {};
-  const { category, regDate } = dietProps;
-
-  const [fast, setFast] = useState(diet?.isFast);
+  const { category, regDate, fast, setFast } = dietProps;
 
   const navigator = useNavigate();
 
@@ -62,30 +59,19 @@ const OneDiet = (dietProps: dietProps) => {
   };
 
   const registFasting = async () => {
-    setFast(!fast);
-
     try {
-      //////
-      //////
-      /////
-      // isFast 버튼 바뀌는지 확인 필요!!!!
       const response = await useAxios.post('/diet/isFast', {
         regDate,
         category,
       });
       if (response.status === httpStatusCode.OK) {
         console.log('단식 등록 성공');
-        setFast(true);
+        setFast(!fast);
       }
     } catch (err) {
       console.log('단식 등록 에러', err);
     }
   };
-
-  useEffect(() => {
-    console.log(diet);
-    setFast(diet?.isFast);
-  }, [regDate]);
 
   return (
     <OneDietWrapper>
@@ -99,24 +85,43 @@ const OneDiet = (dietProps: dietProps) => {
                 ? '저녁'
                 : '간식'}
         </Category>
-        <button onClick={goDietDetails}>
-          {(diet && !fast) || fast ? (
-            <img src={CheckIcon} alt="check" />
-          ) : (
+        {/* 1. 식단을 등록하지 않은 경우 */}
+        {!diet ? (
+          <button onClick={goDietDetails}>
             <img src={PlusIcon} alt="plus" />
-          )}
-        </button>
+          </button>
+        ) : // 2. 식단을 등록하지 않았고, 단식버튼을 누른 경우
+        //    또는 식단을 등록했지만 단식인 경우
+        fast ? (
+          <img src={CheckIcon} alt="check" />
+        ) : (
+          // 3. 식단을 등록했고, 단식이 아닌 경우
+          <button onClick={goDietDetails}>
+            <img src={CheckIcon} alt="check" />
+          </button>
+        )}
       </CategoryWrapper>
-      {diet && !fast && diet.dietImg ? (
-        <DietImg src={diet?.dietImg} />
-      ) : (
+      {/* 1. 식단을 등록하지 않은 경우 (단식 버튼 클릭 여부에 따라 변경) */}
+      {!diet ? (
         <DietImg
           src={fast ? `/images/fasting.png` : `/images/${category}.png`}
         />
+      ) : // 2. 단식을 한 경우
+      fast ? (
+        <DietImg
+          src={fast ? `/images/fasting.png` : `/images/${category}.png`}
+        />
+      ) : (
+        // 3. 식단 이미지 유무
+        <>
+          <DietImg src={diet?.dietImg || `/images/${category}.png`} />
+        </>
       )}
-      {diet && !diet?.isFast ? (
+      {/* 1. 식단을 등록했고, 단식이 아닌 경우 경우 */}
+      {diet && !fast ? (
         <Calories>{diet?.totalCalories} kcal</Calories>
       ) : (
+        // 2. 단식이거나 식단을 등록하지 않은 경우
         <FastWrapper onClick={registFasting}>
           <span>
             <img

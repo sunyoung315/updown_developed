@@ -123,6 +123,7 @@ const DietPage = () => {
         setNutrition(response.data.nutrition);
         setFoodList(response.data.foodList);
       } else if (response.status === httpStatusCode.NOCONTENT) {
+        // foodList의 마지막 요소가 지워진 상태 => 정보 초기화
         setFoodList(undefined);
         setDietImg(undefined);
         setNutrition(undefined);

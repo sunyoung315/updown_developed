@@ -31,6 +31,8 @@ export type dietProps = {
   diet?: diet;
   category: string;
   regDate?: string;
+  fast: boolean;
+  setFast: (value: boolean) => void;
 };
 
 export type foodInfo = {
