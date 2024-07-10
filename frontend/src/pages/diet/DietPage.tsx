@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useAxios from '@/util/http-commons';
 import { Box, IconButton } from '@/components';
@@ -149,10 +149,6 @@ const DietPage = () => {
     navigator('/main');
   };
 
-  const registPhoto = () => {
-    console.log('식단 사진 등록');
-  };
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const openModal = () => {
@@ -161,6 +157,61 @@ const DietPage = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+
+  // 버튼을 눌렀을 때 input 클릭
+  const onClickImageUploadHandler = (): void => {
+    imageInputRef.current?.click();
+  };
+
+  // 식단 사진 등록
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      // 백엔드에서 MultipartFile로 파일을 받기 위해서는 FormData로 감싸서 보내기
+      // FormData객체는 key-value 쌍으로 저장
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await useAxios.post(`/diet/img/${dietId}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.status === httpStatusCode.OK) {
+          console.log('식단 사진 등록 성공');
+
+          getDietInfo();
+          closeModal();
+        } else if (response.status === httpStatusCode.NOCONTENT) {
+          alert('식단을 먼저 등록하세요');
+          console.log('등록된 식단이 없습니다.');
+        }
+      } catch (err) {
+        console.log('식단 사진 등록 에러:', err);
+      }
+    }
+  };
+
+  // 식단 사진 삭제
+  const deleteImage = async () => {
+    try {
+      const response = await useAxios.delete(`/diet/img/${dietId}`);
+      console.log('식단 사진 삭제 시도');
+
+      if (response.status === httpStatusCode.NOCONTENT) {
+        console.log('식단 사진 삭제 성공');
+
+        getDietInfo();
+        closeModal();
+      }
+    } catch (err) {
+      console.log('식단 사진 삭제 에러:', err);
+    }
   };
 
   return (
@@ -201,6 +252,13 @@ const DietPage = () => {
                     color="orange"
                     radius={0}
                     dir="top"
+                    onClick={onClickImageUploadHandler}
+                  />
+                  <input
+                    type="file"
+                    ref={imageInputRef}
+                    style={{ display: 'none' }}
+                    onChange={uploadImage}
                   />
                   <Button
                     buttonName="사진 찍기"
@@ -209,7 +267,13 @@ const DietPage = () => {
                     dir="bottom"
                   />
                 </ButtonBox>
-                <Button buttonName="삭제하기" color="orange" />
+                {dietImg && (
+                  <Button
+                    buttonName="삭제하기"
+                    color="orange"
+                    onClick={deleteImage}
+                  />
+                )}
               </ButtonBox>
             </BottomSheet>
           </ImageIcon>

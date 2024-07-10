@@ -9,7 +9,7 @@ const ButtonWrapper = styled.button<{
   $dir?: 'top' | 'bottom';
 }>`
   width: ${props => (props?.$size ? `${props?.$size}rem` : '100%')};
-  height: 2.3rem;
+  height: 2.5rem;
   background-color: ${props => theme[props.$color]};
   color: ${props => props.theme.white};
   font-size: 1.25rem;
