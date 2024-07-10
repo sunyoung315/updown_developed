@@ -1,19 +1,20 @@
 package com.updown.diet.service;
 
+import com.updown.common.S3Uploader;
 import com.updown.diet.dto.req.InsertFoodReq;
 import com.updown.diet.dto.req.IsFastCheck;
 import com.updown.diet.dto.res.*;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
-import com.updown.diet.exception.DietNotFoundException;
-import com.updown.diet.exception.FoodNotFoundException;
-import com.updown.diet.exception.NotInsertFoodException;
+import com.updown.diet.exception.*;
 import com.updown.diet.repository.DietRepository;
 import com.updown.diet.repository.FoodRepository;
 import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class DietServiceImpl implements DietService {
     private final DietRepository dietRepository;
     private final FoodRepository foodRepository;
+    private final S3Uploader s3Uploader;
 
     @Override
     public DietSearchRes searchFood(String category, Member member, String searchStr) {
@@ -273,5 +275,47 @@ public class DietServiceImpl implements DietService {
         }
         foodRepository.delete(food); // 음식 삭제
     }
+
+    /**
+     * 식단 이미지 업로드
+     * @param dietId
+     * @param member
+     * @param file
+     */
+    @Transactional
+    public void uploadDietImg(Integer dietId, Member member, MultipartFile file) {
+        Diet diet = dietRepository.findById(dietId).orElseThrow(DietNotFoundException::new);
+        try {
+            // 기존 이미지가 있으면 삭제
+            if (diet.getDietImg() != null) {
+                s3Uploader.delete(diet.getDietImg());
+            }
+
+            // 새 이미지 업로드
+            String storedFileName = s3Uploader.upload(file, "diet");
+            diet.setDietImg(storedFileName);
+            dietRepository.save(diet);
+        } catch (Exception e) {
+            throw new ImgUploadFailureException(e);
+        }
+    }
+
+    /**
+     * 식단 이미지 삭제
+     * @param dietId
+     * @param member
+     */
+    @Override
+    public void deleteDietImg(Integer dietId, Member member) {
+        Diet diet = dietRepository.findById(dietId).orElseThrow(DietNotFoundException::new);
+        if (diet.getDietImg() != null) {
+            s3Uploader.delete(diet.getDietImg());
+            diet.setDietImg(null);
+            dietRepository.save(diet);
+        } else {
+            throw new ImgNotFoundException();
+        }
+    }
+
 
 }

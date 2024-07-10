@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -47,7 +48,7 @@ public class DietController {
      */
     @Transactional
     @GetMapping
-    public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestParam LocalDate regDate){
+    public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestParam("regDate") LocalDate regDate){
         List<DietDayRes> dietList = dietService.searchDayDiet(member, regDate);
         return ResponseEntity.ok().body(dietList);
     }
@@ -60,7 +61,7 @@ public class DietController {
      */
     @Transactional
     @GetMapping("/{category}")
-    public ResponseEntity<?> searchCategoryDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestParam Integer dietId){
+    public ResponseEntity<?> searchCategoryDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestParam("dietId") Integer dietId){
         DietCategoryRes dietCategoryRes = dietService.searchCategoryDiet(category, member, dietId);
         return ResponseEntity.ok().body(dietCategoryRes);
     }
@@ -73,7 +74,7 @@ public class DietController {
      */
     @Transactional
     @GetMapping("/food")
-    public ResponseEntity<?> searchFood(@AuthenticationPrincipal Member member, @RequestParam Integer foodId){
+    public ResponseEntity<?> searchFood(@AuthenticationPrincipal Member member, @RequestParam("foodId") Integer foodId){
         FoodDetails foodDetails = dietService.searchFood(member, foodId);
         return ResponseEntity.ok().body(foodDetails);
     }
@@ -110,6 +111,27 @@ public class DietController {
     public ResponseEntity<?> deleteFood(@AuthenticationPrincipal Member member, @RequestParam Integer foodId){
         dietService.deleteFood(member, foodId);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 식단 이미지 업로드
+     * @param dietId
+     * @param member
+     * @param file
+     * @return
+     */
+    @Transactional
+    @PostMapping("/img/{dietId}")
+    public ResponseEntity<?> uploadDietImg(@PathVariable("dietId") Integer dietId, @AuthenticationPrincipal Member member, @RequestPart("file") MultipartFile file){
+        dietService.uploadDietImg(dietId, member, file);
+        return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    @DeleteMapping("/img/{dietId}")
+    public ResponseEntity<?> deleteDietImage(@PathVariable Integer dietId, @AuthenticationPrincipal Member member) {
+        dietService.deleteDietImg(dietId, member);
+        return ResponseEntity.noContent().build();
     }
 
     /**
