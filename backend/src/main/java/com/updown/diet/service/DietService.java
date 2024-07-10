@@ -9,6 +9,7 @@ import com.updown.diet.dto.res.FoodDetails;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
 import com.updown.member.entity.Member;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,4 +30,8 @@ public interface DietService {
     void checkIsFast(Member member, IsFastCheck isFastCheck);
 
     void deleteFood(Member member, Integer foodId);
+
+    void uploadDietImg(Integer dietId, Member member, MultipartFile file);
+
+    void deleteDietImg(Integer dietId, Member member);
 }

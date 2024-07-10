@@ -14,8 +14,9 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   servlet:
     multipart:
-      max-file-size: 5MB
+      max-file-size: 10MB
       max-request-size: 10MB
+      enabled: true
   jpa:
     properties:
       hibernate:
@@ -47,18 +48,18 @@ spring:
             client-name: kakao
             scope: account_email
 
-#cloud:
-#  aws:
-#    s3:
-#      bucket: ykk-s3-bucket
-#    credentials:
-#      accessKey:
-#      secretKey:
-#    region:
-#      static: ap-northeast-2
-#      auto: false
-#    stack:
-#      auto: false
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET} # {버킷명}
+    credentials:
+      access-key: ${S3_ACCESS}
+      secret-key: ${S3_SECRET}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
 
 
