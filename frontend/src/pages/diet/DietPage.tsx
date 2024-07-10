@@ -6,6 +6,7 @@ import { Button, Header } from '@/components';
 import { nutritionProps, foodInfo } from '@/types/type';
 import { httpStatusCode } from '@/util/http-status';
 import styled from 'styled-components';
+import BottomSheet from '@/components/BottomSheet';
 
 const SummaryWrapper = styled.div`
   display: flex;
@@ -97,6 +98,12 @@ const ButtonWrapper = styled.div`
   padding: 1rem 0 1rem;
 `;
 
+const ButtonBox = styled.div<{ $gap: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.$gap}rem;
+`;
+
 const DietPage = () => {
   const navigator = useNavigate();
 
@@ -146,6 +153,16 @@ const DietPage = () => {
     console.log('식단 사진 등록');
   };
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <SummaryWrapper>
@@ -175,7 +192,26 @@ const DietPage = () => {
             alt="dietImg"
           />
           <ImageIcon>
-            <IconButton iconName="photo" onClick={registPhoto} />
+            <IconButton iconName="photo" onClick={openModal} />
+            <BottomSheet isOpen={isOpen} onClose={closeModal} noModal={true}>
+              <ButtonBox $gap={1}>
+                <ButtonBox $gap={0.15}>
+                  <Button
+                    buttonName="사진 보관함"
+                    color="orange"
+                    radius={0}
+                    dir="top"
+                  />
+                  <Button
+                    buttonName="사진 찍기"
+                    color="orange"
+                    radius={0}
+                    dir="bottom"
+                  />
+                </ButtonBox>
+                <Button buttonName="삭제하기" color="orange" />
+              </ButtonBox>
+            </BottomSheet>
           </ImageIcon>
         </ImageBox>
       </SummaryWrapper>

@@ -80,6 +80,7 @@ export type buttonProps = {
   color: keyof typeof theme;
   size?: number;
   radius?: number;
+  dir?: 'top' | 'bottom';
 };
 
 export type inputProps = {
@@ -210,4 +211,5 @@ export type bottomSheetProps = {
   onClose?: () => void;
   children?: React.ReactNode;
   title?: string;
+  noModal?: boolean;
 };

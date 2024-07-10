@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import OneDiet from './OneDiet';
 import styled from 'styled-components';
 import useAxios from '@/util/http-commons';
-import { Diet, dietProps } from '@/types/type';
+import { Diet } from '@/types/type';
 
 const DailyDietWrapper = styled.div`
   width: 100%;
@@ -56,7 +56,6 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
       setLunchFast(lunch?.isFast || false);
       setDinnerFast(dinner?.isFast || false);
       setSnackFast(snack?.isFast || false);
-      console.log(dinnerFast);
     } catch (err) {
       console.log('일별 식단 정보 조회 에러:', err);
     }
