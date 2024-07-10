@@ -2,6 +2,7 @@ package com.updown.common;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.updown.diet.exception.ImgDeleteFailureException;
 import com.updown.diet.exception.ImgUploadFailureException;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -29,51 +31,35 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-        File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
-        return upload(uploadFile, dirName);
-    }
+    /**
+     * MultipartFile을 전달받아 InputStream으로 S3에 업로드하는 메서드
+     *
+     * @param multipartFile 업로드할 파일
+     * @param dirName 파일이 저장될 S3 폴더 이름
+     * @return 업로드된 파일의 S3 URL
+     */
+    public String upload(MultipartFile multipartFile, String dirName) {
+        // 파일 이름 생성 (디렉토리 이름과 UUID를 포함한 고유한 파일 이름)
+        String fileName = dirName + "/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
 
-    private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
-        String uploadImageUrl = putS3(uploadFile, fileName);
+        // 파일을 InputStream으로 변환하여 S3에 업로드
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            // 파일 메타데이터 설정 (파일 크기)
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(multipartFile.getSize());
 
-        removeNewFile(uploadFile);  // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
+            // S3에 파일 업로드 요청 생성 및 설정 (PublicRead 권한 부여)
+            amazonS3Client.putObject(
+                    new PutObjectRequest(bucket, fileName, inputStream, metadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
 
-        return uploadImageUrl;      // 업로드된 파일의 S3 URL 주소 반환
-    }
+        } catch (IOException e) {
+            throw new ImgUploadFailureException(e);
+        }
 
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(
-                new PutObjectRequest(bucket, fileName, uploadFile)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)	// PublicRead 권한으로 업로드 됨
-        );
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
-
-    private void removeNewFile(File targetFile) {
-        if(targetFile.delete()) {
-            log.info("파일이 삭제되었습니다.");
-        }else {
-            log.info("파일이 삭제되지 못했습니다.");
-        }
-    }
-
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        String originalFileName = file.getOriginalFilename();
-        String uniqueFileName = UUID.randomUUID() + "_" + originalFileName;
-        File convertFile = new File(uniqueFileName);
-        if (convertFile.createNewFile()) {
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-        return Optional.empty();
-    }
-
 
     public void delete(String fileUrl) {
         String objectKeyEncoded = fileUrl.substring(fileUrl.indexOf(".com/") + 5);
