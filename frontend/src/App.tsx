@@ -1,8 +1,16 @@
-import MainPage from '@/pages/MainPage';
-import LoginPage from '@/pages/LoginPage';
-import SignUpPage from '@/pages/SignUpPage';
-import LoadingPage from '@/pages/LoadingPage';
-import MyPage from '@/pages/MyPage';
+import {
+  MainPage,
+  LoginPage,
+  LoadingPage,
+  SignUpPage,
+  MyPage,
+  DietDetailPage,
+  DietEditPage,
+  DietPage,
+  DietRegistPage,
+  DietSearchPage,
+} from '@/pages';
+import { BottomNav } from '@/components';
 import { getAccessToken, refreshAccessToken } from './api/auth';
 import { tokenStore } from './store';
 import { Route, Routes, useLocation } from 'react-router-dom';
@@ -13,7 +21,7 @@ const AppWrapper = styled.div`
   margin: auto;
   max-width: 430px;
   min-height: 100vh;
-  background-color: #fffefc;
+  background-color: white;
 `;
 
 function App() {
@@ -38,8 +46,17 @@ function App() {
       }
     };
 
-    refresh(); // async 함수 실행
-  }, [location.pathname]); // 의존성 배열
+    // 페이지 이동했을 때 스크롤 제일 위로 이동
+    window.scrollTo(0, 0);
+
+    refresh();
+  }, [location.pathname]);
+
+  // BottomNav가 보여야 하는 경로인지 체크
+  const showBottomNav =
+    location.pathname !== '/' &&
+    location.pathname !== '/signup' &&
+    location.pathname !== '/load';
 
   return (
     <AppWrapper>
@@ -49,11 +66,13 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/load" element={<LoadingPage />} />
         <Route path="/mypage" element={<MyPage />} />
-        {/* <Route
-          path="/mypage"
-          element={<MyPage tokenRefreshed={tokenRefreshed} />}
-        /> */}
+        <Route path="/diet/detail/:foodId" element={<DietDetailPage />} />
+        <Route path="/diet/edit/:foodId" element={<DietEditPage />} />
+        <Route path="/diet/:category" element={<DietPage />} />
+        <Route path="/diet/regist" element={<DietRegistPage />} />
+        <Route path="/diet/search" element={<DietSearchPage />} />
       </Routes>
+      {showBottomNav && <BottomNav />}
     </AppWrapper>
   );
 }
