@@ -1,9 +1,10 @@
 package com.updown.diet.controller;
 
 import com.updown.diet.dto.req.InsertFoodReq;
-import com.updown.diet.dto.req.IsFastCheck;
-import com.updown.diet.dto.res.DietDayRes;
+import com.updown.diet.dto.req.IsFastCheckReq;
+import com.updown.diet.dto.req.UploadDietImgReq;
 import com.updown.diet.dto.res.DietCategoryRes;
+import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietSearchRes;
 import com.updown.diet.dto.res.FoodDetails;
 import com.updown.diet.entity.DietCategory;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -82,13 +82,13 @@ public class DietController {
     /**
      * 단식 여부 체크
      * @param member
-     * @param isFastCheck
+     * @param isFastCheckReq
      * @return
      */
     @Transactional
     @PostMapping("/isFast")
-    public ResponseEntity<?> checkIsFast(@AuthenticationPrincipal Member member, @RequestBody IsFastCheck isFastCheck){
-        dietService.checkIsFast(member, isFastCheck);
+    public ResponseEntity<?> checkIsFast(@AuthenticationPrincipal Member member, @RequestBody IsFastCheckReq isFastCheckReq){
+        dietService.checkIsFast(member, isFastCheckReq);
         return ResponseEntity.ok().build();
     }
 
@@ -115,15 +115,17 @@ public class DietController {
 
     /**
      * 식단 이미지 업로드
-     * @param dietId
+     * @param category
      * @param member
-     * @param file
+     * @param uploadDietImgReq
      * @return
      */
     @Transactional
-    @PostMapping("/img/{dietId}")
-    public ResponseEntity<?> uploadDietImg(@PathVariable("dietId") Integer dietId, @AuthenticationPrincipal Member member, @RequestPart("file") MultipartFile file){
-        dietService.uploadDietImg(dietId, member, file);
+    @PostMapping("/img/{category}")
+    public ResponseEntity<?> uploadDietImg(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @ModelAttribute UploadDietImgReq uploadDietImgReq){
+        System.out.println(uploadDietImgReq.getDietImg());
+        System.out.println(uploadDietImgReq.getRegDate());
+        dietService.uploadDietImg(category, member, uploadDietImgReq);
         return ResponseEntity.ok().build();
     }
 

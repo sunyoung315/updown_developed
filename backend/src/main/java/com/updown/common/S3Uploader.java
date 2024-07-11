@@ -39,6 +39,7 @@ public class S3Uploader {
      * @return 업로드된 파일의 S3 URL
      */
     public String upload(MultipartFile multipartFile, String dirName) {
+        System.out.println("1번");
         // 파일 이름 생성 (디렉토리 이름과 UUID를 포함한 고유한 파일 이름)
         String fileName = dirName + "/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
 
@@ -47,7 +48,6 @@ public class S3Uploader {
             // 파일 메타데이터 설정 (파일 크기)
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(multipartFile.getSize());
-
             // S3에 파일 업로드 요청 생성 및 설정 (PublicRead 권한 부여)
             amazonS3Client.putObject(
                     new PutObjectRequest(bucket, fileName, inputStream, metadata)

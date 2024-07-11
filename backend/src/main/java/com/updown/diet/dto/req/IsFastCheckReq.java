@@ -12,13 +12,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class IsFastCheck {
+public class IsFastCheckReq {
 
     private LocalDate regDate;
     private DietCategory category;
 
     @JsonCreator
-    public IsFastCheck(@JsonProperty("regDate") LocalDate regDate, @JsonProperty("category") DietCategory category) {
+    public IsFastCheckReq(@JsonProperty("regDate") LocalDate regDate, @JsonProperty("category") DietCategory category) {
         this.regDate = regDate;
         this.category = category;
     }

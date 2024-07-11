@@ -18,4 +18,6 @@ public interface DietRepository extends JpaRepository<Diet, Integer> {
     Optional<Diet> findByMemberAndDietIdAndCategory(Member member, Integer dietId, DietCategory category);
 
     List<Diet> findByMemberAndRegDate(Member member, LocalDate regDate);
+
+    Optional<Diet> findByCategoryAndRegDate(DietCategory category, LocalDate regDate);
 }
