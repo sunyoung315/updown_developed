@@ -77,11 +77,11 @@ const OneDiet = (dietProps: dietProps) => {
     <OneDietWrapper>
       <CategoryWrapper>
         <Category>
-          {category == 'breakfast'
+          {category == 'BREAKFAST'
             ? '아침'
-            : category == 'lunch'
+            : category == 'LUNCH'
               ? '점심'
-              : category == 'dinner'
+              : category == 'DINNER'
                 ? '저녁'
                 : '간식'}
         </Category>

@@ -6,6 +6,8 @@ const GlobalStyle = createGlobalStyle`
     ${reset}
     #root {
         font-family: "omyudapretty";
+        font-size: 1.13rem;
+        color: ${theme.black};
     }
     * {
         box-sizing: border-box;

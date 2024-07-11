@@ -8,7 +8,7 @@ export interface tokenState {
 
 export interface Diet {
   dietId: number;
-  category: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   dietImg: string;
   totalCalories: number;
   isFast: boolean;
@@ -21,7 +21,7 @@ export type dateProps = {
 
 type diet = {
   dietId?: number;
-  category?: string;
+  category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   dietImg?: string;
   totalCalories?: number;
   isFast?: boolean;
@@ -29,7 +29,7 @@ type diet = {
 
 export type dietProps = {
   diet?: diet;
-  category: string;
+  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   regDate?: string;
   fast: boolean;
   setFast: (value: boolean) => void;
@@ -59,7 +59,7 @@ type commonProps = {
   type: 'diet' | 'exercise';
   setIsDelted: React.Dispatch<React.SetStateAction<boolean>>;
   dietId?: number;
-  category?: string;
+  category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
 };
 
 type dietCommonProps = commonProps & {
@@ -81,6 +81,7 @@ export type buttonProps = {
   size?: number;
   radius?: number;
   dir?: 'top' | 'bottom';
+  textColor?: keyof typeof theme;
 };
 
 export type inputProps = {
@@ -95,6 +96,9 @@ export type inputProps = {
   onChange: React.Dispatch<React.SetStateAction<any>>;
   value?: string | number;
   isBig?: boolean;
+  name?: string;
+  step?: number;
+  signup?: boolean;
 };
 
 export type nutritionProps = {
@@ -122,6 +126,8 @@ export type headerProps = {
   onChange?: React.Dispatch<React.SetStateAction<string>>;
   searchFood?: () => void;
   nutrition?: nutritionProps;
+  mypage?: boolean;
+  logout?: () => Promise<void>;
 };
 
 export type iconButtonProps = {
@@ -152,7 +158,7 @@ type exerciseResult = {
 // type에 따른 조건부 타입 지정
 type commonResultProps = {
   type: 'diet' | 'exercise';
-  category: string;
+  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   dietId?: number;
 };
 
@@ -202,7 +208,7 @@ export type food = {
 export type formProps = {
   food: food;
   buttonName?: string;
-  category?: string;
+  category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   foodId?: number;
 };
 
@@ -212,4 +218,24 @@ export type bottomSheetProps = {
   children?: React.ReactNode;
   title?: string;
   noModal?: boolean;
+  signup?: boolean;
+};
+
+export type Member = {
+  gender: '남성' | '여성' | '';
+  age: number;
+  height: number;
+  nowWeight: number;
+  targetWeight: number;
+  activeLevel: '거의없음' | '적음' | '보통' | '많음' | '매우많음' | '';
+  targetCalories: number;
+  recentWeight?: number;
+};
+
+export type pageProps = {
+  data: Member;
+  setData: React.Dispatch<React.SetStateAction<Member>>;
+  next?: boolean;
+  setNext?: React.Dispatch<React.SetStateAction<boolean>>;
+  signUp?: () => Promise<void>;
 };

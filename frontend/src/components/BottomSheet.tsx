@@ -4,9 +4,9 @@ import { IconButton } from '@/components';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
-const ModalWraper = styled.div`
+const ModalWraper = styled.div<{ $signup?: boolean }>`
   position: fixed;
-  bottom: 3.25rem;
+  bottom: ${props => (props?.$signup ? '0' : '3.25rem')};
   left: 0;
   right: 0;
   top: 0;
@@ -30,7 +30,6 @@ const BackDrop = styled.div`
   opacity: 40%;
 `;
 
-// background-color: ${props => props.theme.white};
 const Modal = styled.div<{ $nomodal?: boolean }>`
   background-color: ${props =>
     props?.$nomodal ? 'transparent' : props.theme.white};
@@ -64,7 +63,8 @@ const ModalContent = styled.div`
 `;
 
 const BottomSheet = (bottomSheetProps: bottomSheetProps) => {
-  const { isOpen, onClose, title, children, noModal } = bottomSheetProps;
+  const { isOpen, onClose, title, children, noModal, signup } =
+    bottomSheetProps;
   const portalElement = document.getElementById('modal') as HTMLElement;
 
   // 모달이 열렸을 때 배경화면의 스크롤 막기
@@ -84,7 +84,7 @@ const BottomSheet = (bottomSheetProps: bottomSheetProps) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <ModalWraper>
+    <ModalWraper $signup={signup}>
       <BackDrop onClick={onClose}></BackDrop>
       <Modal $nomodal={noModal}>
         {!noModal && (

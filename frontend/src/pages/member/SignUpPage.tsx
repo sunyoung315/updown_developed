@@ -1,32 +1,36 @@
+import { Header } from '@/components';
+import { FirstPage, SecondPage } from './components';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Member } from '@/types/type';
+import styled from 'styled-components';
+
+const SignUpWrapper = styled.div`
+  padding: 0 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+`;
 
 const SignUpPage = () => {
   const navigator = useNavigate();
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<Member>({
     gender: '',
     age: 0,
-    height: 0.0,
-    nowWeight: 0.0,
-    targetWeight: 0.0,
+    height: 0,
+    nowWeight: 0,
+    targetWeight: 0,
     activeLevel: '',
-    targetCalories: 0.0,
+    targetCalories: 0,
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
-  ) => {
-    const { name, value } = e.target;
-    setData(prevData => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const [next, setNext] = useState<boolean>(false);
 
-  const signup = async () => {
+  const signUp = async () => {
     try {
       const response = await useAxios.post('/auth/signup', data);
       if (response.status === httpStatusCode.OK) {
@@ -37,85 +41,29 @@ const SignUpPage = () => {
     }
   };
 
+  const goBack = () => {
+    if (!next) {
+      navigator('/');
+    } else {
+      setNext(false);
+    }
+  };
+
   return (
     <>
-      <h1>회원가입</h1>
-      <div>
-        <span>성별</span>
-        <select
-          name="gender"
-          id="gender"
-          value={data.gender}
-          onChange={handleChange}
-        >
-          <option value="남성">남성</option>
-          <option value="여성">여성</option>
-        </select>
-      </div>
-      <div>
-        <span>나이</span>
-        <input
-          type="number"
-          name="age"
-          value={data.age}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <span>키</span>
-        <input
-          type="number"
-          step={0.1}
-          name="height"
-          value={data.height}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <span>현재 체중</span>
-        <input
-          type="number"
-          step={0.1}
-          name="nowWeight"
-          value={data.nowWeight}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <span>목표 체중</span>
-        <input
-          type="number"
-          step={0.1}
-          name="targetWeight"
-          value={data.targetWeight}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <span>평소 활동량</span>
-        <select
-          name="activeLevel"
-          id="activeLevel"
-          value={data.activeLevel}
-          onChange={handleChange}
-        >
-          <option value="거의없음">거의 없음</option>
-          <option value="적음">적음</option>
-          <option value="보통">보통</option>
-          <option value="많음">많음</option>
-        </select>
-      </div>
-      <div>
-        <span>목표칼로리</span>
-        <input
-          type="number"
-          step={0.1}
-          name="targetCalories"
-          value={data.targetCalories}
-          onChange={handleChange}
-        />
-      </div>
-      <button onClick={signup}>저장</button>
+      <Header iconName="back" onClick={goBack} />
+      <SignUpWrapper>
+        {!next ? (
+          <FirstPage data={data} setData={setData} setNext={setNext} />
+        ) : (
+          <SecondPage
+            data={data}
+            setData={setData}
+            next={next}
+            signUp={signUp}
+          />
+        )}
+      </SignUpWrapper>
     </>
   );
 };

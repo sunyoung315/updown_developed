@@ -15,6 +15,7 @@ const theme = {
   grey: '#B7B7B7',
   darkgrey: '#242424',
   black: '#262626',
+  transparent: 'transparent',
 };
 
 export default theme;

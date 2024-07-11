@@ -109,7 +109,11 @@ const DietPage = () => {
 
   const location = useLocation();
   const dietId = location.state.dietId || 0;
-  const category = decodeURI(location.pathname.split('/')[2]);
+  const category = decodeURI(location.pathname.split('/')[2]) as
+    | 'BREAKFAST'
+    | 'LUNCH'
+    | 'DINNER'
+    | 'SNACK';
 
   const [dietImg, setDietImg] = useState<string>();
   const [nutrition, setNutrition] = useState<nutritionProps>();
@@ -281,11 +285,11 @@ const DietPage = () => {
       </SummaryWrapper>
       <FoodListWrapper>
         <Category>
-          {category == 'breakfast'
+          {category == 'BREAKFAST'
             ? '아침'
-            : category == 'lunch'
+            : category == 'LUNCH'
               ? '점심'
-              : category == 'dinner'
+              : category == 'DINNER'
                 ? '저녁'
                 : '간식'}{' '}
           메뉴 <Count>{foodList?.length || 0}</Count>

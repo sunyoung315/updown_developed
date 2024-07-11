@@ -15,22 +15,25 @@ const InputName = styled.span`
   font-size: 1.13rem;
 `;
 
-const InputLabel = styled.label<{ $isbig?: boolean }>`
+const InputLabel = styled.label<{ $isbig?: boolean; $signup?: boolean }>`
   background-color: ${props => props.theme.lightgrey};
-  width: ${props => (props?.$isbig ? '15rem' : '100%')};
+  width: ${props =>
+    !props?.$isbig ? '100%' : props?.$signup ? '12rem' : '15rem'};
   border-radius: 0.5rem;
   height: ${props => (props?.$isbig ? '5.5rem' : '2.94rem')};
   display: flex;
   align-items: center;
-  padding: ${props => (props?.$isbig ? '0 1.5rem' : '0 0.7rem')};
+  padding: ${props => (props?.$isbig ? '0 1.3rem' : '0 0.7rem')};
 `;
 
 const InputBox = styled.input<{
   $inputnamecolor?: keyof typeof theme;
   $isbig?: boolean;
+  $signup?: boolean;
 }>`
   width: 100%;
-  font-size: ${props => (props?.$isbig ? '3.75rem' : '1.25rem')};
+  font-size: ${props =>
+    !props?.$isbig ? '1.25rem' : props?.$signup ? '2.5rem' : '3.75rem'};
   color: ${props =>
     theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
 `;
@@ -38,9 +41,11 @@ const InputBox = styled.input<{
 const UnitWrapper = styled.span<{
   $inputnamecolor?: keyof typeof theme;
   $isbig?: boolean;
+  $signup?: boolean;
 }>`
-  font-size: ${props => (props?.$isbig ? '2.8rem' : '1.25rem')};
-  padding-left: 0.5rem;
+  font-size: ${props =>
+    !props?.$isbig ? '1.25rem' : props.$signup ? '2rem' : '2.8rem'};
+  padding-left: 0.3rem;
   color: ${props =>
     theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
 `;
@@ -58,17 +63,28 @@ const Input = (inputProps: inputProps) => {
     onChange,
     value,
     isBig,
+    name,
+    step,
+    signup,
   } = inputProps;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (inputType === 'text') {
       onChange(e.target.value);
     } else {
-      // 0이 기본값으로 들어가 있을 때 0 자동 삭제
-      if (e.target.value.length > 1 && e.target.value.startsWith('0')) {
-        e.target.value = e.target.value.slice(1);
+      if (name) {
+        // 0이 기본값으로 들어가 있을 때 0 자동 삭제
+        if (e.target.value.length > 1 && e.target.value.startsWith('0')) {
+          e.target.value = e.target.value.slice(1);
+        }
+        onChange({ name: e.target.name, value: Number(e.target.value) });
+      } else {
+        // 0이 기본값으로 들어가 있을 때 0 자동 삭제
+        if (e.target.value.length > 1 && e.target.value.startsWith('0')) {
+          e.target.value = e.target.value.slice(1);
+        }
+        onChange(Number(e.target.value));
       }
-      onChange(Number(e.target.value));
     }
   };
 
@@ -86,7 +102,7 @@ const Input = (inputProps: inputProps) => {
           </span>
         )}
       </InputName>
-      <InputLabel htmlFor="input" $isbig={isBig}>
+      <InputLabel htmlFor="input" $isbig={isBig} $signup={signup}>
         <InputBox
           type={inputType === 'text' ? 'text' : 'number'}
           id="input"
@@ -95,9 +111,16 @@ const Input = (inputProps: inputProps) => {
           value={value}
           $inputnamecolor={inputNameColor}
           $isbig={isBig}
+          name={name}
+          step={step}
+          $signup={signup}
         />
         {unit && (
-          <UnitWrapper $inputnamecolor={inputNameColor} $isbig={isBig}>
+          <UnitWrapper
+            $inputnamecolor={inputNameColor}
+            $isbig={isBig}
+            $signup={signup}
+          >
             {unit}
           </UnitWrapper>
         )}

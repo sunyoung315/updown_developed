@@ -1,5 +1,6 @@
 import theme from '@/styles/theme';
 import { buttonProps } from '@/types/type';
+import { RightArrow } from '@/assets/icons';
 import styled from 'styled-components';
 
 const ButtonWrapper = styled.button<{
@@ -7,12 +8,15 @@ const ButtonWrapper = styled.button<{
   $size?: number;
   $radius?: number;
   $dir?: 'top' | 'bottom';
+  $textcolor?: keyof typeof theme;
 }>`
   width: ${props => (props?.$size ? `${props?.$size}rem` : '100%')};
-  height: 2.5rem;
+  height: ${props => (props?.$color === 'transparent' ? '2rem' : '2.5rem')};
   background-color: ${props => theme[props.$color]};
-  color: ${props => props.theme.white};
-  font-size: 1.25rem;
+  color: ${props =>
+    props?.$textcolor ? theme[props.$textcolor] : props.theme.white};
+  font-size: ${props =>
+    props?.$color === 'transparent' ? '1.13rem' : '1.25rem'};
   border-radius: ${props =>
     props?.$dir === 'top'
       ? '0.5rem 0.5rem 0 0'
@@ -22,7 +26,7 @@ const ButtonWrapper = styled.button<{
 `;
 
 const Button = (props: buttonProps) => {
-  const { buttonName, onClick, color, size, radius, dir } = props;
+  const { buttonName, onClick, color, size, radius, dir, textColor } = props;
 
   return (
     <ButtonWrapper
@@ -31,8 +35,10 @@ const Button = (props: buttonProps) => {
       $size={size}
       $radius={radius}
       $dir={dir}
+      $textcolor={textColor}
     >
       {buttonName}
+      {color === 'transparent' && <RightArrow size={20} />}
     </ButtonWrapper>
   );
 };

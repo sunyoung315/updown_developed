@@ -7,6 +7,7 @@ import Info from './Info';
 import Input from './Input';
 import SearchInput from './SearchInput';
 import SearchResult from './SearchResult';
+import BottomSheet from './BottomSheet';
 
 export {
   BottomNav,
@@ -18,4 +19,5 @@ export {
   Input,
   SearchInput,
   SearchResult,
+  BottomSheet,
 };

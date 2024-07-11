@@ -46,11 +46,11 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
 
       const diets = response.data;
       const breakfast = diets?.find(
-        (diet: Diet) => diet.category === 'breakfast',
+        (diet: Diet) => diet.category === 'BREAKFAST',
       );
-      const lunch = diets?.find((diet: Diet) => diet.category === 'lunch');
-      const dinner = diets?.find((diet: Diet) => diet.category === 'dinner');
-      const snack = diets?.find((diet: Diet) => diet.category === 'snack');
+      const lunch = diets?.find((diet: Diet) => diet.category === 'LUNCH');
+      const dinner = diets?.find((diet: Diet) => diet.category === 'DINNER');
+      const snack = diets?.find((diet: Diet) => diet.category === 'SNACK');
 
       setBreakfastFast(breakfast?.isFast || false);
       setLunchFast(lunch?.isFast || false);
@@ -65,18 +65,21 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
     getTodayDiet();
   }, [regDate]);
 
-  const handleFastChange = async (category: string, value: boolean) => {
+  const handleFastChange = async (
+    category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK',
+    value: boolean,
+  ) => {
     switch (category) {
-      case 'breakfast':
+      case 'BREAKFAST':
         setBreakfastFast(value);
         break;
-      case 'lunch':
+      case 'LUNCH':
         setLunchFast(value);
         break;
-      case 'dinner':
+      case 'DINNER':
         setDinnerFast(value);
         break;
-      case 'snack':
+      case 'SNACK':
         setSnackFast(value);
         break;
       default:
@@ -90,32 +93,32 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
       <TitleWrapper>식단</TitleWrapper>
       <DietWrapper>
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'breakfast')}
-          category="breakfast"
+          diet={todayDiet.find(diet => diet.category === 'BREAKFAST')}
+          category="BREAKFAST"
           regDate={regDate}
           fast={breakfastFast}
-          setFast={(value: boolean) => handleFastChange('breakfast', value)}
+          setFast={(value: boolean) => handleFastChange('BREAKFAST', value)}
         />
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'lunch')}
-          category="lunch"
+          diet={todayDiet.find(diet => diet.category === 'LUNCH')}
+          category="LUNCH"
           regDate={regDate}
           fast={lunchFast}
-          setFast={(value: boolean) => handleFastChange('lunch', value)}
+          setFast={(value: boolean) => handleFastChange('LUNCH', value)}
         />
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'dinner')}
-          category="dinner"
+          diet={todayDiet.find(diet => diet.category === 'DINNER')}
+          category="DINNER"
           regDate={regDate}
           fast={dinnerFast}
-          setFast={(value: boolean) => handleFastChange('dinner', value)}
+          setFast={(value: boolean) => handleFastChange('DINNER', value)}
         />
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'snack')}
-          category="snack"
+          diet={todayDiet.find(diet => diet.category === 'SNACK')}
+          category="SNACK"
           regDate={regDate}
           fast={snackFast}
-          setFast={(value: boolean) => handleFastChange('snack', value)}
+          setFast={(value: boolean) => handleFastChange('SNACK', value)}
         />
       </DietWrapper>
     </DailyDietWrapper>
