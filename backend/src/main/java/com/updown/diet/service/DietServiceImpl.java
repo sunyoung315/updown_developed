@@ -2,7 +2,8 @@ package com.updown.diet.service;
 
 import com.updown.common.S3Uploader;
 import com.updown.diet.dto.req.InsertFoodReq;
-import com.updown.diet.dto.req.IsFastCheck;
+import com.updown.diet.dto.req.IsFastCheckReq;
+import com.updown.diet.dto.req.UploadDietImgReq;
 import com.updown.diet.dto.res.*;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.DietCategory;
@@ -232,18 +233,18 @@ public class DietServiceImpl implements DietService {
      * 단식 여부 등록
      *
      * @param member
-     * @param isFastCheck
+     * @param isFastCheckReq
      */
     @Override
-    public void checkIsFast(Member member, IsFastCheck isFastCheck) {
+    public void checkIsFast(Member member, IsFastCheckReq isFastCheckReq) {
         // 멤버랑 오늘날짜, 카테고리에 해당하는 diet가 없다면 만들고
-        Optional<Diet> diet = dietRepository.findByMemberAndRegDateAndCategory(member, isFastCheck.getRegDate(), isFastCheck.getCategory());
+        Optional<Diet> diet = dietRepository.findByMemberAndRegDateAndCategory(member, isFastCheckReq.getRegDate(), isFastCheckReq.getCategory());
         if (diet.isEmpty()) {
             Diet newDiet = Diet.builder()
                     .member(member)
                     .isFast(true)
-                    .regDate(isFastCheck.getRegDate())
-                    .category(isFastCheck.getCategory())
+                    .regDate(isFastCheckReq.getRegDate())
+                    .category(isFastCheckReq.getCategory())
                     .build();
 
             dietRepository.save(newDiet);
@@ -278,26 +279,38 @@ public class DietServiceImpl implements DietService {
 
     /**
      * 식단 이미지 업로드
-     * @param dietId
+     * @param category
      * @param member
-     * @param file
+     * @param uploadDietImgReq
      */
     @Transactional
-    public void uploadDietImg(Integer dietId, Member member, MultipartFile file) {
-        Diet diet = dietRepository.findById(dietId).orElseThrow(DietNotFoundException::new);
+    public void uploadDietImg(DietCategory category, Member member, UploadDietImgReq uploadDietImgReq) {
+        // dietId에 해당하는 Diet 데이터가 없다면 새로 생성해서 이미지 넣자
+        Diet diet = dietRepository.findByCategoryAndRegDate(category, uploadDietImgReq.getRegDate())
+                .orElseGet(() -> createNewDiet(category, uploadDietImgReq.getRegDate(), member));
+
         try {
             // 기존 이미지가 있으면 삭제
             if (diet.getDietImg() != null) {
                 s3Uploader.delete(diet.getDietImg());
             }
-
             // 새 이미지 업로드
-            String storedFileName = s3Uploader.upload(file, "diet");
+            String storedFileName = s3Uploader.upload(uploadDietImgReq.getDietImg(), "diet");
             diet.setDietImg(storedFileName);
             dietRepository.save(diet);
         } catch (Exception e) {
             throw new ImgUploadFailureException(e);
         }
+    }
+
+    private Diet createNewDiet(DietCategory category, LocalDate regDate, Member member) {
+        Diet diet = Diet.builder()
+                .category(category)
+                .regDate(regDate)
+                .member(member)
+                .isFast(false)
+                .build();
+        return dietRepository.save(diet);
     }
 
     /**

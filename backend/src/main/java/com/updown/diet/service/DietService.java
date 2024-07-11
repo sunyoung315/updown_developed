@@ -1,7 +1,8 @@
 package com.updown.diet.service;
 
 import com.updown.diet.dto.req.InsertFoodReq;
-import com.updown.diet.dto.req.IsFastCheck;
+import com.updown.diet.dto.req.IsFastCheckReq;
+import com.updown.diet.dto.req.UploadDietImgReq;
 import com.updown.diet.dto.res.DietDayRes;
 import com.updown.diet.dto.res.DietCategoryRes;
 import com.updown.diet.dto.res.DietSearchRes;
@@ -27,11 +28,11 @@ public interface DietService {
 
     FoodDetails searchFood(Member member, Integer foodId);
 
-    void checkIsFast(Member member, IsFastCheck isFastCheck);
+    void checkIsFast(Member member, IsFastCheckReq isFastCheckReq);
 
     void deleteFood(Member member, Integer foodId);
 
-    void uploadDietImg(Integer dietId, Member member, MultipartFile file);
+    void uploadDietImg(DietCategory category, Member member, UploadDietImgReq uploadDietImgReq);
 
     void deleteDietImg(Integer dietId, Member member);
 }
