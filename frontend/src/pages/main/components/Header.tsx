@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { dateProps } from '@/types/type';
-import LeftArrow from '@/assets/icons/left-arrow.svg';
-import RightArrow from '@/assets/icons/right-arrow.svg';
+import { LeftArrow, RightArrow } from '@/assets/icons';
 import CalendarIcon from '@/assets/icons/calendar.svg';
 import styled from 'styled-components';
 
@@ -16,11 +14,6 @@ const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0.8rem;
   position: fixed;
-`;
-
-const ArrowButton = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
 `;
 
 const DateWrapper = styled.span`
@@ -70,7 +63,7 @@ const Header = (dateProps: dateProps) => {
   return (
     <HeaderWrapper>
       <button onClick={prevDate}>
-        <ArrowButton src={LeftArrow} />
+        <LeftArrow />
       </button>
       <DateWrapper>
         <button>
@@ -85,7 +78,7 @@ const Header = (dateProps: dateProps) => {
               : selectedDate}
       </DateWrapper>
       <button onClick={nextDate}>
-        <ArrowButton src={RightArrow} />
+        <RightArrow />
       </button>
     </HeaderWrapper>
   );

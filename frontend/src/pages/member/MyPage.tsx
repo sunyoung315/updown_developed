@@ -1,17 +1,100 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setAccessToken } from '@/api/auth';
+import { ImgIcon } from '@/assets/icons';
+import { Header, Button } from '@/components';
 import { tokenStore } from '@/store';
 import useAxios from '@/util/http-commons';
-import { useEffect } from 'react';
+import { httpStatusCode } from '@/util/http-status';
+import { Member } from '@/types/type';
+import TargetIcon from '@/assets/icons/target-icon.svg';
+import Running from '@/assets/images/running.png';
+import styled from 'styled-components';
+
+const MyPageWrapper = styled.div`
+  padding: 0 1.8rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+`;
+
+const ImageBox = styled.div`
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0.5rem;
+  background-color: ${props => props.theme.pink};
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+`;
+
+const ImageIcon = styled.button`
+  position: absolute;
+  bottom: -11%;
+  right: -13%;
+`;
+
+const Image = styled.img`
+  width: 90%;
+  margin: 5%;
+`;
+
+const Hr = styled.div`
+  background-color: ${props => props.theme.lightgrey};
+  height: 0.1rem;
+  border: none;
+  margin: 1.5rem 0 1rem;
+`;
+
+const Box = styled.div`
+  background-color: ${props => props.theme.lightgrey};
+  border-radius: 0.63rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 0 0.4rem;
+`;
+
+const Column = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Target = styled.div`
+  margin-top: 3rem;
+  text-align: right;
+  color: ${props => props.theme.grey};
+`;
+
+const Kilogram = styled.span`
+  color: ${props => props.theme.black};
+  font-size: 1.4rem;
+`;
 
 const MyPage = () => {
   const { checkToken } = tokenStore();
+
+  const [myInfo, setMyInfo] = useState<Member>();
+  const [loseWeight, setLoseWeight] = useState<number>(0);
+
   useEffect(() => {
     const getMyPageInfo = async () => {
-      console.log('getMyPageInfo');
       try {
         const response = await useAxios.get('/mypage');
-        console.log('mypage:', response?.data);
+
+        if (response.status === httpStatusCode.OK) {
+          setMyInfo(response.data);
+          // 가장 최근 등록한 몸무게와 최초 몸무게의 차
+          setLoseWeight(response.data?.recentWeight - response.data?.nowWeight);
+        }
       } catch (err) {
-        console.log('mypage getMyPageInfo errer:', err);
+        console.log('마이페이지 조회 에러:', err);
       }
     };
 
@@ -21,9 +104,72 @@ const MyPage = () => {
     }
   }, [checkToken]);
 
+  const navigator = useNavigate();
+  const goBack = () => {
+    navigator(-1);
+  };
+
+  const logout = async () => {
+    try {
+      const response = await useAxios.get('/auth/logout');
+      if (response.status === httpStatusCode.OK) {
+        console.log('로그아웃 성공');
+        // 로그아웃 후 access token 초기화
+        setAccessToken('');
+        navigator('/');
+      }
+    } catch (err) {
+      console.log('로그아웃 에러:', err);
+    }
+  };
+
+  const goMyEditPage = () => {
+    navigator('/mypage/edit', { state: { myInfo } });
+  };
+
   return (
     <>
-      <div>마이페이지</div>
+      <Header
+        iconName="close"
+        onClick={goBack}
+        mypage={true}
+        logout={logout}
+        headerName="마이페이지"
+      />
+      <MyPageWrapper>
+        <ImageBox>
+          <Image src={Running} alt="themeImg" />
+          <ImageIcon>
+            <ImgIcon fillColor="darkpink" />
+          </ImageIcon>
+        </ImageBox>
+        <Hr />
+        <div>
+          <Button
+            buttonName="나의 목표"
+            color="transparent"
+            textColor="black"
+            size={6}
+            onClick={goMyEditPage}
+          />
+          <Box>
+            <Content>
+              <Column>
+                <span>목표 체중</span>
+                <span>{myInfo?.targetWeight} kcal</span>
+              </Column>
+              <Column>
+                <span>목표 칼로리</span>
+                <span>{myInfo?.targetCalories} kcal</span>
+              </Column>
+            </Content>
+            <Target>
+              <img src={TargetIcon} alt="icon" /> 지금까지{' '}
+              <Kilogram>{loseWeight} kg</Kilogram> 감량했어요!
+            </Target>
+          </Box>
+        </div>
+      </MyPageWrapper>
     </>
   );
 };

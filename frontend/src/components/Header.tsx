@@ -8,7 +8,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.3rem 1.7rem;
+  padding: 1rem 1.3rem;
   gap: 0.5rem;
 `;
 
@@ -57,6 +57,8 @@ const Header = (headerProps: headerProps) => {
     onChange,
     searchFood,
     nutrition,
+    mypage,
+    logout,
   } = headerProps;
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -70,7 +72,11 @@ const Header = (headerProps: headerProps) => {
       {headerName && (
         <>
           <HeaderName>{headerName}</HeaderName>
-          <Blank $search={search} />
+          {mypage ? (
+            <IconButton iconName="logout" onClick={logout} />
+          ) : (
+            <Blank $search={search} />
+          )}
         </>
       )}
       {search && (
