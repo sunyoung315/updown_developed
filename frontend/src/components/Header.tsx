@@ -69,11 +69,14 @@ const Header = (headerProps: headerProps) => {
   return (
     <HeaderWrapper>
       <IconButton iconName={iconName} onClick={onClick} />
-      {mypage && <IconButton iconName="logout" onClick={logout} />}
       {headerName && (
         <>
           <HeaderName>{headerName}</HeaderName>
-          <Blank $search={search} />
+          {mypage ? (
+            <IconButton iconName="logout" onClick={logout} />
+          ) : (
+            <Blank $search={search} />
+          )}
         </>
       )}
       {search && (

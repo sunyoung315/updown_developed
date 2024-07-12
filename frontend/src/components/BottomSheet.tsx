@@ -52,7 +52,6 @@ const ModalTitle = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1.5rem;
-
   flex-shrink: 0;
 `;
 

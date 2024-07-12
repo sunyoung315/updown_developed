@@ -16,6 +16,7 @@ const theme = {
   darkgrey: '#242424',
   black: '#262626',
   transparent: 'transparent',
+  purple: '#AC81B0',
 };
 
 export default theme;

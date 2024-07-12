@@ -27,7 +27,7 @@ const Content = styled.div`
 const Column = styled.div<{ $color: keyof typeof theme }>`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   color: ${props => theme[props.$color]};
 `;
 
@@ -38,12 +38,14 @@ const Box = styled.div`
   margin-bottom: 2rem;
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled.div<{ $margin?: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
   margin-top: 0.5rem;
+  border-radius: 0.63rem;
+  margin-bottom: ${props => (props?.$margin ? '3.25rem' : '0')};
 `;
 
 const Target = styled.div`
@@ -58,13 +60,14 @@ const Period = styled.span`
 `;
 
 const SecondPage = (pageProps: pageProps) => {
-  const { data, setData, next, signUp } = pageProps;
+  const { data, setData, next, onClick, targetCalories } = pageProps;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [period, setPeriod] = useState<number>(0);
+
   const [BMR, setBMR] = useState<number>(0);
   const [TDEE, setTDEE] = useState<number>(0);
-  const [period, setPeriod] = useState<number>(0);
 
   const calculateTargetCalories = () => {
     let valueBMR;
@@ -117,15 +120,17 @@ const SecondPage = (pageProps: pageProps) => {
     }
     setTDEE(Math.round(valueTDEE));
 
-    setData(prevData => ({
-      ...prevData,
-      // 목표 칼로리를 500kcal 적자로 설명
-      targetCalories: Math.round(valueTDEE - 500),
-    }));
+    // 저장되어 있는 목표 칼로리가 있으면 기존 값으로 유지해야 함
+    if (data.targetCalories !== targetCalories)
+      setData(prevData => ({
+        ...prevData,
+        // 목표 칼로리를 500kcal 적자로 설명
+        targetCalories: Math.round(valueTDEE - 500),
+      }));
   };
 
-  const calculatePerios = (targetCalories: number) => {
-    let gap = data.nowWeight - data.targetWeight;
+  const calculatePeriods = (targetCalories: number) => {
+    let gap = Math.round((data.nowWeight - data.targetWeight) * 10) / 10;
     // 활동 대사량보다 +-500kcal일 경우, 주간 체중 변화가 +-0.5kg인 것을 고려하예 기간 계산
     setPeriod(Math.round((gap / ((TDEE - targetCalories) / 1000)) * 10) / 10);
   };
@@ -135,8 +140,8 @@ const SecondPage = (pageProps: pageProps) => {
   }, [next]);
 
   useEffect(() => {
-    calculatePerios(data.targetCalories);
-  }, [data.targetCalories]);
+    calculatePeriods(data.targetCalories);
+  }, [TDEE, data.targetCalories]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -174,9 +179,7 @@ const SecondPage = (pageProps: pageProps) => {
         <Box>
           <div>내 목표 섭취 칼로리</div>
           <Column $color="black">
-            <div style={{ fontSize: '1.88rem' }}>
-              {data.targetCalories} kcal
-            </div>
+            <div style={{ fontSize: '2rem' }}>{data.targetCalories} kcal</div>
             <Button
               buttonName="목표 수정"
               onClick={openModal}
@@ -191,7 +194,7 @@ const SecondPage = (pageProps: pageProps) => {
               title="목표 칼로리 입력"
               signup={true}
             >
-              <ModalContent>
+              <ModalContent $margin={targetCalories}>
                 <Input
                   unit="kcal"
                   onChange={changeTargetCalories}
@@ -204,7 +207,7 @@ const SecondPage = (pageProps: pageProps) => {
                 <Button
                   buttonName="입력완료"
                   onClick={closeModal}
-                  color="black"
+                  color="purple"
                 />
               </ModalContent>
             </BottomSheet>
@@ -214,7 +217,11 @@ const SecondPage = (pageProps: pageProps) => {
             <Period>{period}주</Period> 걸려요!
           </Target>
         </Box>
-        <Button buttonName="UPDOWN 시작하기" onClick={signUp} color="black" />
+        <Button
+          buttonName={targetCalories ? '수정하기' : 'UPDOWN 시작하기'}
+          onClick={onClick}
+          color="purple"
+        />
       </SecondPageWrapper>
     </>
   );

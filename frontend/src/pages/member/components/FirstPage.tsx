@@ -307,7 +307,7 @@ const FirstPage = (pageProps: pageProps) => {
           </Radio>
         </RadioButton>
       </RadioWrapper>
-      <Button buttonName="등록하기" onClick={goNext} color="black" />
+      <Button buttonName="등록하기" onClick={goNext} color="purple" />
     </>
   );
 };

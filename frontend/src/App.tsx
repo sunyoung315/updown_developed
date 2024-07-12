@@ -3,6 +3,7 @@ import {
   LoginPage,
   LoadingPage,
   SignUpPage,
+  MyEditPage,
   MyPage,
   DietDetailPage,
   DietEditPage,
@@ -65,6 +66,7 @@ function App() {
         <Route path="/main" element={<MainPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/load" element={<LoadingPage />} />
+        <Route path="/mypage/edit" element={<MyEditPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/diet/detail/:foodId" element={<DietDetailPage />} />
         <Route path="/diet/edit/:foodId" element={<DietEditPage />} />

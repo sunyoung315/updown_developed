@@ -1,20 +1,49 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken } from '@/api/auth';
+import { ImgIcon } from '@/assets/icons';
 import { Header, Button } from '@/components';
 import { tokenStore } from '@/store';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import { Member } from '@/types/type';
 import TargetIcon from '@/assets/icons/target-icon.svg';
+import Running from '@/assets/images/running.png';
 import styled from 'styled-components';
 
 const MyPageWrapper = styled.div`
   padding: 0 1.8rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  margin: 1rem 0;
+`;
+
+const ImageBox = styled.div`
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0.5rem;
+  background-color: ${props => props.theme.pink};
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+`;
+
+const ImageIcon = styled.button`
+  position: absolute;
+  bottom: -11%;
+  right: -13%;
+`;
+
+const Image = styled.img`
+  width: 90%;
+  margin: 5%;
+`;
+
+const Hr = styled.div`
+  background-color: ${props => props.theme.lightgrey};
+  height: 0.1rem;
+  border: none;
+  margin: 1.5rem 0 1rem;
 `;
 
 const Box = styled.div`
@@ -94,16 +123,34 @@ const MyPage = () => {
     }
   };
 
+  const goMyEditPage = () => {
+    navigator('/mypage/edit', { state: { myInfo } });
+  };
+
   return (
     <>
-      <Header iconName="close" onClick={goBack} mypage={true} logout={logout} />
+      <Header
+        iconName="close"
+        onClick={goBack}
+        mypage={true}
+        logout={logout}
+        headerName="마이페이지"
+      />
       <MyPageWrapper>
+        <ImageBox>
+          <Image src={Running} alt="themeImg" />
+          <ImageIcon>
+            <ImgIcon fillColor="darkpink" />
+          </ImageIcon>
+        </ImageBox>
+        <Hr />
         <div>
           <Button
             buttonName="나의 목표"
             color="transparent"
             textColor="black"
             size={6}
+            onClick={goMyEditPage}
           />
           <Box>
             <Content>

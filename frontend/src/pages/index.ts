@@ -1,4 +1,10 @@
-import { LoadingPage, LoginPage, MyPage, SignUpPage } from './member';
+import {
+  LoadingPage,
+  LoginPage,
+  MyEditPage,
+  MyPage,
+  SignUpPage,
+} from './member';
 import MainPage from './main/MainPage';
 import {
   DietDetailPage,
@@ -12,6 +18,7 @@ export {
   LoadingPage,
   LoginPage,
   MainPage,
+  MyEditPage,
   MyPage,
   SignUpPage,
   DietDetailPage,

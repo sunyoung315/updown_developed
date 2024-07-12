@@ -7,6 +7,7 @@ import StepFourIcon from './StepFourIcon';
 import StepFiveIcon from './StepFiveIcon';
 import RightArrow from './RightArrow';
 import LeftArrow from './LeftArrow';
+import ImgIcon from './ImgIcon';
 
 export {
   MaleIcon,
@@ -18,4 +19,5 @@ export {
   StepFiveIcon,
   RightArrow,
   LeftArrow,
+  ImgIcon,
 };

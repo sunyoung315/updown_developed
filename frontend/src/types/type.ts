@@ -237,5 +237,6 @@ export type pageProps = {
   setData: React.Dispatch<React.SetStateAction<Member>>;
   next?: boolean;
   setNext?: React.Dispatch<React.SetStateAction<boolean>>;
-  signUp?: () => Promise<void>;
+  onClick?: () => Promise<void>;
+  targetCalories?: number;
 };
