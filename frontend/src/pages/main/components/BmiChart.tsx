@@ -8,6 +8,7 @@ import {
   ChartData,
   Plugin,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import theme from '@/styles/theme';
 
 const BmiChart = ({ bmi }: { bmi: number }) => {
@@ -31,6 +32,21 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
       {
         label: 'BMI',
         data: [4.5, 4.5, 2, 5, 5],
+        datalabels: {
+          formatter: (value, context) => {
+            const labels = context.chart.data.labels;
+            if (labels && Array.isArray(labels)) {
+              return labels[context.dataIndex];
+            }
+            return null;
+          },
+          align: 'center',
+          anchor: 'center',
+          color: theme.black,
+          font: {
+            family: 'omyudapretty',
+          },
+        },
         backgroundColor: [
           theme.blue,
           theme.darkgreen,
@@ -125,15 +141,22 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
       const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
 
       const bmiValue = dataTotal * circumferenceValue + 14;
-
       ctx.font = '18px omyudapretty';
       ctx.fillStyle = theme.black;
       ctx.textAlign = 'center';
-      ctx.fillText(`BMI : ${bmiValue.toFixed(1)}`, x, y + 30);
+      ctx.fillText(
+        `BMI : ${bmiValue === 0 || bmiValue === 35 ? bmi.toFixed(1) : bmiValue.toFixed(1)}`,
+        x,
+        y + 30,
+      );
     },
   };
 
-  const plugins: Plugin<'doughnut'>[] = [gaugeNeedle, gaugeFlowMeter];
+  const plugins: Plugin<'doughnut'>[] = [
+    gaugeNeedle,
+    gaugeFlowMeter,
+    ChartDataLabels as unknown as Plugin<'doughnut'>,
+  ];
 
   return <Doughnut data={data} options={options} plugins={plugins} />;
 };

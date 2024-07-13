@@ -5,8 +5,13 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  ChartOptions,
+  ChartData,
+  Plugin,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import theme from '@/styles/theme';
+import { endianness } from 'os';
 
 const RecordChart = ({
   xInfo,
@@ -17,7 +22,7 @@ const RecordChart = ({
 }) => {
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-  const data = {
+  const data: ChartData<'line'> = {
     labels: xInfo,
     datasets: [
       {
@@ -26,11 +31,20 @@ const RecordChart = ({
         borderColor: theme['darkgreen'],
         borderWidth: 1.5,
         data: yInfo,
+        datalabels: {
+          font: {
+            family: 'omyudapretty',
+            size: 13,
+          },
+          color: theme.black,
+          align: 'end',
+          anchor: 'end',
+        },
       },
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: false,
     plugins: {
       legend: {
@@ -41,7 +55,6 @@ const RecordChart = ({
       x: {
         grid: {
           color: 'transparent',
-          width: 0.5,
         },
         border: {
           display: true,
@@ -58,20 +71,15 @@ const RecordChart = ({
       },
       y: {
         grid: {
-          color: 'transparent',
-          width: 0.5,
+          color: ctx =>
+            ctx.index === 0 ? theme['darkgreen'] : theme['lightgreen'],
+          drawOnChartArea: true,
         },
         border: {
-          display: true,
-          color: theme['darkgreen'],
-          width: 1.5,
+          display: false,
         },
         ticks: {
-          color: theme['black'],
-          font: {
-            size: 12.5,
-            family: 'omyudapretty',
-          },
+          display: false,
         },
         afterDataLimits: (scale: { max: number; min: number }) => {
           scale.max = scale.max + 2;
@@ -81,11 +89,14 @@ const RecordChart = ({
     },
   };
 
+  const plugins: Plugin<'line'>[] = [ChartDataLabels];
+
   return (
     <Line
       data={data}
       options={options}
       style={{ width: '18rem', height: '13rem' }}
+      plugins={plugins}
     />
   );
 };
