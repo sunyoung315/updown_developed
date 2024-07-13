@@ -29,12 +29,6 @@ public class DietServiceImpl implements DietService {
     private final FoodRepository foodRepository;
     private final S3Uploader s3Uploader;
 
-    @Override
-    public DietSearchRes searchFood(String category, Member member, String searchStr) {
-        DietSearchRes dietSearchRes = DietSearchRes.builder().build();
-        return dietSearchRes;
-    }
-
     /**
      * 음식 등록
      *
@@ -328,6 +322,16 @@ public class DietServiceImpl implements DietService {
         } else {
             throw new ImgNotFoundException();
         }
+    }
+
+    /**
+     * 음식 검색
+     * @param searchStr
+     * @return
+     */
+    @Override
+    public DietSearchRes findFood(String searchStr) {
+        return null;
     }
 
 

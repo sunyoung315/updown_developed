@@ -138,14 +138,13 @@ public class DietController {
 
     /**
      * 음식 검색
-     * @param category
      * @param member
      * @param searchStr
      * @return
      */
-    @GetMapping("/search/{category}")
-    public ResponseEntity<?> searchFood(@PathVariable("category") String category, @AuthenticationPrincipal Member member, @RequestBody String searchStr){
-        DietSearchRes dietSearchRes = dietService.searchFood(category, member, searchStr);
+    @GetMapping("/search")
+    public ResponseEntity<?> findFood(@AuthenticationPrincipal Member member, @RequestParam String searchStr){
+        DietSearchRes dietSearchRes = dietService.findFood(searchStr);
         return ResponseEntity.ok().body(dietSearchRes);
     }
 
