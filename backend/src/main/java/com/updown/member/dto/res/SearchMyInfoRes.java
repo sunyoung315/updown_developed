@@ -15,6 +15,7 @@ public class SearchMyInfoRes {
     private float height;
     private  float nowWeight;
     private float targetWeight;
-    private Integer targetCalories;
     private MemberActivity activeLevel;
+    private Integer targetCalories;
+    private float recentWeight;
 }

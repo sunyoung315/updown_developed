@@ -52,8 +52,9 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
                 .height(member.getHeight())
                 .nowWeight(member.getNowWeight())
                 .targetWeight(member.getTargetWeight())
-                .targetCalories(member.getTargetCalories())
                 .activeLevel(member.getActiveLevel())
+                .targetCalories(member.getTargetCalories())
+//                .recentWeight()
                 .build();
 
         return searchMyInfoRes;
