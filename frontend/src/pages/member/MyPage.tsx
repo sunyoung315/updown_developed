@@ -106,7 +106,7 @@ const MyPage = () => {
 
   const navigator = useNavigate();
   const goBack = () => {
-    navigator(-1);
+    navigator('/main');
   };
 
   const logout = async () => {
