@@ -7,10 +7,13 @@ import com.updown.auth.redis.RedisPrefix;
 import com.updown.auth.redis.RedisService;
 import com.updown.member.entity.Member;
 import com.updown.member.repository.MemberRepository;
+import com.updown.weight.entity.Weight;
+import com.updown.weight.repository.WeightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
     private final MemberRepository memberRepository;
+    private final WeightRepository weightRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
 
@@ -81,7 +85,14 @@ public class AuthServiceImpl implements AuthService{
                 .activeLevel(signUpReq.getActiveLevel())
                 .build();
 
+        Weight weight = Weight.builder()
+                .member(member)
+                .weight(member.getNowWeight())
+                .regDate(LocalDate.now())
+                .build();
+
         memberRepository.save(member);
+        weightRepository.save(weight);
 
         String key = RedisPrefix.REFRESH_TOKEN.prefix() + email;
         // 레디스에 리프레시 토큰 저장
