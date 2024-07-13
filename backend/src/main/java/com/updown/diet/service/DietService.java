@@ -16,15 +16,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface DietService {
-    DietSearchRes searchFood(String category, Member member, String searchStr);
-
     Integer insertDiet(DietCategory category, Member member, InsertFoodReq insertFoodReq);
 
     void updateDiet(Member member, Integer foodId, Food food);
 
     List<DietDayRes> searchDayDiet(Member member, LocalDate regDate);
 
-    DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId);
+    DietCategoryRes searchCategoryDiet(DietCategory category, Member member, LocalDate regDate);
 
     FoodDetails searchFood(Member member, Integer foodId);
 
@@ -35,4 +33,6 @@ public interface DietService {
     void uploadDietImg(DietCategory category, Member member, UploadDietImgReq uploadDietImgReq);
 
     void deleteDietImg(Integer dietId, Member member);
+
+    DietSearchRes findFood(String searchStr);
 }

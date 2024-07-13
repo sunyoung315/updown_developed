@@ -29,11 +29,65 @@ public class DietServiceImpl implements DietService {
     private final FoodRepository foodRepository;
     private final S3Uploader s3Uploader;
 
+
+    /**
+     * 식사별 식단 리스트 조회
+     *
+     * @param member
+     * @param regDate
+     * @return
+     */
     @Override
-    public DietSearchRes searchFood(String category, Member member, String searchStr) {
-        DietSearchRes dietSearchRes = DietSearchRes.builder().build();
-        return dietSearchRes;
+    public DietCategoryRes searchCategoryDiet(DietCategory category, Member member, LocalDate regDate) {
+        Diet diet = dietRepository.findByMemberAndRegDateAndCategory(member, regDate, category).orElseThrow(DietNotFoundException::new);
+
+        Integer dietId = diet.getDietId();
+        Nutrition nutrition = null;
+        List<Integer> foodIdList = foodRepository.findByDietId(dietId);
+        List<FoodListRes> foodList = new ArrayList<>();
+
+        if (!foodIdList.isEmpty()) {
+            nutrition = Nutrition.builder()
+                    .totalFoodIntake(diet.getDietTotalIntake())
+                    .totalCalories(diet.getDietTotalCalories())
+                    .totalProtein(foodRepository.findProteinByDiet(dietId))
+                    .totalSugars(foodRepository.findSugarsByDiet(dietId))
+                    .totalDietaryFiber(foodRepository.findDietaryFiberByDiet(dietId))
+                    .totalCholesterol(foodRepository.findCholesterolByDiet(dietId))
+                    .totalPotassium(foodRepository.findPotassiumByDiet(dietId))
+                    .totalFat(foodRepository.findFatByDiet(dietId))
+                    .totalTransFat(foodRepository.findTransFatByDiet(dietId))
+                    .totalSaturatedFat(foodRepository.findSaturatedFatByDiet(dietId))
+                    .totalSodium(foodRepository.findSodiumByDiet(dietId))
+                    .totalCarbohydrate(foodRepository.findCarbohydrateByDiet(dietId))
+                    .build();
+
+            foodIdList = foodRepository.findByDietId(dietId); // foodId가져오기
+
+            foodList = new ArrayList<>();
+
+            for (Integer foodId : foodIdList) {
+                Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
+                FoodListRes foodListRes = FoodListRes.builder()
+                        .foodId(foodId)
+                        .foodName(food.getFoodName())
+                        .brandName(food.getBrandName())
+                        .foodIntake(food.getFoodIntake())
+                        .calories(food.getCalories())
+                        .method(food.getMethod())
+                        .build();
+
+                foodList.add(foodListRes);
+            }
+        }
+
+        return DietCategoryRes.builder()
+                .dietImg(diet.getDietImg())
+                .nutrition(nutrition)
+                .foodList(foodList.isEmpty() ? null : foodList)
+                .build();
     }
+
 
     /**
      * 음식 등록
@@ -152,55 +206,6 @@ public class DietServiceImpl implements DietService {
     }
 
     /**
-     * 식사별 식단 리스트 조회
-     *
-     * @param member
-     * @param dietId
-     * @return
-     */
-    @Override
-    public DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId) {
-        Diet diet = dietRepository.findByMemberAndDietIdAndCategory(member, dietId, category).orElseThrow(DietNotFoundException::new);
-        Nutrition nutrition = Nutrition.builder()
-                .totalFoodIntake(diet.getDietTotalIntake())
-                .totalCalories(diet.getDietTotalCalories())
-                .totalProtein(foodRepository.findProteinByDiet(dietId))
-                .totalSugars(foodRepository.findSugarsByDiet(dietId))
-                .totalDietaryFiber(foodRepository.findDietaryFiberByDiet(dietId))
-                .totalCholesterol(foodRepository.findCholesterolByDiet(dietId))
-                .totalPotassium(foodRepository.findPotassiumByDiet(dietId))
-                .totalFat(foodRepository.findFatByDiet(dietId))
-                .totalTransFat(foodRepository.findTransFatByDiet(dietId))
-                .totalSaturatedFat(foodRepository.findSaturatedFatByDiet(dietId))
-                .totalSodium(foodRepository.findSodiumByDiet(dietId))
-                .totalCarbohydrate(foodRepository.findCarbohydrateByDiet(dietId))
-                .build();
-
-        List<Integer> foodIdList = foodRepository.findByDietId(dietId); // foodId가져오기
-        List<FoodListRes> foodList = new ArrayList<>();
-
-        for (Integer foodId : foodIdList) {
-            Food food = foodRepository.findByFoodId(foodId).orElseThrow(FoodNotFoundException::new);
-            FoodListRes foodListRes = FoodListRes.builder()
-                    .foodId(foodId)
-                    .foodName(food.getFoodName())
-                    .brandName(food.getBrandName())
-                    .foodIntake(food.getFoodIntake())
-                    .calories(food.getCalories())
-                    .method(food.getMethod())
-                    .build();
-
-            foodList.add(foodListRes);
-        }
-
-        return DietCategoryRes.builder()
-                .dietImg(diet.getDietImg())
-                .nutrition(nutrition)
-                .foodList(foodList)
-                .build();
-    }
-
-    /**
      * 식단 상세 조회
      *
      * @param member
@@ -279,6 +284,7 @@ public class DietServiceImpl implements DietService {
 
     /**
      * 식단 이미지 업로드
+     *
      * @param category
      * @param member
      * @param uploadDietImgReq
@@ -315,6 +321,7 @@ public class DietServiceImpl implements DietService {
 
     /**
      * 식단 이미지 삭제
+     *
      * @param dietId
      * @param member
      */
@@ -328,6 +335,17 @@ public class DietServiceImpl implements DietService {
         } else {
             throw new ImgNotFoundException();
         }
+    }
+
+    /**
+     * 음식 검색
+     *
+     * @param searchStr
+     * @return
+     */
+    @Override
+    public DietSearchRes findFood(String searchStr) {
+        return null;
     }
 
 

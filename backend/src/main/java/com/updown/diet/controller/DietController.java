@@ -56,13 +56,13 @@ public class DietController {
     /**
      * 식사별 식단 리스트 조회
      * @param member
-     * @param dietId
+     * @param regDate
      * @return
      */
     @Transactional
     @GetMapping("/{category}")
-    public ResponseEntity<?> searchCategoryDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestParam("dietId") Integer dietId){
-        DietCategoryRes dietCategoryRes = dietService.searchCategoryDiet(category, member, dietId);
+    public ResponseEntity<?> searchCategoryDiet(@PathVariable("category") DietCategory category, @AuthenticationPrincipal Member member, @RequestParam("regDate") LocalDate regDate){
+        DietCategoryRes dietCategoryRes = dietService.searchCategoryDiet(category, member, regDate);
         return ResponseEntity.ok().body(dietCategoryRes);
     }
 
@@ -129,6 +129,12 @@ public class DietController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 식단 사진 삭제
+     * @param dietId
+     * @param member
+     * @return
+     */
     @Transactional
     @DeleteMapping("/img/{dietId}")
     public ResponseEntity<?> deleteDietImage(@PathVariable Integer dietId, @AuthenticationPrincipal Member member) {
@@ -138,14 +144,13 @@ public class DietController {
 
     /**
      * 음식 검색
-     * @param category
      * @param member
      * @param searchStr
      * @return
      */
-    @GetMapping("/search/{category}")
-    public ResponseEntity<?> searchFood(@PathVariable("category") String category, @AuthenticationPrincipal Member member, @RequestBody String searchStr){
-        DietSearchRes dietSearchRes = dietService.searchFood(category, member, searchStr);
+    @GetMapping("/search")
+    public ResponseEntity<?> findFood(@AuthenticationPrincipal Member member, @RequestParam String searchStr){
+        DietSearchRes dietSearchRes = dietService.findFood(searchStr);
         return ResponseEntity.ok().body(dietSearchRes);
     }
 
