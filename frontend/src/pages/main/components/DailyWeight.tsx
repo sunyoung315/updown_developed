@@ -61,7 +61,7 @@ const LineChartWrapper = styled.div`
   width: 19rem;
   display: flex;
   justify-content: center;
-  margin: 0.5rem 0 2rem;
+  margin: 1rem 0 1.5rem;
 `;
 
 const DailyWeight = ({ regDate }: { regDate: string }) => {
