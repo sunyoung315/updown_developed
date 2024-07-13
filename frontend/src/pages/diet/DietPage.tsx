@@ -114,6 +114,7 @@ const DietPage = () => {
     | 'LUNCH'
     | 'DINNER'
     | 'SNACK';
+  const regDate = localStorage.getItem('date');
 
   const [dietImg, setDietImg] = useState<string>();
   const [nutrition, setNutrition] = useState<nutritionProps>();
@@ -124,7 +125,7 @@ const DietPage = () => {
   const getDietInfo = async () => {
     try {
       const response = await useAxios.get(`/diet/${category}`, {
-        params: { dietId },
+        params: { regDate },
       });
 
       // 아직 등록되지 않은 식단인 경우
@@ -177,14 +178,21 @@ const DietPage = () => {
       // 백엔드에서 MultipartFile로 파일을 받기 위해서는 FormData로 감싸서 보내기
       // FormData객체는 key-value 쌍으로 저장
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('dietImg', file);
+
+      const regDate = localStorage.getItem('date');
+      if (regDate) formData.append('regDate', regDate);
 
       try {
-        const response = await useAxios.post(`/diet/img/${dietId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
+        const response = await useAxios.post(
+          `/diet/img/${category}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
           },
-        });
+        );
 
         if (response.status === httpStatusCode.OK) {
           console.log('식단 사진 등록 성공');
