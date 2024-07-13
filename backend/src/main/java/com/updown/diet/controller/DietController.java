@@ -56,7 +56,7 @@ public class DietController {
     /**
      * 식사별 식단 리스트 조회
      * @param member
-     * @param dietId
+     * @param regDate
      * @return
      */
     @Transactional
