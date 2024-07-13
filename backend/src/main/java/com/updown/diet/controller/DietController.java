@@ -160,14 +160,7 @@ public class DietController {
         List<FoodInfo> foodInfos = foodInfoService.searchFoodInfo(searchStr);
 
         if(!foodInfos.isEmpty()){
-
-            List<String> foodNameList = new ArrayList<>();
-
-            for(FoodInfo foodInfo : foodInfos){
-                foodNameList.add(foodInfo.getFoodInfoName());
-            }
-
-            return ResponseEntity.ok(foodNameList);
+            return ResponseEntity.ok(foodInfos);
         }
         return ResponseEntity.noContent().build();
     }
