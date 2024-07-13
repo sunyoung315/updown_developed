@@ -5,6 +5,7 @@ import com.updown.member.dto.res.SearchMyInfoRes;
 import com.updown.member.entity.Member;
 import com.updown.member.exception.NotUpdateMyInfoException;
 import com.updown.member.repository.MemberRepository;
+import com.updown.weight.repository.WeightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberServiceImpl extends DefaultOAuth2UserService implements MemberService {
     private final MemberRepository memberRepository;
+    private final WeightRepository weightRepository;
 
     @Override
     public void updateMyInfo(Member member, MyInfo myInfo) {
@@ -54,7 +56,7 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
                 .targetWeight(member.getTargetWeight())
                 .activeLevel(member.getActiveLevel())
                 .targetCalories(member.getTargetCalories())
-//                .recentWeight()
+                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
                 .build();
 
         return searchMyInfoRes;
