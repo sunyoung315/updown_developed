@@ -47,7 +47,7 @@ const Modal = styled.div<{ $nomodal?: boolean }>`
 
 const ModalTitle = styled.div`
   padding: 0 2rem;
-  font-size: 1.63rem;
+  font-size: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

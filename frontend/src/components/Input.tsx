@@ -18,9 +18,9 @@ const InputName = styled.span`
 const InputLabel = styled.label<{ $isbig?: boolean; $signup?: boolean }>`
   background-color: ${props => props.theme.lightgrey};
   width: ${props =>
-    !props?.$isbig ? '100%' : props?.$signup ? '12rem' : '15rem'};
+    !props?.$isbig ? '100%' : props?.$signup ? '12rem' : '10.2rem'};
   border-radius: 0.5rem;
-  height: ${props => (props?.$isbig ? '5.5rem' : '2.94rem')};
+  height: ${props => (props?.$isbig ? '5rem' : '2.94rem')};
   display: flex;
   align-items: center;
   padding: ${props => (props?.$isbig ? '0 1.3rem' : '0 0.7rem')};
@@ -33,7 +33,7 @@ const InputBox = styled.input<{
 }>`
   width: 100%;
   font-size: ${props =>
-    !props?.$isbig ? '1.25rem' : props?.$signup ? '2.5rem' : '3.75rem'};
+    !props?.$isbig ? '1.25rem' : props?.$signup ? '2.5rem' : '2.8rem'};
   color: ${props =>
     theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
 `;
@@ -44,7 +44,7 @@ const UnitWrapper = styled.span<{
   $signup?: boolean;
 }>`
   font-size: ${props =>
-    !props?.$isbig ? '1.25rem' : props.$signup ? '2rem' : '2.8rem'};
+    !props?.$isbig ? '1.25rem' : props.$signup ? '2rem' : '2.3rem'};
   padding-left: 0.3rem;
   color: ${props =>
     theme[props.$inputnamecolor ? props.$inputnamecolor : 'black']};
