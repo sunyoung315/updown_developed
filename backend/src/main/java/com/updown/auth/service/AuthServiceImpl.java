@@ -13,6 +13,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,7 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
+    @Transactional
     @Override
     public void signUp(SignUpReq signUpReq, String refreshToken) {
         String email = jwtTokenProvider.getEmailFromToken(refreshToken);
@@ -104,6 +106,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    @Transactional
     public void logOut(Member member, HttpServletRequest request, HttpServletResponse response) {
         System.out.println(member.getGender());
         // 레디스에서 삭제
@@ -126,5 +129,15 @@ public class AuthServiceImpl implements AuthService{
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(0);
         response.addCookie(refreshTokenCookie);
+    }
+
+    /**
+     * 회원탈퇴
+     * @param member
+     */
+    @Transactional
+    @Override
+    public void deleteMember(Member member) {
+        memberRepository.delete(member);
     }
 }

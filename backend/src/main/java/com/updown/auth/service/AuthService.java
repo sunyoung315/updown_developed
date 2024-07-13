@@ -16,4 +16,6 @@ public interface AuthService {
     void signUp(SignUpReq signUpReq, String refreshToken);
 
     void logOut(Member member, HttpServletRequest request, HttpServletResponse response);
+
+    void deleteMember(Member member);
 }
