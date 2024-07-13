@@ -1,8 +1,6 @@
 import theme from '@/styles/theme';
 
 const MaleIcon = ({ fillColor }: { fillColor: keyof typeof theme }) => {
-  const color = theme[fillColor];
-
   return (
     <svg
       width="112"
@@ -13,7 +11,7 @@ const MaleIcon = ({ fillColor }: { fillColor: keyof typeof theme }) => {
     >
       <path
         d="M111.918 53.5677C113.656 85.3841 87.5879 106.013 57.0016 108.81C17.031 110.907 0 95.8731 0 53.5677C0 2.06862 15.5802 -2.21918 35.4364 0.689326C49.8755 2.80434 64.6257 3.3633 78.7153 7.1639C100.423 13.0193 110.569 28.869 111.918 53.5677Z"
-        fill={color}
+        fill={fillColor}
       />
       <g clipPath="url(#clip0_38_273)">
         <path
