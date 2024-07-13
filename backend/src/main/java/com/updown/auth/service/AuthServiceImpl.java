@@ -10,7 +10,9 @@ import com.updown.member.repository.MemberRepository;
 import com.updown.weight.entity.Weight;
 import com.updown.weight.repository.WeightRepository;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -102,13 +104,19 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void logOut(Member member, HttpServletResponse response) {
+    public void logOut(Member member, HttpServletRequest request, HttpServletResponse response) {
         System.out.println(member.getGender());
         // 레디스에서 삭제
         String key = RedisPrefix.REFRESH_TOKEN.prefix() + member.getEmail();
         redisService.deleteValues(key);
         // 쿠키 삭제
         deleteRefreshTokenCookie(response);
+
+        // 세션 무효화
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
     }
 
     public void deleteRefreshTokenCookie(HttpServletResponse response) {

@@ -7,6 +7,7 @@ import com.updown.auth.redis.RedisPrefix;
 import com.updown.auth.redis.RedisService;
 import com.updown.auth.service.AuthService;
 import com.updown.member.entity.Member;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -107,8 +108,8 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> logOut(@AuthenticationPrincipal Member member, HttpServletResponse response){
-        authService.logOut(member, response);
+    public ResponseEntity<?> logOut(@AuthenticationPrincipal Member member, HttpServletRequest request, HttpServletResponse response){
+        authService.logOut(member, request, response);
         return ResponseEntity.ok().build();
     }
 
