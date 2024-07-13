@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
-import useAxios from '@/util/http-commons';
+// import useAxios from '@/util/http-commons';
 import { Button, Input } from '@/components';
 import BottomSheet from '@/components/BottomSheet';
-import { Chart, Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-} from 'chart.js';
-import theme from '@/styles/theme';
 import styled from 'styled-components';
+import { BmiChart, RecordChart } from '../components';
 
 const DailyWeightWrapper = styled.div`
   width: 100%;
@@ -22,11 +14,15 @@ const DailyWeightWrapper = styled.div`
 const Title = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
   padding-left: 1.8rem;
   padding-right: 1.8rem;
   padding-top: 1.6rem;
   padding-bottom: 1.6rem;
+`;
+
+const TitleButton = styled.button<{ $color: boolean }>`
+  color: ${props => (props.$color ? props.theme.black : props.theme.darkgreen)};
   font-size: 1.25rem;
 `;
 
@@ -36,7 +32,6 @@ const Content = styled.div`
   align-items: center;
   font-size: 1.1rem;
   gap: 0.5rem;
-  margin-top: 0.6rem;
 `;
 
 const Weight = styled.div`
@@ -53,18 +48,24 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
-  margin-top: 3rem;
+  gap: 2rem;
 `;
 
-const ChartWrapper = styled.div`
+const GaugeChartWrapper = styled.div`
   width: 19rem;
-  height: 13rem;
-  background-color: ${props => props.theme.lightgreen};
-  margin: 1rem;
+  margin: 1.2rem 0 2rem;
+  padding: 0.5rem;
+`;
+
+const LineChartWrapper = styled.div`
+  width: 19rem;
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 2rem;
 `;
 
 const DailyWeight = ({ regDate }: { regDate: string }) => {
+  const height = 167.5;
   const weightList = [
     { weight: 51.6, regDate: '2024-07-08' },
     { weight: 52.4, regDate: '2024-07-09' },
@@ -76,17 +77,25 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   ];
 
   // 오늘 날짜의 정보만 추출
-  const todayInfo = weightList.find(w => w.regDate === regDate);
+  const todayInfo = weightList.find(w => w.regDate === regDate) || {
+    weight: 0,
+    regDate: '',
+  };
+
+  // bmi 지수 계산
+  const bmi = todayInfo?.weight / Math.pow(height / 100, 2);
 
   // chart에 들어갈 정보
   const xInfo = weightList.map(w => {
     const [yyyy, mm, dd] = w.regDate.split('-');
-    return [`${yyyy}.`, `${mm}.${dd}`];
+    return [`${mm}/${dd}`];
   });
+
   const yInfo = weightList.map(w => w.weight);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [weight, setWeight] = useState(todayInfo?.weight || 0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isRecord, setIsRecord] = useState<boolean>(false);
+  const [weight, setWeight] = useState<number>(todayInfo?.weight || 0);
 
   useEffect(() => {}, [regDate, weight]);
 
@@ -98,87 +107,43 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
     setIsOpen(false);
   };
 
+  const changeToRecordChart = () => {
+    setIsRecord(true);
+  };
+
+  const changeToBmiChart = () => {
+    setIsRecord(false);
+  };
+
   const registWeight = () => {
     console.log('몸무게 입력');
   };
 
-  ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
-
-  const data = {
-    labels: xInfo,
-    datasets: [
-      {
-        pointBackgroundColor: theme['darkgreen'],
-        pointBorderWidth: 1,
-        borderColor: theme['darkgreen'],
-        borderWidth: 1.5,
-        data: yInfo,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: false,
-    scales: {
-      x: {
-        grid: {
-          color: theme['green'],
-          width: 0.5,
-        },
-        border: {
-          display: true,
-          color: theme['darkgreen'],
-          width: 1.5,
-        },
-        ticks: {
-          color: theme['black'],
-          font: {
-            size: 9.5,
-            family: 'omyudapretty',
-          },
-        },
-      },
-      y: {
-        grid: {
-          color: theme['green'],
-          width: 0.5,
-        },
-        border: {
-          display: true,
-          color: theme['darkgreen'],
-          width: 1.5,
-        },
-        ticks: {
-          color: theme['black'],
-          font: {
-            size: 10,
-            family: 'omyudapretty',
-          },
-        },
-        afterDataLimits: (scale: { max: number; min: number }) => {
-          scale.max = scale.max + 2;
-          scale.min = scale.min - 2;
-        },
-      },
-    },
-  };
-
   return (
     <DailyWeightWrapper>
-      <Title>몸무게</Title>
+      <Title>
+        <TitleButton onClick={changeToBmiChart} $color={!isRecord}>
+          몸무게
+        </TitleButton>
+        <TitleButton onClick={changeToRecordChart} $color={isRecord}>
+          기록
+        </TitleButton>
+      </Title>
       <Content>
         <div>오늘 나의 몸무게는?</div>
         <Weight>
           {todayInfo?.weight || 0}
           <Unit> kg</Unit>
         </Weight>
-        <ChartWrapper>
-          <Line
-            data={data}
-            options={options}
-            style={{ height: '13rem', width: '19rem' }}
-          />
-        </ChartWrapper>
+        {!isRecord ? (
+          <GaugeChartWrapper>
+            <BmiChart bmi={bmi} />
+          </GaugeChartWrapper>
+        ) : (
+          <LineChartWrapper>
+            <RecordChart xInfo={xInfo} yInfo={yInfo} />
+          </LineChartWrapper>
+        )}
         <Button
           buttonName="기록하기"
           onClick={openModal}
