@@ -44,22 +44,11 @@ export type foodInfo = {
   method?: boolean;
 };
 
-export type exerciseInfo = {
-  exerciseId: number;
-  exerciseName: string;
-  exerciseTime: number;
-  exerciseBurned: number;
-  exerciseCount?: number;
-  exerciseWeight?: number;
-  exerciseDistance?: number;
-  method?: boolean;
-};
-
 type commonProps = {
   type: 'diet' | 'exercise';
-  setIsDelted: React.Dispatch<React.SetStateAction<boolean>>;
-  dietId?: number;
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>;
   category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+  dietId?: number;
 };
 
 type dietCommonProps = commonProps & {
@@ -69,7 +58,7 @@ type dietCommonProps = commonProps & {
 
 type exerciseCommonProps = commonProps & {
   type: 'exercise';
-  info: exerciseInfo;
+  info: Exercise;
 };
 
 export type boxProps = dietCommonProps | exerciseCommonProps;
@@ -239,4 +228,28 @@ export type pageProps = {
   setNext?: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => Promise<void>;
   targetCalories?: number;
+};
+
+export type ExerciseInfo = {
+  exerciseRecordId?: number;
+  totalTime?: number;
+  totalCaloriesBurned?: number;
+  exerciseImg?: string;
+};
+
+export type Exercise = {
+  exerciseId?: number;
+  exerciseName?: string;
+  exerciseTime?: number;
+  caloriesBurned?: number;
+  method?: boolean;
+  setList?: ExerciseSet[];
+};
+
+export type ExerciseSet = {
+  exerciseSetId?: number;
+  setNum?: number;
+  exerciseCount?: number;
+  exerciseWeight?: number;
+  exerciseDistance?: number;
 };

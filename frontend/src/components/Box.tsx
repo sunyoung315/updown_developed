@@ -1,9 +1,10 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@/components';
 import { boxProps } from '@/types/type';
-import styled from 'styled-components';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
+import styled from 'styled-components';
 
 const BoxWrapper = styled.div`
   width: 100%;
@@ -52,7 +53,7 @@ const Calorie = styled.span`
 `;
 
 const Box = (boxProps: boxProps) => {
-  const { type, info, setIsDelted, dietId, category } = boxProps;
+  const { type, info, setIsDeleted, dietId, category } = boxProps;
 
   const navigator = useNavigate();
   const goFoodDetail = () => {
@@ -74,7 +75,7 @@ const Box = (boxProps: boxProps) => {
         });
         if (response.status === httpStatusCode.OK) {
           console.log('식단 삭제 성공');
-          setIsDelted(true);
+          setIsDeleted(true);
         }
       } catch (err) {
         console.log('식단 삭제 에러:', err);
@@ -83,6 +84,22 @@ const Box = (boxProps: boxProps) => {
       console.log('운동 삭제');
     }
   };
+
+  const totalCount =
+    type === 'exercise'
+      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseCount || 0), 0)
+      : 0;
+  const totalWeight =
+    type === 'exercise'
+      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseWeight || 0), 0)
+      : 0;
+  const totalDistance =
+    type === 'exercise'
+      ? info?.setList?.reduce(
+          (acc, set) => acc + (set?.exerciseDistance || 0),
+          0,
+        )
+      : 0;
 
   return (
     <BoxWrapper onClick={goFoodDetail}>
@@ -95,18 +112,17 @@ const Box = (boxProps: boxProps) => {
           {type === 'diet' ? info.brandName : info.exerciseTime + '분'} &nbsp;
           <SubInfo>
             {type === 'diet' && info.foodIntake ? info.foodIntake + 'g' : ''}
-            {type === 'exercise' &&
-            (info.exerciseWeight || info.exerciseCount || info.exerciseDistance)
-              ? info.exerciseWeight
-                ? info.exerciseWeight + 'kg ' + info.exerciseCount + '회'
-                : info.exerciseCount
-                  ? info.exerciseCount + '회'
-                  : info.exerciseDistance + 'km'
+            {type === 'exercise' && (totalWeight || totalCount || totalDistance)
+              ? totalWeight
+                ? '(' + info?.setList?.length + '세트) 총 ' + totalCount + '회'
+                : totalCount
+                  ? '총 ' + totalCount + '회'
+                  : '총 ' + totalDistance + 'km'
               : ''}
           </SubInfo>
         </MainInfo>
         <Calorie>
-          {type === 'diet' ? info.calories : info.exerciseBurned} Kcal
+          {type === 'diet' ? info.calories : info.caloriesBurned} Kcal
         </Calorie>
       </Infos>
     </BoxWrapper>

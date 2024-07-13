@@ -5,7 +5,6 @@ import {
   MyPage,
   SignUpPage,
 } from './member';
-import MainPage from './main/MainPage';
 import {
   DietDetailPage,
   DietEditPage,
@@ -13,6 +12,8 @@ import {
   DietRegistPage,
   DietSearchPage,
 } from './diet';
+import { ExercisePage } from './exercise';
+import MainPage from './main/MainPage';
 
 export {
   LoadingPage,
@@ -26,4 +27,5 @@ export {
   DietPage,
   DietRegistPage,
   DietSearchPage,
+  ExercisePage,
 };

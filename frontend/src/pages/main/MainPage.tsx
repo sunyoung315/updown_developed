@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Header, DailyRecord, DailyDiet, DailyWeight } from './components';
+import {
+  Header,
+  DailyRecord,
+  DailyDiet,
+  DailyWeight,
+  DailyExercise,
+} from './components';
 import styled from 'styled-components';
 
 const ContentsWrapper = styled.div`
@@ -30,6 +36,7 @@ const MainPage = () => {
         <DailyRecord />
         <DailyDiet regDate={regDate} />
         <DailyWeight regDate={regDate} />
+        <DailyExercise regDate={regDate} />
       </ContentsWrapper>
     </>
   );
