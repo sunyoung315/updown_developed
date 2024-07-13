@@ -107,8 +107,8 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> logOut(@AuthenticationPrincipal Member member){
-        authService.logOut(member);
+    public ResponseEntity<?> logOut(@AuthenticationPrincipal Member member, HttpServletResponse response){
+        authService.logOut(member, response);
         return ResponseEntity.ok().build();
     }
 
