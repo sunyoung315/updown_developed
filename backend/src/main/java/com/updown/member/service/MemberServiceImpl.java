@@ -24,6 +24,7 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
             member.setHeight(myInfo.getHeight());
             member.setNowWeight(myInfo.getNowWeight());
             member.setTargetWeight(myInfo.getTargetWeight());
+            member.setTargetCalories(myInfo.getTargetCalories());
             member.setActiveLevel(myInfo.getActiveLevel());
 
             memberRepository.save(member);
@@ -32,16 +33,16 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
         }
     }
 
-    @Override
-    public void updateCalorie(Member member, Integer targetCalories) {
-        try {
-            member.setTargetCalories(targetCalories);
-
-            memberRepository.save(member);
-        }catch (Exception e){
-            throw new NotUpdateMyInfoException(e);
-        }
-    }
+//    @Override
+//    public void updateCalorie(Member member, Integer targetCalories) {
+//        try {
+//            member.setTargetCalories(targetCalories);
+//
+//            memberRepository.save(member);
+//        }catch (Exception e){
+//            throw new NotUpdateMyInfoException(e);
+//        }
+//    }
 
     @Override
     public SearchMyInfoRes searchMyInfo(Member member) {

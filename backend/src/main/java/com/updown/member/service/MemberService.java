@@ -9,7 +9,7 @@ public interface MemberService {
 
     void updateMyInfo(Member member, MyInfo myInfo);
 
-    void updateCalorie(Member member, Integer targetCalories);
+//    void updateCalorie(Member member, Integer targetCalories);
 
     SearchMyInfoRes searchMyInfo(Member member);
 }
