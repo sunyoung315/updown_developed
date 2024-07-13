@@ -12,10 +12,10 @@ import Running from '@/assets/images/running.png';
 import styled from 'styled-components';
 
 const MyPageWrapper = styled.div`
-  padding: 0 1.8rem;
+  margin: 1rem 1.8rem;
   display: flex;
   flex-direction: column;
-  margin: 1rem 0;
+  position: relative;
 `;
 
 const ImageBox = styled.div`
@@ -77,6 +77,17 @@ const Kilogram = styled.span`
   font-size: 1.4rem;
 `;
 
+const TextButton = styled.button`
+  color: ${props => props.theme.grey};
+  text-decoration: underline;
+  font-size: 1rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  // bottom: 4.5rem;
+  // right: 2.1rem;
+`;
+
 const MyPage = () => {
   const { checkToken } = tokenStore();
 
@@ -91,7 +102,7 @@ const MyPage = () => {
         if (response.status === httpStatusCode.OK) {
           setMyInfo(response.data);
           // 가장 최근 등록한 몸무게와 최초 몸무게의 차
-          setLoseWeight(response.data?.recentWeight - response.data?.nowWeight);
+          setLoseWeight(response.data?.nowWeight - response.data?.recentWeight);
         }
       } catch (err) {
         console.log('마이페이지 조회 에러:', err);
@@ -125,6 +136,20 @@ const MyPage = () => {
 
   const goMyEditPage = () => {
     navigator('/mypage/edit', { state: { myInfo } });
+  };
+
+  // 회원 탈퇴
+  const deleteMember = async () => {
+    try {
+      const response = await useAxios.delete('/auth/delete');
+      if (response.status === httpStatusCode.OK) {
+        console.log('회원탈퇴 성공');
+        setAccessToken('');
+        navigator('/');
+      }
+    } catch (err) {
+      console.log('회원탈퇴 에러:', err);
+    }
   };
 
   return (
@@ -169,6 +194,7 @@ const MyPage = () => {
             </Target>
           </Box>
         </div>
+        <TextButton onClick={deleteMember}>회원탈퇴</TextButton>
       </MyPageWrapper>
     </>
   );
