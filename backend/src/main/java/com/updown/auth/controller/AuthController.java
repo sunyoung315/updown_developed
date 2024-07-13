@@ -66,6 +66,13 @@ public class AuthController {
         authService.signUp(signUpReq, refreshToken);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * accessToken 재발급
+     * @param refreshToken
+     * @param response
+     * @return
+     */
     @GetMapping("/token")
     public ResponseEntity<?> reissueRefreshToken(@CookieValue(value = "refreshToken") String refreshToken, HttpServletResponse response){
         // refreshToken 검증 및 새로운 accessToken 생성 로직
@@ -107,9 +114,27 @@ public class AuthController {
         }
     }
 
+    /**
+     * 로그아웃
+     * @param member
+     * @param request
+     * @param response
+     * @return
+     */
     @GetMapping("/logout")
     public ResponseEntity<?> logOut(@AuthenticationPrincipal Member member, HttpServletRequest request, HttpServletResponse response){
         authService.logOut(member, request, response);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 회원탈퇴
+     * @param member
+     * @return
+     */
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal Member member){
+        authService.deleteMember(member);
         return ResponseEntity.ok().build();
     }
 
