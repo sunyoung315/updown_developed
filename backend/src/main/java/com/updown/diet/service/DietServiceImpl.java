@@ -149,12 +149,13 @@ public class DietServiceImpl implements DietService {
      * 식사별 식단 리스트 조회
      *
      * @param member
-     * @param dietId
+     * @param regDate
      * @return
      */
     @Override
-    public DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId) {
-        Diet diet = dietRepository.findByMemberAndDietIdAndCategory(member, dietId, category).orElseThrow(DietNotFoundException::new);
+    public DietCategoryRes searchCategoryDiet(DietCategory category, Member member, LocalDate regDate) {
+        Diet diet = dietRepository.findByMemberAndRegDateAndCategory(member, regDate, category).orElseThrow(DietNotFoundException::new);
+        Integer dietId = diet.getDietId();
         Nutrition nutrition = Nutrition.builder()
                 .totalFoodIntake(diet.getDietTotalIntake())
                 .totalCalories(diet.getDietTotalCalories())

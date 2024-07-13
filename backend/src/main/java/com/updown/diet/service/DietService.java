@@ -22,7 +22,7 @@ public interface DietService {
 
     List<DietDayRes> searchDayDiet(Member member, LocalDate regDate);
 
-    DietCategoryRes searchCategoryDiet(DietCategory category, Member member, Integer dietId);
+    DietCategoryRes searchCategoryDiet(DietCategory category, Member member, LocalDate regDate);
 
     FoodDetails searchFood(Member member, Integer foodId);
 
