@@ -9,15 +9,22 @@ import com.updown.diet.dto.res.DietSearchRes;
 import com.updown.diet.dto.res.FoodDetails;
 import com.updown.diet.entity.DietCategory;
 import com.updown.diet.entity.Food;
+import com.updown.diet.entity.FoodInfo;
 import com.updown.diet.service.DietService;
+import com.updown.diet.service.FoodInfoService;
 import com.updown.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,6 +32,7 @@ import java.util.List;
 @RequestMapping("/diet")
 public class DietController {
     private final DietService dietService;
+    private final FoodInfoService foodInfoService;
 
     /**
      * 음식 등록
@@ -144,14 +152,17 @@ public class DietController {
 
     /**
      * 음식 검색
-     * @param member
      * @param searchStr
      * @return
      */
     @GetMapping("/search")
-    public ResponseEntity<?> findFood(@AuthenticationPrincipal Member member, @RequestParam String searchStr){
-        DietSearchRes dietSearchRes = dietService.findFood(searchStr);
-        return ResponseEntity.ok().body(dietSearchRes);
+    public ResponseEntity<?> searchFoodInfo(@AuthenticationPrincipal Member member, @RequestParam String searchStr){
+        List<FoodInfo> foodInfos = foodInfoService.searchFoodInfo(searchStr);
+
+        if(!foodInfos.isEmpty()){
+            return ResponseEntity.ok(foodInfos);
+        }
+        return ResponseEntity.noContent().build();
     }
 
 }

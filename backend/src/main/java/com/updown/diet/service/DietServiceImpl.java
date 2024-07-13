@@ -337,16 +337,4 @@ public class DietServiceImpl implements DietService {
         }
     }
 
-    /**
-     * 음식 검색
-     *
-     * @param searchStr
-     * @return
-     */
-    @Override
-    public DietSearchRes findFood(String searchStr) {
-        return null;
-    }
-
-
 }

@@ -34,5 +34,4 @@ public interface DietService {
 
     void deleteDietImg(Integer dietId, Member member);
 
-    DietSearchRes findFood(String searchStr);
 }

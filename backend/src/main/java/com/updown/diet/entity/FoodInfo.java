@@ -16,7 +16,7 @@ public class FoodInfo {
 
     @Id
     @Column(name = "food_info_id")
-    private int foodInfoId;
+    private String foodInfoId;
 
     @Column(name = "food_info_name")
     private String foodInfoName;
@@ -45,7 +45,7 @@ public class FoodInfo {
     @Column(name = "saturated_fat")
     private float saturated_fat;
 
-    @Column(name = "tarns_fat")
+    @Column(name = "trans_fat")
     private float transFat;
 
     @Column(name = "cholesterol")
