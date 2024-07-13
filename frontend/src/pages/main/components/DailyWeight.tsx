@@ -65,6 +65,7 @@ const LineChartWrapper = styled.div`
 `;
 
 const DailyWeight = ({ regDate }: { regDate: string }) => {
+  const height = 167.5;
   const weightList = [
     { weight: 51.6, regDate: '2024-07-08' },
     { weight: 52.4, regDate: '2024-07-09' },
@@ -76,7 +77,13 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   ];
 
   // 오늘 날짜의 정보만 추출
-  const todayInfo = weightList.find(w => w.regDate === regDate);
+  const todayInfo = weightList.find(w => w.regDate === regDate) || {
+    weight: 0,
+    regDate: '',
+  };
+
+  // bmi 지수 계산
+  const bmi = todayInfo?.weight / Math.pow(height / 100, 2);
 
   // chart에 들어갈 정보
   const xInfo = weightList.map(w => {
@@ -130,7 +137,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
         </Weight>
         {!isRecord ? (
           <GaugeChartWrapper>
-            <BmiChart bmi={21.2} />
+            <BmiChart bmi={bmi} />
           </GaugeChartWrapper>
         ) : (
           <LineChartWrapper>
