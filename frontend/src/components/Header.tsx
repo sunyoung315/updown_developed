@@ -4,12 +4,21 @@ import { SearchInput, IconButton, Info } from '@/components';
 import styled from 'styled-components';
 import BottomSheet from './BottomSheet';
 
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled.div<{ $isfixed?: boolean }>`
+  height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.3rem;
-  gap: 0.5rem;
+  gap: 1.2rem;
+  ${props =>
+    props?.$isfixed
+      ? `position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: ${props.theme.white};
+    z-index: 1000;`
+      : ''}
 `;
 
 const NutritionButton = styled.button`
@@ -59,6 +68,7 @@ const Header = (headerProps: headerProps) => {
     nutrition,
     mypage,
     logout,
+    isFixed,
   } = headerProps;
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -67,7 +77,7 @@ const Header = (headerProps: headerProps) => {
   const closeModal = () => setModalOpen(false);
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper $isfixed={isFixed}>
       <IconButton iconName={iconName} onClick={onClick} />
       {headerName && (
         <>

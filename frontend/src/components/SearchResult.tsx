@@ -5,13 +5,14 @@ import styled from 'styled-components';
 
 const SearchBox = styled.div`
   width: 100%;
-  height: 4.5rem;
+  height: auto;
   border-radius: 0.6rem;
   background-color: ${props => props.theme.lightgrey};
   font-size: 1.13rem;
-  padding: 0.8rem 1rem;
+  padding: 0.7rem 1rem 0.8rem;
   display: flex;
   flex-direction: column;
+  gap: 0.6rem;
 `;
 
 const Title = styled.div`
@@ -20,6 +21,11 @@ const Title = styled.div`
   align-items: center;
 `;
 
+const InfoWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.94rem;
+`;
 const Info = styled.div`
   font-size: 0.94rem;
   color: ${props => props.theme.grey};
@@ -49,17 +55,18 @@ const SearchResult = (searchResultProps: searchResultProps) => {
     <SearchBox>
       <Title>
         <span>
-          {type === 'diet'
-            ? result.foodInfoName + ' (' + result.brandName + ')'
-            : result.exerciseName}
+          {type === 'diet' ? result.foodInfoName : result.exerciseName}
         </span>
         <IconButton iconName="add" onClick={regist} />
       </Title>
-      <Info>
-        {type === 'diet'
-          ? result.foodInfoCalories + 'kcal / 100g'
-          : result.met + ' met'}
-      </Info>
+      <InfoWrapper>
+        {type === 'diet' && <div>{result.brandName}</div>}
+        {type === 'diet' ? (
+          <Info>{result.foodInfoCalories} kcal / 100 g</Info>
+        ) : (
+          <Info>{result.met} met</Info>
+        )}
+      </InfoWrapper>
     </SearchBox>
   );
 };

@@ -3,8 +3,8 @@ import { iconButtonProps } from '@/types/type';
 import styled from 'styled-components';
 
 const IconButtonWrapper = styled.button<{ $size?: number }>`
-  width: ${props => (props?.$size ? props?.$size : 1.7)}rem;
-  height: ${props => (props?.$size ? props?.$size : 1.7)}rem;
+  width: ${props => props?.$size}rem;
+  height: ${props => props?.$size}rem;
   display: flex;
   justify-content: center;
   align-items: center;
