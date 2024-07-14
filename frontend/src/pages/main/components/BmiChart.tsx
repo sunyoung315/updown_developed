@@ -145,7 +145,7 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
       ctx.fillStyle = theme.black;
       ctx.textAlign = 'center';
       ctx.fillText(
-        `BMI : ${bmiValue === 0 || bmiValue === 35 ? bmi.toFixed(1) : bmiValue.toFixed(1)}`,
+        `${bmi === 0 ? '몸무게를 입력하세요' : bmiValue === 0 || bmiValue === 35 ? `BMI : ${bmi.toFixed(1)}` : `BMI : ${bmiValue.toFixed(1)}`}`,
         x,
         y + 30,
       );
