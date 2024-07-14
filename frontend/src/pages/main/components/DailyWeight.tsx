@@ -4,6 +4,8 @@ import { Button, Input } from '@/components';
 import BottomSheet from '@/components/BottomSheet';
 import styled from 'styled-components';
 import { BmiChart, RecordChart } from '../components';
+import useAxios from '@/util/http-commons';
+import { httpStatusCode } from '@/util/http-status';
 
 const DailyWeightWrapper = styled.div`
   width: 100%;
@@ -65,25 +67,37 @@ const LineChartWrapper = styled.div`
 `;
 
 const DailyWeight = ({ regDate }: { regDate: string }) => {
-  const height = 167.5;
-  const weightList = [
-    { weight: 51.6, regDate: '2024-07-08' },
-    { weight: 52.4, regDate: '2024-07-09' },
-    { weight: 53.3, regDate: '2024-07-10' },
-    { weight: 56.9, regDate: '2024-07-11' },
-    { weight: 54.1, regDate: '2024-07-12' },
-    { weight: 52.2, regDate: '2024-07-13' },
-    { weight: 50.2, regDate: '2024-07-14' },
-  ];
+  const [height, setHeight] = useState<number>(0);
+  const [weightList, setWeightList] = useState<
+    { weight: number; regDate: string }[]
+  >([]);
 
-  // 오늘 날짜의 정보만 추출
-  const todayInfo = weightList.find(w => w.regDate === regDate) || {
-    weight: 0,
-    regDate: '',
+  const getWeightInfo = async () => {
+    try {
+      const response = await useAxios.get(`/weight/${regDate}`);
+
+      if (response.status === httpStatusCode.OK) {
+        setHeight(response.data.height);
+        setWeightList(response.data.weightList);
+      }
+    } catch (err) {
+      console.log('체중 정보 조회 에러:', err);
+    }
   };
 
+  useEffect(() => {
+    getWeightInfo();
+  }, [regDate]);
+
+  // 오늘 날짜의 정보만 추출
+  const todayInfo = weightList?.find(w => w.regDate === regDate);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isRecord, setIsRecord] = useState<boolean>(false);
+  const [weight, setWeight] = useState<number>(todayInfo?.weight || 0);
+
   // bmi 지수 계산
-  const bmi = todayInfo?.weight / Math.pow(height / 100, 2);
+  const bmi = todayInfo ? weight / Math.pow(height / 100, 2) : 0;
 
   // chart에 들어갈 정보
   const xInfo = weightList.map(w => {
@@ -92,10 +106,6 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   });
 
   const yInfo = weightList.map(w => w.weight);
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isRecord, setIsRecord] = useState<boolean>(false);
-  const [weight, setWeight] = useState<number>(todayInfo?.weight || 0);
 
   useEffect(() => {}, [regDate, weight]);
 
@@ -115,8 +125,28 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
     setIsRecord(false);
   };
 
-  const registWeight = () => {
-    console.log('몸무게 입력');
+  const registWeight = async () => {
+    try {
+      const response = await useAxios.post('/weight', { weight, regDate });
+
+      if (response.status === httpStatusCode.OK) {
+        closeModal();
+      }
+    } catch (err) {
+      console.log('몸무게 등록 오류:', err);
+    }
+  };
+
+  const updataWeight = async () => {
+    try {
+      const response = await useAxios.put('/weight', { weight, regDate });
+
+      if (response.status === httpStatusCode.OK) {
+        closeModal();
+      }
+    } catch (err) {
+      console.log('몸무게 수정 에러:', err);
+    }
   };
 
   return (
@@ -132,7 +162,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
       <Content>
         <div>오늘 나의 몸무게는?</div>
         <Weight>
-          {todayInfo?.weight || 0}
+          {weight}
           <Unit> kg</Unit>
         </Weight>
         {!isRecord ? (
@@ -156,8 +186,8 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
         <ModalContent>
           <Input value={weight} onChange={setWeight} isBig={true} unit="kg" />
           <Button
-            buttonName="등록하기"
-            onClick={registWeight}
+            buttonName={!todayInfo ? '등록하기' : '수정하기'}
+            onClick={!todayInfo ? registWeight : updataWeight}
             color="darkgreen"
           />
         </ModalContent>
