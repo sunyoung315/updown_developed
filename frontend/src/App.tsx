@@ -10,6 +10,7 @@ import {
   DietPage,
   DietRegistPage,
   DietSearchPage,
+  ExercisePage,
 } from '@/pages';
 import { BottomNav } from '@/components';
 import { getAccessToken, refreshAccessToken } from './api/auth';
@@ -73,6 +74,7 @@ function App() {
         <Route path="/diet/:category" element={<DietPage />} />
         <Route path="/diet/regist" element={<DietRegistPage />} />
         <Route path="/diet/search" element={<DietSearchPage />} />
+        <Route path="/exercise" element={<ExercisePage />} />
       </Routes>
       {showBottomNav && <BottomNav />}
     </AppWrapper>

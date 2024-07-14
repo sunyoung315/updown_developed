@@ -2,24 +2,25 @@ import iconPaths from '@/styles/icon';
 import { iconButtonProps } from '@/types/type';
 import styled from 'styled-components';
 
-const IconButtonWrapper = styled.button`
-  width: 1.7rem;
-  height: 1.7rem;
+const IconButtonWrapper = styled.button<{ $size?: number }>`
+  width: ${props => (props?.$size ? props?.$size : 1.7)}rem;
+  height: ${props => (props?.$size ? props?.$size : 1.7)}rem;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const Image = styled.img<{ $size?: number }>`
-  width: ${props => props.$size}rem;
-  height: ${props => props.$size}rem;
+  width: ${props => props?.$size}rem;
+  height: ${props => props?.$size}rem;
 `;
 
 const IconButton = (iconButtonProps: iconButtonProps) => {
   const { iconName, onClick, size } = iconButtonProps;
+  console.log;
 
   return (
-    <IconButtonWrapper onClick={onClick}>
+    <IconButtonWrapper onClick={onClick} $size={size}>
       <Image src={iconPaths[iconName]} alt="icon" $size={size} />
     </IconButtonWrapper>
   );

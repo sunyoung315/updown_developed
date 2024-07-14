@@ -119,7 +119,7 @@ const DietPage = () => {
   const [dietImg, setDietImg] = useState<string>();
   const [nutrition, setNutrition] = useState<nutritionProps>();
   const [foodList, setFoodList] = useState<foodInfo[]>();
-  const [isDeleted, setIsDelted] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   // 식사별 식단 리스트 조회
   const getDietInfo = async () => {
@@ -147,7 +147,7 @@ const DietPage = () => {
 
   useEffect(() => {
     getDietInfo();
-    setIsDelted(false);
+    setIsDeleted(false);
   }, [isDeleted]);
 
   const goMain = () => {
@@ -307,7 +307,7 @@ const DietPage = () => {
             type="diet"
             info={food}
             key={food.foodId}
-            setIsDelted={setIsDelted}
+            setIsDeleted={setIsDeleted}
             dietId={dietId}
             category={category}
           />

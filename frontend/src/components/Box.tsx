@@ -1,21 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@/components';
 import { boxProps } from '@/types/type';
-import styled from 'styled-components';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
+import styled from 'styled-components';
 
 const BoxWrapper = styled.div`
   width: 100%;
-  height: 6rem;
+  height: auto;
   background-color: ${props => props.theme.white};
   border: 1px solid #eeeeee;
   border-radius: 0.5rem;
-  padding: 0.9rem 1.1rem;
+  padding: 1.1rem;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
   cursor: pointer;
 `;
 
@@ -25,10 +25,14 @@ const Title = styled.div`
   align-items: flex-start;
 `;
 
-const Name = styled.span`
+const Name = styled.span<{ $type: string }>`
   font-size: 1.6rem;
-  padding: 0.2rem;
-  color: ${props => props.theme.black};
+  margin-left: ${props => (props.$type === 'exercise' ? '0.3rem' : 0)};
+`;
+
+const Record = styled.span`
+  font-size: 1.25rem;
+  margin-left: 0.7rem;
 `;
 
 const Infos = styled.div`
@@ -51,8 +55,22 @@ const Calorie = styled.span`
   color: ${props => props.theme.black};
 `;
 
+const SetBox = styled.div`
+  background-color: ${props => props.theme.lightgrey};
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const SetInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
 const Box = (boxProps: boxProps) => {
-  const { type, info, setIsDelted, dietId, category } = boxProps;
+  const { type, info, setIsDeleted, dietId, category } = boxProps;
 
   const navigator = useNavigate();
   const goFoodDetail = () => {
@@ -74,7 +92,7 @@ const Box = (boxProps: boxProps) => {
         });
         if (response.status === httpStatusCode.OK) {
           console.log('식단 삭제 성공');
-          setIsDelted(true);
+          setIsDeleted(true);
         }
       } catch (err) {
         console.log('식단 삭제 에러:', err);
@@ -84,31 +102,64 @@ const Box = (boxProps: boxProps) => {
     }
   };
 
+  const totalCount =
+    type === 'exercise'
+      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseCount || 0), 0)
+      : 0;
+  const totalWeight =
+    type === 'exercise'
+      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseWeight || 0), 0)
+      : 0;
+  const totalDistance =
+    type === 'exercise'
+      ? info?.setList?.reduce(
+          (acc, set) => acc + (set?.exerciseDistance || 0),
+          0,
+        )
+      : 0;
+
   return (
     <BoxWrapper onClick={goFoodDetail}>
       <Title>
-        <Name>{type === 'diet' ? info.foodName : info.exerciseName}</Name>
-        <IconButton iconName="close" onClick={deleteInfo} />
+        <div>
+          <Name $type={type}>
+            {type === 'diet' ? info.foodName : info.exerciseName}
+          </Name>
+          {type === 'exercise' && (
+            <Record>
+              총 {info.exerciseTime}분 / {info.caloriesBurned}kcal
+            </Record>
+          )}
+        </div>
+        <IconButton iconName="close" onClick={deleteInfo} size={1.2} />
       </Title>
-      <Infos>
-        <MainInfo>
-          {type === 'diet' ? info.brandName : info.exerciseTime + '분'} &nbsp;
-          <SubInfo>
-            {type === 'diet' && info.foodIntake ? info.foodIntake + 'g' : ''}
-            {type === 'exercise' &&
-            (info.exerciseWeight || info.exerciseCount || info.exerciseDistance)
-              ? info.exerciseWeight
-                ? info.exerciseWeight + 'kg ' + info.exerciseCount + '회'
-                : info.exerciseCount
-                  ? info.exerciseCount + '회'
-                  : info.exerciseDistance + 'km'
-              : ''}
-          </SubInfo>
-        </MainInfo>
-        <Calorie>
-          {type === 'diet' ? info.calories : info.exerciseBurned} Kcal
-        </Calorie>
-      </Infos>
+      {type === 'diet' && (
+        <Infos>
+          <MainInfo>
+            {info.brandName} &nbsp;
+            <SubInfo>{info.foodIntake ? info.foodIntake + 'g' : ''}</SubInfo>
+          </MainInfo>
+          <Calorie>{info.calories} Kcal</Calorie>
+        </Infos>
+      )}
+      {type === 'exercise' && (
+        <SetBox>
+          {info.setList?.map(set => (
+            <SetInfo>
+              <div>세트 {set.setNum}</div>
+              <div>
+                {set.exerciseDistance
+                  ? `${set.exerciseDistance} km`
+                  : set.exerciseWeight
+                    ? `${set.exerciseWeight}kg X ${set.exerciseCount}회`
+                    : set.exerciseCount
+                      ? `${set.exerciseCount}회`
+                      : ''}
+              </div>
+            </SetInfo>
+          ))}
+        </SetBox>
+      )}
     </BoxWrapper>
   );
 };
