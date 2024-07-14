@@ -1,13 +1,20 @@
 import { Header, SearchResult } from '@/components';
+import useAxios from '@/util/http-commons';
+import { httpStatusCode } from '@/util/http-status';
+import { foodResult } from '@/types/type';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+const DietSearchPageWrapper = styled.div`
+  padding-top: 4rem;
+`;
 
 const FoodList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 0rem 2rem 3.25rem 2rem;
+  padding: 0rem 2rem 4.75rem 2rem;
 `;
 
 const DietSearchPage = () => {
@@ -22,54 +29,51 @@ const DietSearchPage = () => {
     navigator(`/diet/${category}`, { state: { dietId } });
   };
 
-  const [foodName, setFoodName] = useState('');
+  const [searchStr, setSearchStr] = useState<string>('');
+  const [foodInfoList, setFoodInfoList] = useState<foodResult[]>();
 
-  const searchFood = () => {
-    console.log(foodName);
-    // 검색 axios
+  const searchFood = async () => {
+    setFoodInfoList(undefined);
+    try {
+      const response = await useAxios.get('/diet/search', {
+        params: { searchStr },
+      });
+
+      if (response.status === httpStatusCode.OK) {
+        setFoodInfoList(response.data);
+      } else if (response.status === httpStatusCode.NOCONTENT) {
+        setFoodInfoList(undefined);
+      }
+    } catch (err) {
+      console.log('음식 검색 에러:', err);
+    }
   };
 
-  const foodList = [
-    {
-      foodInfoId: 1,
-      foodInfoName: '김치만두',
-      brandName: '비비고',
-      foodInfoCalories: 180,
-      carbohydrate: 20,
-      sugars: 15,
-      dietaryFiber: 0,
-      protein: 3,
-      fat: 4,
-      saturatedFat: 0,
-      transFat: 1,
-      cholesterol: 1,
-      sodium: 223,
-      potassium: 333,
-    },
-  ];
-
   return (
-    <div>
+    <DietSearchPageWrapper>
       <Header
         iconName="back"
         onClick={goBack}
         search={true}
         placeholder="어떤 음식을 드셨나요?"
-        onChange={setFoodName}
+        onChange={setSearchStr}
         searchFood={searchFood}
+        isFixed={true}
       />
       <FoodList>
-        {foodList.map(food => (
-          <SearchResult
-            result={food}
-            type="diet"
-            category={category}
-            key={food.foodInfoId}
-            dietId={dietId}
-          />
-        ))}
+        {foodInfoList
+          ? foodInfoList.map((food: foodResult) => (
+              <SearchResult
+                result={food}
+                type="diet"
+                category={category}
+                key={food.foodInfoId}
+                dietId={dietId}
+              />
+            ))
+          : ''}
       </FoodList>
-    </div>
+    </DietSearchPageWrapper>
   );
 };
 

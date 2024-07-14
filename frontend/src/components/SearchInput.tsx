@@ -1,5 +1,5 @@
 import { searchProps } from '@/types/type';
-import SearchIcon from '@/assets/icons/search-icon.svg';
+import { SearchIcon } from '@/assets/icons';
 import styled from 'styled-components';
 
 const SearchWrapper = styled.label`
@@ -35,8 +35,9 @@ const SearchInput = (searchProps: searchProps) => {
         onChange={handleChange}
         size={27}
       />
-
-      <img src={SearchIcon} alt="icon" onClick={search} />
+      <button onClick={search}>
+        <SearchIcon color="grey" />
+      </button>
     </SearchWrapper>
   );
 };

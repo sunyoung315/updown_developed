@@ -89,10 +89,10 @@ const SearchForm = (formProps: formProps) => {
       Math.round((food.cholesterol / food.foodIntake) * foodIntake * 100) / 100,
     );
     setSodium(
-      Math.round((food.transFat / food.foodIntake) * foodIntake * 100) / 100,
+      Math.round((food.sodium / food.foodIntake) * foodIntake * 100) / 100,
     );
     setPotassium(
-      Math.round((food.transFat / food.foodIntake) * foodIntake * 100) / 100,
+      Math.round((food.potassium / food.foodIntake) * foodIntake * 100) / 100,
     );
   }, [foodIntake]);
 

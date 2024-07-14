@@ -117,6 +117,7 @@ export type headerProps = {
   nutrition?: nutritionProps;
   mypage?: boolean;
   logout?: () => Promise<void>;
+  isFixed?: boolean;
 };
 
 export type iconButtonProps = {
@@ -131,14 +132,24 @@ export type searchProps = {
   search?: () => void;
 };
 
-type foodResult = {
-  foodInfoId: number;
-  foodInfoName: string;
-  brandName: string;
-  foodInfoCalories: number;
+export type foodResult = {
+  foodInfoId?: number;
+  foodInfoName?: string;
+  brandName?: string;
+  foodInfoCalories?: number;
+  carbohydrate?: number;
+  sugars?: number;
+  dietaryFiber?: number;
+  protein?: number;
+  fat?: number;
+  saturatedFat?: number;
+  transFat?: number;
+  cholesterol?: number;
+  sodium?: number;
+  potassium?: number;
 };
 
-type exerciseResult = {
+export type exerciseResult = {
   exerciseInfoId: number;
   exerciseName: string;
   met: number;
