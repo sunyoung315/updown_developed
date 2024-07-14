@@ -332,6 +332,10 @@ public class DietServiceImpl implements DietService {
             s3Uploader.delete(diet.getDietImg());
             diet.setDietImg(null);
             dietRepository.save(diet);
+
+            if(foodRepository.findByDietId(dietId).isEmpty()){
+                dietRepository.delete(diet);
+            }
         } else {
             throw new ImgNotFoundException();
         }
