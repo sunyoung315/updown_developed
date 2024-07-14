@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@/components';
 import { boxProps } from '@/types/type';
@@ -8,15 +7,15 @@ import styled from 'styled-components';
 
 const BoxWrapper = styled.div`
   width: 100%;
-  height: 6rem;
+  height: auto;
   background-color: ${props => props.theme.white};
   border: 1px solid #eeeeee;
   border-radius: 0.5rem;
-  padding: 0.9rem 1.1rem;
+  padding: 1.1rem;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
   cursor: pointer;
 `;
 
@@ -26,10 +25,14 @@ const Title = styled.div`
   align-items: flex-start;
 `;
 
-const Name = styled.span`
+const Name = styled.span<{ $type: string }>`
   font-size: 1.6rem;
-  padding: 0.2rem;
-  color: ${props => props.theme.black};
+  margin-left: ${props => (props.$type === 'exercise' ? '0.3rem' : 0)};
+`;
+
+const Record = styled.span`
+  font-size: 1.25rem;
+  margin-left: 0.7rem;
 `;
 
 const Infos = styled.div`
@@ -50,6 +53,20 @@ const SubInfo = styled.span`
 const Calorie = styled.span`
   font-size: 1.5rem;
   color: ${props => props.theme.black};
+`;
+
+const SetBox = styled.div`
+  background-color: ${props => props.theme.lightgrey};
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const SetInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const Box = (boxProps: boxProps) => {
@@ -104,27 +121,45 @@ const Box = (boxProps: boxProps) => {
   return (
     <BoxWrapper onClick={goFoodDetail}>
       <Title>
-        <Name>{type === 'diet' ? info.foodName : info.exerciseName}</Name>
-        <IconButton iconName="close" onClick={deleteInfo} />
+        <div>
+          <Name $type={type}>
+            {type === 'diet' ? info.foodName : info.exerciseName}
+          </Name>
+          {type === 'exercise' && (
+            <Record>
+              총 {info.exerciseTime}분 / {info.caloriesBurned}kcal
+            </Record>
+          )}
+        </div>
+        <IconButton iconName="close" onClick={deleteInfo} size={1.2} />
       </Title>
-      <Infos>
-        <MainInfo>
-          {type === 'diet' ? info.brandName : info.exerciseTime + '분'} &nbsp;
-          <SubInfo>
-            {type === 'diet' && info.foodIntake ? info.foodIntake + 'g' : ''}
-            {type === 'exercise' && (totalWeight || totalCount || totalDistance)
-              ? totalWeight
-                ? '(' + info?.setList?.length + '세트) 총 ' + totalCount + '회'
-                : totalCount
-                  ? '총 ' + totalCount + '회'
-                  : '총 ' + totalDistance + 'km'
-              : ''}
-          </SubInfo>
-        </MainInfo>
-        <Calorie>
-          {type === 'diet' ? info.calories : info.caloriesBurned} Kcal
-        </Calorie>
-      </Infos>
+      {type === 'diet' && (
+        <Infos>
+          <MainInfo>
+            {info.brandName} &nbsp;
+            <SubInfo>{info.foodIntake ? info.foodIntake + 'g' : ''}</SubInfo>
+          </MainInfo>
+          <Calorie>{info.calories} Kcal</Calorie>
+        </Infos>
+      )}
+      {type === 'exercise' && (
+        <SetBox>
+          {info.setList?.map(set => (
+            <SetInfo>
+              <div>세트 {set.setNum}</div>
+              <div>
+                {set.exerciseDistance
+                  ? `${set.exerciseDistance} km`
+                  : set.exerciseWeight
+                    ? `${set.exerciseWeight}kg X ${set.exerciseCount}회`
+                    : set.exerciseCount
+                      ? `${set.exerciseCount}회`
+                      : ''}
+              </div>
+            </SetInfo>
+          ))}
+        </SetBox>
+      )}
     </BoxWrapper>
   );
 };
