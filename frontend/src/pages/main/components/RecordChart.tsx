@@ -11,13 +11,12 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import theme from '@/styles/theme';
-import { endianness } from 'os';
 
 const RecordChart = ({
   xInfo,
   yInfo,
 }: {
-  xInfo: string[][];
+  xInfo: string[];
   yInfo: number[];
 }) => {
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
@@ -26,11 +25,11 @@ const RecordChart = ({
     labels: xInfo,
     datasets: [
       {
+        data: yInfo,
         pointBackgroundColor: theme['darkgreen'],
         pointBorderWidth: 1,
         borderColor: theme['darkgreen'],
         borderWidth: 1.5,
-        data: yInfo,
         datalabels: {
           font: {
             family: 'omyudapretty',
@@ -68,6 +67,7 @@ const RecordChart = ({
             family: 'omyudapretty',
           },
         },
+        offset: true,
       },
       y: {
         grid: {

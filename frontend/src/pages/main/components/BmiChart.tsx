@@ -10,19 +10,32 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import theme from '@/styles/theme';
+import { useEffect, useRef } from 'react';
 
-const BmiChart = ({ bmi }: { bmi: number }) => {
+const BmiChart = ({ value }: { value: number }) => {
   ChartJS.register(ArcElement, Tooltip, Legend);
+  const chartRef = useRef<ChartJS<'doughnut'>>(null);
+  const bmiRef = useRef<number>(value);
 
-  const needleValue = () => {
-    if (bmi <= 14) {
+  const calculateNeedleValue = (): number => {
+    if (value <= 14) {
       return 0;
-    } else if (bmi >= 35) {
+    } else if (value >= 35) {
       return 21;
     } else {
-      return bmi - 14;
+      return value - 14;
     }
   };
+
+  const needleRef = useRef<number>(calculateNeedleValue());
+
+  useEffect(() => {
+    bmiRef.current = value;
+    needleRef.current = calculateNeedleValue();
+    if (chartRef.current) {
+      chartRef.current.update();
+    }
+  }, [value]);
 
   // 저제중: 18.5 미만, 정상체중: 18.5 ~ 22.9, 과체중: 23 ~ 24.9,
   // 비만: 25 ~ 29.9, 고도비만: 30이상
@@ -99,7 +112,8 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
 
       const { circumference } = dataset as any;
       const circumferenceValue =
-        (circumference / Math.PI / data.datasets[0].data[0]) * needleValue();
+        (circumference / Math.PI / data.datasets[0].data[0]) *
+        needleRef.current;
 
       ctx.translate(x, y);
       ctx.rotate(Math.PI * (circumferenceValue + 1.5));
@@ -137,7 +151,8 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
       const { circumference } = dataset as any;
 
       const circumferenceValue =
-        (circumference / Math.PI / data.datasets[0].data[0]) * needleValue();
+        (circumference / Math.PI / data.datasets[0].data[0]) *
+        needleRef.current;
       const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
 
       const bmiValue = dataTotal * circumferenceValue + 14;
@@ -145,7 +160,7 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
       ctx.fillStyle = theme.black;
       ctx.textAlign = 'center';
       ctx.fillText(
-        `${bmi === 0 ? '몸무게를 입력하세요' : bmiValue === 0 || bmiValue === 35 ? `BMI : ${bmi.toFixed(1)}` : `BMI : ${bmiValue.toFixed(1)}`}`,
+        `${bmiRef.current === 0 ? '몸무게를 입력하세요' : bmiValue === 0 || bmiValue === 35 ? `BMI : ${bmiRef.current.toFixed(1)}` : `BMI : ${bmiValue.toFixed(1)}`}`,
         x,
         y + 30,
       );
@@ -158,7 +173,9 @@ const BmiChart = ({ bmi }: { bmi: number }) => {
     ChartDataLabels as unknown as Plugin<'doughnut'>,
   ];
 
-  return <Doughnut data={data} options={options} plugins={plugins} />;
+  return (
+    <Doughnut ref={chartRef} data={data} options={options} plugins={plugins} />
+  );
 };
 
 export default BmiChart;
