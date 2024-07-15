@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-// import useAxios from '@/util/http-commons';
-import { Button, Input } from '@/components';
-import BottomSheet from '@/components/BottomSheet';
-import styled from 'styled-components';
-import { BmiChart, RecordChart } from '../components';
+import { useRef, useEffect, useState } from 'react';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
+import { BmiChart, RecordChart } from '../components';
+import { Button, Input, BottomSheet } from '@/components';
+import { WeightInfo } from '@/types/type';
+import styled from 'styled-components';
 
 const DailyWeightWrapper = styled.div`
   width: 100%;
@@ -67,18 +66,39 @@ const LineChartWrapper = styled.div`
 `;
 
 const DailyWeight = ({ regDate }: { regDate: string }) => {
-  const [height, setHeight] = useState<number>(0);
-  const [weightList, setWeightList] = useState<
-    { weight: number; regDate: string }[]
-  >([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isRecord, setIsRecord] = useState<boolean>(false);
+  const todayRef = useRef<WeightInfo>();
+  const [weight, setWeight] = useState<number>(0);
+  const xRef = useRef<string[]>([]);
+  const yRef = useRef<number[]>([]);
+  const bmiRef = useRef<number>(0);
 
   const getWeightInfo = async () => {
     try {
       const response = await useAxios.get(`/weight/${regDate}`);
 
       if (response.status === httpStatusCode.OK) {
-        setHeight(response.data.height);
-        setWeightList(response.data.weightList);
+        const height = response.data.height;
+        const weightList = response.data.weightList;
+
+        const todayInfo = weightList?.find(
+          (w: WeightInfo) => w.regDate === regDate,
+        );
+        todayRef.current = todayInfo;
+
+        // 오늘 날짜의 몸무게만 추출
+        setWeight(todayInfo?.weight || 0);
+
+        // bmi 지수 계산
+        bmiRef.current = todayInfo?.weight / Math.pow(height / 100, 2) || 0;
+
+        // chart에 들어갈 정보
+        xRef.current = weightList?.map((w: WeightInfo) => {
+          const [yyyy, mm, dd] = w.regDate.split('-');
+          return [`${mm}/${dd}`];
+        });
+        yRef.current = weightList?.map((w: WeightInfo) => w.weight);
       }
     } catch (err) {
       console.log('체중 정보 조회 에러:', err);
@@ -88,26 +108,6 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   useEffect(() => {
     getWeightInfo();
   }, [regDate]);
-
-  // 오늘 날짜의 정보만 추출
-  const todayInfo = weightList?.find(w => w.regDate === regDate);
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isRecord, setIsRecord] = useState<boolean>(false);
-  const [weight, setWeight] = useState<number>(todayInfo?.weight || 0);
-
-  // bmi 지수 계산
-  const bmi = todayInfo ? weight / Math.pow(height / 100, 2) : 0;
-
-  // chart에 들어갈 정보
-  const xInfo = weightList.map(w => {
-    const [yyyy, mm, dd] = w.regDate.split('-');
-    return [`${mm}/${dd}`];
-  });
-
-  const yInfo = weightList.map(w => w.weight);
-
-  useEffect(() => {}, [regDate, weight]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -130,6 +130,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
       const response = await useAxios.post('/weight', { weight, regDate });
 
       if (response.status === httpStatusCode.OK) {
+        getWeightInfo();
         closeModal();
       }
     } catch (err) {
@@ -142,6 +143,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
       const response = await useAxios.put('/weight', { weight, regDate });
 
       if (response.status === httpStatusCode.OK) {
+        getWeightInfo();
         closeModal();
       }
     } catch (err) {
@@ -167,11 +169,11 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
         </Weight>
         {!isRecord ? (
           <GaugeChartWrapper>
-            <BmiChart bmi={bmi} />
+            <BmiChart value={bmiRef.current} />
           </GaugeChartWrapper>
         ) : (
           <LineChartWrapper>
-            <RecordChart xInfo={xInfo} yInfo={yInfo} />
+            <RecordChart xInfo={xRef.current} yInfo={yRef.current} />
           </LineChartWrapper>
         )}
         <Button
@@ -186,8 +188,8 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
         <ModalContent>
           <Input value={weight} onChange={setWeight} isBig={true} unit="kg" />
           <Button
-            buttonName={!todayInfo ? '등록하기' : '수정하기'}
-            onClick={!todayInfo ? registWeight : updataWeight}
+            buttonName={!todayRef.current ? '등록하기' : '수정하기'}
+            onClick={!todayRef.current ? registWeight : updataWeight}
             color="darkgreen"
           />
         </ModalContent>

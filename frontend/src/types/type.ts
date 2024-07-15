@@ -264,3 +264,8 @@ export type ExerciseSet = {
   exerciseWeight?: number;
   exerciseDistance?: number;
 };
+
+export type WeightInfo = {
+  weight: number;
+  regDate: string;
+};
