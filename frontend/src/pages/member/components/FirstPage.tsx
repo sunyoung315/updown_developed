@@ -118,9 +118,7 @@ const FirstPage = (pageProps: pageProps) => {
         <Label>성별</Label>
         <RadioButton>
           <label htmlFor="male">
-            <MaleIcon
-              fillColor={data.gender === '남성' ? theme['blue'] : theme['grey']}
-            />
+            <MaleIcon fillColor={data.gender === '남성' ? 'blue' : 'grey'} />
             <Label $value={data.gender} $gender="male">
               남성
             </Label>
@@ -135,9 +133,7 @@ const FirstPage = (pageProps: pageProps) => {
           </label>
           <label htmlFor="female">
             <FemaleIcon
-              fillColor={
-                data.gender === '여성' ? theme['darkpink'] : theme['grey']
-              }
+              fillColor={data.gender === '여성' ? 'darkpink' : 'grey'}
             />
             <Label $value={data.gender} $gender="female">
               여성
@@ -195,9 +191,7 @@ const FirstPage = (pageProps: pageProps) => {
         <RadioButton>
           <Radio htmlFor="1">
             <StepOneIcon
-              fillColor={
-                data.activeLevel === '거의없음' ? theme['blue'] : theme['grey']
-              }
+              fillColor={data.activeLevel === '거의없음' ? 'blue' : 'grey'}
             />
             <StepLabel $size={1} $value={data.activeLevel} $activity="1">
               거의 없음
@@ -217,9 +211,7 @@ const FirstPage = (pageProps: pageProps) => {
           </Radio>
           <Radio htmlFor="2">
             <StepTwoIcon
-              fillColor={
-                data.activeLevel === '적음' ? theme['darkgreen'] : theme['grey']
-              }
+              fillColor={data.activeLevel === '적음' ? 'darkgreen' : 'grey'}
             />
             <StepLabel $size={1} $value={data.activeLevel} $activity="2">
               적음
@@ -239,9 +231,7 @@ const FirstPage = (pageProps: pageProps) => {
           </Radio>
           <Radio htmlFor="3">
             <StepThreeIcon
-              fillColor={
-                data.activeLevel === '보통' ? theme['yellow'] : theme['grey']
-              }
+              fillColor={data.activeLevel === '보통' ? 'yellow' : 'grey'}
             />
             <StepLabel $size={1} $value={data.activeLevel} $activity="3">
               보통
@@ -261,9 +251,7 @@ const FirstPage = (pageProps: pageProps) => {
           </Radio>
           <Radio htmlFor="4">
             <StepFourIcon
-              fillColor={
-                data.activeLevel === '많음' ? theme['orange'] : theme['grey']
-              }
+              fillColor={data.activeLevel === '많음' ? 'orange' : 'grey'}
             />
             <StepLabel $size={1} $value={data.activeLevel} $activity="4">
               많음
@@ -283,11 +271,7 @@ const FirstPage = (pageProps: pageProps) => {
           </Radio>
           <Radio htmlFor="5">
             <StepFiveIcon
-              fillColor={
-                data.activeLevel === '매우많음'
-                  ? theme['darkpink']
-                  : theme['grey']
-              }
+              fillColor={data.activeLevel === '매우많음' ? 'darkpink' : 'grey'}
             />
             <StepLabel $size={1} $value={data.activeLevel} $activity="5">
               매우 많음

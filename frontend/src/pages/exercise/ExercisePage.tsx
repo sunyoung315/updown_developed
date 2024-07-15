@@ -109,7 +109,6 @@ const ExercisePage = () => {
       setList: [
         {
           exerciseSetId: 1,
-          setNum: 1,
           exerciseCount: 0,
           exerciseWeight: 0,
           exerciseDistance: 2.5,
@@ -125,14 +124,12 @@ const ExercisePage = () => {
       setList: [
         {
           exerciseSetId: 2,
-          setNum: 1,
           exerciseCount: 12,
           exerciseWeight: 3,
           exerciseDistance: 0,
         },
         {
           exerciseSetId: 3,
-          setNum: 2,
           exerciseCount: 24,
           exerciseWeight: 5,
           exerciseDistance: 0,
@@ -148,7 +145,6 @@ const ExercisePage = () => {
       setList: [
         {
           exerciseSetId: 4,
-          setNum: 1,
           exerciseCount: 12,
           exerciseWeight: 0,
           exerciseDistance: 0,

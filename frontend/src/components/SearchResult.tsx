@@ -32,11 +32,11 @@ const Info = styled.div`
 `;
 
 const SearchResult = (searchResultProps: searchResultProps) => {
-  const { result, type, category, dietId } = searchResultProps;
+  const { result, type, category, dietId, exerciseRef, openModal } =
+    searchResultProps;
 
   const navigator = useNavigate();
   const regist = () => {
-    console.log('검색 등록');
     if (type === 'diet') {
       const foodInfo = {
         foodId: result.foodInfoId,
@@ -45,9 +45,13 @@ const SearchResult = (searchResultProps: searchResultProps) => {
         foodIntake: 100,
         ...result,
       };
-      navigator(`/diet/regist`, { state: { category, foodInfo, dietId } });
+      delete foodInfo.foodInfoId,
+        delete foodInfo.foodInfoName,
+        delete foodInfo.foodInfoCalories,
+        navigator(`/diet/regist`, { state: { category, foodInfo, dietId } });
     } else if (type === 'exercise') {
-      // navigator(`/exercise/regist/sc/${result.exerciseInfoId}`);
+      exerciseRef ? (exerciseRef.current = result) : '';
+      openModal();
     }
   };
 

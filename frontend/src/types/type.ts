@@ -113,7 +113,7 @@ export type headerProps = {
   search?: boolean;
   placeholder?: string;
   onChange?: React.Dispatch<React.SetStateAction<string>>;
-  searchFood?: () => void;
+  doSearch?: () => void;
   nutrition?: nutritionProps;
   mypage?: boolean;
   logout?: () => Promise<void>;
@@ -122,7 +122,9 @@ export type headerProps = {
 
 export type iconButtonProps = {
   iconName: keyof typeof iconPaths;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | number,
+  ) => void;
   size?: number;
 };
 
@@ -150,26 +152,32 @@ export type foodResult = {
 };
 
 export type exerciseResult = {
-  exerciseInfoId: number;
-  exerciseName: string;
-  met: number;
+  exerciseInfoId?: number;
+  exerciseName?: string;
+  met?: number;
 };
 
 // type에 따른 조건부 타입 지정
 type commonResultProps = {
   type: 'diet' | 'exercise';
-  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
-  dietId?: number;
 };
 
 type dietSearchResultProps = commonResultProps & {
   type: 'diet';
   result: foodResult;
+  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+  dietId: number;
+  exerciseRef?: React.MutableRefObject<exerciseResult>;
+  openModal?: () => void;
 };
 
 type exerciseSearchResultProps = commonResultProps & {
   type: 'exercise';
   result: exerciseResult;
+  category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+  dietId?: number;
+  exerciseRef: React.MutableRefObject<exerciseResult>;
+  openModal: () => void;
 };
 
 export type searchResultProps =
@@ -185,6 +193,7 @@ export type infoProps = {
   titleColor?: keyof typeof theme;
   unit?: string;
   ntr?: boolean;
+  size?: boolean;
 };
 
 export type food = {
@@ -259,7 +268,7 @@ export type Exercise = {
 
 export type ExerciseSet = {
   exerciseSetId?: number;
-  setNum?: number;
+  // setNum?: number;
   exerciseCount?: number;
   exerciseWeight?: number;
   exerciseDistance?: number;
@@ -268,4 +277,17 @@ export type ExerciseSet = {
 export type WeightInfo = {
   weight: number;
   regDate: string;
+};
+
+export type formExProps = {
+  setExerciseTime: React.Dispatch<React.SetStateAction<number>>;
+  exerciseTime: number;
+  caloriesBurned: number;
+  detailType: string;
+  changeDetailType: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setList?: ExerciseSet[];
+  setSetList?: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
+  addNewSet: () => void;
+  newSetList?: ExerciseSet[];
+  setNewSetList?: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
 };

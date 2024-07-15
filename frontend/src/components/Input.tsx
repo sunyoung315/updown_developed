@@ -72,17 +72,18 @@ const Input = (inputProps: inputProps) => {
     if (inputType === 'text') {
       onChange(e.target.value);
     } else {
+      // 0이 기본값으로 들어가 있을 때 0 자동 삭제
+      if (
+        e.target.value.length > 1 &&
+        Number(e.target.value) >= 1 &&
+        e.target.value.startsWith('0')
+      ) {
+        e.target.value = e.target.value.slice(1);
+      }
+
       if (name) {
-        // 0이 기본값으로 들어가 있을 때 0 자동 삭제
-        if (e.target.value.length > 1 && e.target.value.startsWith('0')) {
-          e.target.value = e.target.value.slice(1);
-        }
         onChange({ name: e.target.name, value: Number(e.target.value) });
       } else {
-        // 0이 기본값으로 들어가 있을 때 0 자동 삭제
-        if (e.target.value.length > 1 && e.target.value.startsWith('0')) {
-          e.target.value = e.target.value.slice(1);
-        }
         onChange(Number(e.target.value));
       }
     }

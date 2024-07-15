@@ -73,7 +73,7 @@ const Box = (boxProps: boxProps) => {
   const { type, info, setIsDeleted, dietId, category } = boxProps;
 
   const navigator = useNavigate();
-  const goFoodDetail = () => {
+  const goDetail = () => {
     if (type === 'diet') {
       navigator(`/diet/detail/${info.foodId}`, { state: { category, dietId } });
     } else if (type === 'exercise') {
@@ -102,24 +102,8 @@ const Box = (boxProps: boxProps) => {
     }
   };
 
-  const totalCount =
-    type === 'exercise'
-      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseCount || 0), 0)
-      : 0;
-  const totalWeight =
-    type === 'exercise'
-      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseWeight || 0), 0)
-      : 0;
-  const totalDistance =
-    type === 'exercise'
-      ? info?.setList?.reduce(
-          (acc, set) => acc + (set?.exerciseDistance || 0),
-          0,
-        )
-      : 0;
-
   return (
-    <BoxWrapper onClick={goFoodDetail}>
+    <BoxWrapper onClick={goDetail}>
       <Title>
         <div>
           <Name $type={type}>
@@ -145,7 +129,7 @@ const Box = (boxProps: boxProps) => {
       {type === 'exercise' && (
         <SetBox>
           {info.setList?.map(set => (
-            <SetInfo>
+            <SetInfo key={set.exerciseSetId}>
               <div>세트 {set.setNum}</div>
               <div>
                 {set.exerciseDistance
