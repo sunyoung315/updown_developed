@@ -93,28 +93,28 @@ const DailyDiet = ({ regDate }: { regDate: string }) => {
       <TitleWrapper>식단</TitleWrapper>
       <DietWrapper>
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'BREAKFAST')}
+          diet={todayDiet?.find(diet => diet.category === 'BREAKFAST')}
           category="BREAKFAST"
           regDate={regDate}
           fast={breakfastFast}
           setFast={(value: boolean) => handleFastChange('BREAKFAST', value)}
         />
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'LUNCH')}
+          diet={todayDiet?.find(diet => diet.category === 'LUNCH')}
           category="LUNCH"
           regDate={regDate}
           fast={lunchFast}
           setFast={(value: boolean) => handleFastChange('LUNCH', value)}
         />
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'DINNER')}
+          diet={todayDiet?.find(diet => diet.category === 'DINNER')}
           category="DINNER"
           regDate={regDate}
           fast={dinnerFast}
           setFast={(value: boolean) => handleFastChange('DINNER', value)}
         />
         <OneDiet
-          diet={todayDiet.find(diet => diet.category === 'SNACK')}
+          diet={todayDiet?.find(diet => diet.category === 'SNACK')}
           category="SNACK"
           regDate={regDate}
           fast={snackFast}
