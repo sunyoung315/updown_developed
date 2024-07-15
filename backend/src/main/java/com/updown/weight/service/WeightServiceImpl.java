@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Transactional
@@ -48,6 +51,9 @@ public class WeightServiceImpl implements WeightService{
     @Override
     public SearchWeightRes searchWeightList(Member member, LocalDate regDate) {
         List<Weight> weightList = weightRepository.findRecentWeightsByMemberIdAndRegDate(member.getMemberId(), regDate);
+
+        weightList.sort(Comparator.comparing(Weight::getRegDate));
+
         return SearchWeightRes.builder()
                 .height(member.getHeight())
                 .weightList(weightList)
