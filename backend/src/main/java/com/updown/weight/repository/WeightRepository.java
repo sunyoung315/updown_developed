@@ -8,12 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.MailException;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@EnableJpaRepositories
+@Repository
 public interface WeightRepository extends JpaRepository<Weight, Integer> {
 
     // 가장 최근 등록 체중 조회
