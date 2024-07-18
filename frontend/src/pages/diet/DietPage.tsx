@@ -307,7 +307,7 @@ const DietPage = () => {
             type="diet"
             info={food}
             key={food.foodId}
-            setIsDeleted={setIsDeleted}
+            setRefreshed={setIsDeleted}
             dietId={dietId}
             category={category}
           />

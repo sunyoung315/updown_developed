@@ -27,11 +27,13 @@ const InfoContent = styled.label<{
   $infodir?: string;
   $ntr?: boolean;
   $size?: boolean;
+  $unitdir?: boolean;
 }>`
   display: flex;
-  align-items: center;
-  justify-content: ${props => (props.$ntr ? 'flex-end' : 'space-between')};
-  gap: ${props => (props.$ntr ? '1rem' : '0')};
+  align-items: ${props => (props.$unitdir ? 'flex-end' : 'center')};
+  justify-content: ${props =>
+    props.$ntr ? 'flex-end' : props.$unitdir ? 'none' : 'space-between'};
+  gap: ${props => (props.$ntr ? '1rem' : props.$unitdir ? '0.5rem' : '0')};
   padding: 0.3rem;
   font-size: ${props =>
     props.$infodir === 'row' && !props.$size ? '1.88rem' : '1.25rem'};
@@ -53,6 +55,7 @@ const Info = (infoProps: infoProps) => {
     unit,
     ntr,
     size,
+    unitdir,
   } = infoProps;
 
   return (
@@ -65,7 +68,12 @@ const Info = (infoProps: infoProps) => {
           </span>
         )}
       </InfoTitle>
-      <InfoContent $infodir={infodir} $ntr={ntr} $size={size}>
+      <InfoContent
+        $infodir={infodir}
+        $ntr={ntr}
+        $size={size}
+        $unitdir={unitdir}
+      >
         {content ? content : '-'}
         {unit && <Unit>{unit}</Unit>}
       </InfoContent>

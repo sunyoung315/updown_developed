@@ -94,23 +94,41 @@ const SetAddButton = styled.button`
 
 const Form = (formExProps: formExProps) => {
   const {
-    setExerciseTime,
     exerciseTime,
+    setExerciseTime,
     caloriesBurned,
+    setCaloriesBurned,
     detailType,
-    changeDetailType,
+    setDetailType,
     setList,
     setSetList,
-    addNewSet,
-    newSetList,
-    setNewSetList,
   } = formExProps;
 
+  // 상세 정보 타입(횟수, 무게, 거리) 변경
+  const changeDetailType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailType(e.target.value);
+    setSetList([]);
+  };
+
+  // 새로운 상세 정보 추가
+  const addNewSet = () => {
+    setSetList([
+      ...setList,
+      {
+        exerciseCount: 0,
+        exerciseWeight: 0,
+        exerciseDistance: 0,
+      },
+    ]);
+  };
+
+  // 상세 정보 변경
   const handleSetList = (
     idx: number,
     key: keyof ExerciseSet,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    // 0이 기본값으로 들어가 있을 때 0 자동 삭제
     if (
       e.target.value.length > 1 &&
       Number(e.target.value) >= 1.0 &&
@@ -126,26 +144,7 @@ const Form = (formExProps: formExProps) => {
     }
   };
 
-  const handleNewSetList = (
-    idx: number,
-    key: keyof ExerciseSet,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (
-      e.target.value.length > 1 &&
-      Number(e.target.value) >= 1 &&
-      e.target.value.startsWith('0')
-    ) {
-      e.target.value = e.target.value.slice(1);
-    }
-
-    if (newSetList && setNewSetList) {
-      const updateSetList = [...newSetList];
-      updateSetList[idx][key] = Number(e.target.value);
-      setNewSetList(updateSetList);
-    }
-  };
-
+  // 상세 정보 삭제
   const deleteSetList = (idx: number) => {
     if (setList && setSetList) {
       const updateSetList = [...setList];
@@ -154,16 +153,8 @@ const Form = (formExProps: formExProps) => {
     }
   };
 
-  const deleteNewSetList = (idx: number) => {
-    if (newSetList && setNewSetList) {
-      const updateSetList = [...newSetList];
-      updateSetList.splice(idx, 1);
-      setNewSetList(updateSetList);
-    }
-  };
-
   return (
-    <>
+    <div>
       <InputWrapper>
         <Input
           inputDir="row"
@@ -174,13 +165,25 @@ const Form = (formExProps: formExProps) => {
           onChange={setExerciseTime}
           value={exerciseTime}
         />
-        <Info
-          infodir="row"
-          title="소모 칼로리"
-          content={caloriesBurned}
-          unit="kcal"
-          size={true}
-        />
+        {setCaloriesBurned ? (
+          <Input
+            inputDir="row"
+            inputName="소모 칼로리"
+            isRequired={true}
+            unit="kcal"
+            starColor="blue"
+            onChange={setCaloriesBurned}
+            value={caloriesBurned}
+          />
+        ) : (
+          <Info
+            infodir="row"
+            title="소모 칼로리"
+            content={caloriesBurned}
+            unit="kcal"
+            size={true}
+          />
+        )}
       </InputWrapper>
       <DetailInputWrapper>
         <InputTitle>상세 기록</InputTitle>
@@ -193,7 +196,6 @@ const Form = (formExProps: formExProps) => {
               id="count"
               value="count"
               onChange={changeDetailType}
-              disabled={!setList || setList?.length === 0 ? false : true}
             />
           </RadioLabel>
           <RadioLabel htmlFor="weight" $value={detailType} $type="weight">
@@ -204,7 +206,6 @@ const Form = (formExProps: formExProps) => {
               id="weight"
               value="weight"
               onChange={changeDetailType}
-              disabled={!setList || setList?.length === 0 ? false : true}
             />
           </RadioLabel>
           <RadioLabel htmlFor="distance" $value={detailType} $type="distance">
@@ -215,13 +216,12 @@ const Form = (formExProps: formExProps) => {
               id="distance"
               value="distance"
               onChange={changeDetailType}
-              disabled={!setList || setList?.length === 0 ? false : true}
             />
           </RadioLabel>
         </RadioWrapper>
         <SetList>
           {setList?.map((set: ExerciseSet, idx: number) => (
-            <Set key={set.exerciseSetId}>
+            <Set key={idx}>
               <div>세트 {idx + 1}</div>
               <Column>
                 {detailType === 'weight' ? (
@@ -274,64 +274,10 @@ const Form = (formExProps: formExProps) => {
               </Column>
             </Set>
           ))}
-          {newSetList?.map((set: ExerciseSet, idx: number) => (
-            <Set key={idx}>
-              <div>세트 {(setList?.length || 0) + idx + 1}</div>
-              <Column>
-                {detailType === 'weight' ? (
-                  <>
-                    <NumberInput
-                      type="number"
-                      value={set?.exerciseWeight}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewSetList(idx, 'exerciseWeight', e)
-                      }
-                    />{' '}
-                    kg
-                    <NumberInput
-                      type="number"
-                      value={set?.exerciseCount}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewSetList(idx, 'exerciseCount', e)
-                      }
-                    />{' '}
-                    회
-                  </>
-                ) : detailType === 'distance' ? (
-                  <>
-                    <NumberInput
-                      type="number"
-                      value={set?.exerciseDistance}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewSetList(idx, 'exerciseDistance', e)
-                      }
-                    />{' '}
-                    km
-                  </>
-                ) : (
-                  <>
-                    <NumberInput
-                      type="number"
-                      value={set?.exerciseCount}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewSetList(idx, 'exerciseCount', e)
-                      }
-                    />{' '}
-                    회
-                  </>
-                )}
-                <IconButton
-                  iconName="close"
-                  size={1.2}
-                  onClick={() => deleteNewSetList(idx)}
-                />
-              </Column>
-            </Set>
-          ))}
         </SetList>
         <SetAddButton onClick={addNewSet}>+ 세트 추가</SetAddButton>
       </DetailInputWrapper>
-    </>
+    </div>
   );
 };
 

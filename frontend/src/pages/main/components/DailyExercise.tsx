@@ -97,7 +97,7 @@ const DailyExercise = ({ regDate }: { regDate: string }) => {
   }, [regDate]);
 
   const goExercisePage = () => {
-    navigator('/exercise', { state: { exerciseInfo } });
+    navigator('/exercise');
   };
 
   return (

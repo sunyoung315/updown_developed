@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Form from './components/Form';
 import { BottomSheet, Button, Header, SearchResult } from '@/components';
 import { httpStatusCode } from '@/util/http-status';
 import useAxios from '@/util/http-commons';
 import { exerciseResult, ExerciseSet } from '@/types/type';
 import styled from 'styled-components';
-import Form from './components/Form';
 
 const ExerciseSearchPageWrapper = styled.div`
   padding-top: 4rem;
@@ -31,27 +31,9 @@ const ExerciseSearchPage = () => {
   const recentWeight = useRef<number>(51);
   const [exerciseTime, setExerciseTime] = useState<number>(0);
   const [caloriesBurned, setCaloriesBurned] = useState<number>(0);
-  // 운동 상세 정보 수정에서 필요!
-  // const [setList, setSetList] = useState<ExerciseSet[]>([]);
-  const [newSetList, setNewSetList] = useState<ExerciseSet[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [setList, setSetList] = useState<ExerciseSet[]>([]);
   const [detailType, setDetailType] = useState<string>('count');
-
-  const changeDetailType = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailType(e.target.value);
-    setNewSetList([]);
-  };
-
-  const addNewSet = () => {
-    setNewSetList([
-      ...newSetList,
-      {
-        exerciseCount: 0,
-        exerciseWeight: 0,
-        exerciseDistance: 0,
-      },
-    ]);
-  };
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const exerciseInfoList = [
     {
@@ -67,9 +49,10 @@ const ExerciseSearchPage = () => {
   ];
 
   const goBack = () => {
-    navigator('/main');
+    navigator('/exercise');
   };
 
+  // 운동 검색 등록 bottom sheet 열기
   const openModal = () => {
     if (exerciseRef && exerciseRef.current) {
       // 1분당 소모 칼로리 계산
@@ -81,7 +64,18 @@ const ExerciseSearchPage = () => {
       ).toFixed(1);
       setCaloriesBurned(Number(calories));
     }
+
     setIsOpen(true);
+  };
+
+  // 운동 검색 등록 bottom sheet 닫기
+  const closeModal = () => {
+    // 모달 끄면 작성한 정보 초기화
+    setExerciseTime(0);
+    setCaloriesBurned(0);
+    setSetList([]);
+
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -93,46 +87,29 @@ const ExerciseSearchPage = () => {
       5
     ).toFixed(1);
 
+    // 1분당 소모 칼로리 설명
     setCaloriesBurned(Number(calories));
-
-    // 운동 상세 정보 수정에서 필요!
-    // if (setList && setList[0]?.exerciseDistance) {
-    //   setDetailType('distance');
-    // } else if (setList && setList[0]?.exerciseWeight) {
-    //   setDetailType('weight');
-    // } else {
-    //   setDetailType('count');
-    // }
   }, [exerciseTime]);
-
-  const closeModal = () => {
-    setIsOpen(false);
-
-    // 모달 끄면 작성한 정보 초기화
-    setExerciseTime(0);
-    setCaloriesBurned(0);
-    setNewSetList([]);
-  };
 
   // 운동 검색
   const searchExercise = async () => {
     console.log('운동 검색');
     console.log('searchStr:', searchStr);
-    //   try {
-    //     const response = await useAxios.get('/exercise/search', {
-    //       params: { searchStr },
-    //     });
+    // try {
+    //   const response = await useAxios.get('/exercise/search', {
+    //     params: { searchStr },
+    //   });
 
-    //     if (response.status === httpStatusCode.OK) {
-    //       setExerciseInfoList(response.data.exerciseInfoList);
-    //       recentWeight.current = response.data.recentWeight;
-    //     } else if (response.status === httpStatusCode.NOCONTENT) {
-    //       setExerciseInfoList([]);
-    //       recentWeight.current = 0;
-    //     }
-    //   } catch (err) {
-    //     console.log('운동 검색 에러:', err);
+    //   if (response.status === httpStatusCode.OK) {
+    //     setExerciseInfoList(response.data.exerciseInfoList);
+    //     recentWeight.current = response.data.recentWeight;
+    //   } else if (response.status === httpStatusCode.NOCONTENT) {
+    //     setExerciseInfoList([]);
+    //     recentWeight.current = 0;
     //   }
+    // } catch (err) {
+    //   console.log('운동 검색 에러:', err);
+    // }
   };
 
   // 운동 등록
@@ -142,7 +119,7 @@ const ExerciseSearchPage = () => {
     console.log('exerciseTime', exerciseTime);
     console.log('caloriesBurned:', caloriesBurned);
     console.log('method:', true);
-    console.log('setList:', newSetList);
+    console.log('setList:', setList);
 
     // try {
     //   const response = await useAxios.post(`/exercise/${regDate}`, {
@@ -150,7 +127,7 @@ const ExerciseSearchPage = () => {
     //     exerciseTime,
     //     caloriesBurned,
     //     method: true,
-    //     setList: newSetList,
+    //     setList: setList,
     //   });
 
     //   if(response.status === httpStatusCode.OK) {
@@ -194,10 +171,9 @@ const ExerciseSearchPage = () => {
           exerciseTime={exerciseTime}
           caloriesBurned={caloriesBurned}
           detailType={detailType}
-          changeDetailType={changeDetailType}
-          addNewSet={addNewSet}
-          newSetList={newSetList}
-          setNewSetList={setNewSetList}
+          setDetailType={setDetailType}
+          setList={setList}
+          setSetList={setSetList}
         />
         <Button buttonName="등록하기" color="blue" onClick={registExercise} />
       </BottomSheet>

@@ -46,7 +46,7 @@ export type foodInfo = {
 
 type commonProps = {
   type: 'diet' | 'exercise';
-  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefreshed: React.Dispatch<React.SetStateAction<boolean>>;
   category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   dietId?: number;
 };
@@ -122,9 +122,7 @@ export type headerProps = {
 
 export type iconButtonProps = {
   iconName: keyof typeof iconPaths;
-  onClick?: (
-    event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | number,
-  ) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   size?: number;
 };
 
@@ -194,6 +192,7 @@ export type infoProps = {
   unit?: string;
   ntr?: boolean;
   size?: boolean;
+  unitdir?: boolean;
 };
 
 export type food = {
@@ -280,14 +279,12 @@ export type WeightInfo = {
 };
 
 export type formExProps = {
-  setExerciseTime: React.Dispatch<React.SetStateAction<number>>;
   exerciseTime: number;
+  setExerciseTime: React.Dispatch<React.SetStateAction<number>>;
   caloriesBurned: number;
+  setCaloriesBurned?: React.Dispatch<React.SetStateAction<number>>;
   detailType: string;
-  changeDetailType: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setList?: ExerciseSet[];
-  setSetList?: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
-  addNewSet: () => void;
-  newSetList?: ExerciseSet[];
-  setNewSetList?: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
+  setDetailType: React.Dispatch<React.SetStateAction<string>>;
+  setList: ExerciseSet[];
+  setSetList: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
 };
