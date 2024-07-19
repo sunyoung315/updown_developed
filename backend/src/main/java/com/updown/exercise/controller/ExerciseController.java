@@ -1,6 +1,7 @@
 package com.updown.exercise.controller;
 
-import com.updown.exercise.dto.req.RegsiterExercise;
+import com.updown.exercise.dto.req.RegsiterExerciseReq;
+import com.updown.exercise.dto.res.SearchExerciseRes;
 import com.updown.exercise.service.ExerciseService;
 import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,25 @@ public class ExerciseController {
      * 운동 등록
      * @param regDate
      * @param member
-     * @param regsiterExercise
+     * @param regsiterExerciseReq
      * @return
      */
     @PostMapping ("/{regDate}")
-    ResponseEntity<?> registerExercise(@PathVariable("regDate") LocalDate regDate, @AuthenticationPrincipal Member member, @RequestBody RegsiterExercise regsiterExercise) {
-        exerciseService.registerExercise(regDate, member, regsiterExercise);
+    ResponseEntity<?> registerExercise(@PathVariable("regDate") LocalDate regDate, @AuthenticationPrincipal Member member, @RequestBody RegsiterExerciseReq regsiterExerciseReq) {
+        exerciseService.registerExercise(regDate, member, regsiterExerciseReq);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 하루 운동 정보 조회
+     * @param regDate
+     * @param member
+     * @return
+     */
+    @GetMapping("/{regDate}")
+    ResponseEntity<?> searchExercise(@PathVariable("regDate") LocalDate regDate, @AuthenticationPrincipal Member member){
+        SearchExerciseRes searchExerciseRes = exerciseService.searchExercise(regDate, member);
+        return ResponseEntity.ok().body(searchExerciseRes);
     }
 
 }

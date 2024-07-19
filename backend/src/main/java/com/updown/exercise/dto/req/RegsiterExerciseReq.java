@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RegsiterExercise {
+public class RegsiterExerciseReq {
     private String exerciseName;
     private Integer exerciseTime;
     private float caloriesBurned;
