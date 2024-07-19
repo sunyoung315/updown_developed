@@ -1,6 +1,7 @@
 package com.updown.exercise.controller;
 
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
+import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
 import com.updown.exercise.service.ExerciseService;
 import com.updown.member.entity.Member;
@@ -40,6 +41,18 @@ public class ExerciseController {
     ResponseEntity<?> searchExercise(@PathVariable("regDate") LocalDate regDate, @AuthenticationPrincipal Member member){
         SearchExerciseRes searchExerciseRes = exerciseService.searchExercise(regDate, member);
         return ResponseEntity.ok().body(searchExerciseRes);
+    }
+
+    /**
+     * 하루 운동 리스트 조회
+     * @param regDate
+     * @param member
+     * @return
+     */
+    @GetMapping("/list/{regDate}")
+    ResponseEntity<?> searchExerciseList(@PathVariable("regDate") LocalDate regDate, @AuthenticationPrincipal Member member){
+        SearchExerciseListRes searchExerciseListRes = exerciseService.searchExerciseList(regDate,member);
+        return ResponseEntity.ok().body(searchExerciseListRes);
     }
 
 }
