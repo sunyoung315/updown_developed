@@ -1,6 +1,9 @@
 package com.updown.exercise.service;
 
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
+import com.updown.exercise.dto.res.ExerciseList;
+import com.updown.exercise.dto.res.ExerciseSetList;
+import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
 import com.updown.exercise.entity.Exercise;
 import com.updown.exercise.entity.ExerciseRecord;
@@ -15,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @Service
@@ -77,6 +82,49 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .totalTime(exerciseRecord.getTotalTime())
                 .totalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned())
                 .exerciseImg(exerciseRecord.getExerciseImg())
+                .build();
+
+    }
+
+    @Override
+    public SearchExerciseListRes searchExerciseList(LocalDate regDate, Member member) {
+        // 운동 기록 찾기
+        ExerciseRecord exerciseRecord = exerciseRecordRepository.findByMemberAndRegDate(member, regDate).orElseThrow(ExerciseRecordNotFoundException::new);
+        // 해당 운동기록 Id를 가지는 운동 찾기
+        List<Exercise> list = exerciseRepository.findByExerciseRecord(exerciseRecord);
+        List<ExerciseList> list2 = new ArrayList<>();
+        for (Exercise exercise : list) {
+            // 해당 운동 Id를 가지는 운동 세트 찾기
+            List<ExerciseSet> exerciseSetListTmp = exerciseSetRepository.findByExercise(exercise);
+            List<ExerciseSetList> exerciseSetList = new ArrayList<>();
+
+            for(ExerciseSet exerciseSet : exerciseSetListTmp){
+                ExerciseSetList exerciseSetList1 = ExerciseSetList.builder()
+                        .exerciseSetId(exerciseSet.getExerciseSetId())
+                        .exerciseCount(exerciseSet.getExerciseCount())
+                        .exerciseWeight(exerciseSet.getExerciseWeight())
+                        .exerciseDistance(exerciseSet.getExerciseDistance())
+                        .build();
+                exerciseSetList.add(exerciseSetList1);
+            }
+
+            ExerciseList exerciseList = ExerciseList.builder()
+                    .exerciseId(exercise.getExerciseId())
+                    .exerciseName(exercise.getExerciseName())
+                    .exerciseTime(exercise.getExerciseTime())
+                    .caloriesBurned(exercise.getCaloriesBurned())
+                    .method(exercise.getMethod())
+                    .exerciseSetList(exerciseSetList)
+                    .build();
+            list2.add(exerciseList);
+        }
+
+        return SearchExerciseListRes.builder()
+                .exerciseRecordId(exerciseRecord.getExerciseRecordId())
+                .totalTime(exerciseRecord.getTotalTime())
+                .totalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned())
+                .exerciseImg(exerciseRecord.getExerciseImg())
+                .exerciseList(list2)
                 .build();
 
     }
