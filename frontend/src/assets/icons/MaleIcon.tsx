@@ -1,6 +1,8 @@
 import theme from '@/styles/theme';
 
-const MaleIcon = ({ fillColor }: { fillColor: keyof typeof theme }) => {
+const MaleIcon = ({ color }: { color: keyof typeof theme }) => {
+  const fillColor = theme[color];
+
   return (
     <svg
       width="112"
