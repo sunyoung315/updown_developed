@@ -70,30 +70,25 @@ const Text = styled.div`
 const DailyExercise = ({ regDate }: { regDate: string }) => {
   const navigator = useNavigate();
 
-  // const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
-
-  const exerciseInfo = {
-    exerciseRecordId: 1,
-    totalTime: 60,
-    totalCaloriesBurned: 532,
-    exerciseImg: '',
-  };
+  const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
 
   // 운동 정보 조회
-  // const getExerciseInfo = async () => {
-  //   try {
-  //     const response = await useAxios.get(`/exercise/${regDate}`);
+  const getExerciseInfo = async () => {
+    try {
+      const response = await useAxios.get(`/exercise/${regDate}`);
 
-  //     if (response.status === httpStatusCode.OK) {
-  //       setExerciseInfo(response?.data);
-  //     }
-  //   } catch (err) {
-  //     console.log('운동 정보 조회 에러:', err);
-  //   }
-  // };
+      if (response.status === httpStatusCode.OK) {
+        setExerciseInfo(response?.data);
+      } else if (response.status === httpStatusCode.NOCONTENT) {
+        setExerciseInfo(undefined);
+      }
+    } catch (err) {
+      console.log('운동 정보 조회 에러:', err);
+    }
+  };
 
   useEffect(() => {
-    // getExerciseInfo();
+    getExerciseInfo();
   }, [regDate]);
 
   const goExercisePage = () => {

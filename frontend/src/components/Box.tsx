@@ -205,7 +205,8 @@ const Box = (boxProps: boxProps) => {
             <Calorie>{info.calories} Kcal</Calorie>
           </Infos>
         )}
-        {type === 'exercise' && info.setList && info.setList.length > 0 && (
+        {/* {type === 'exercise' && info.setList && info.setList.length > 0 && ( */}
+        {type === 'exercise' && (
           <SetBox>
             {info.setList?.map((set, idx) => (
               <SetInfo key={set.exerciseSetId}>

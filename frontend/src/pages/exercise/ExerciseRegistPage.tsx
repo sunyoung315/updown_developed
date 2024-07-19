@@ -32,29 +32,22 @@ const ExerciseRegistPage = () => {
 
   // 운동 등록
   const registExercise = async () => {
-    console.log('운동 등록');
-    console.log('exerciseName:', exerciseName);
-    console.log('exerciseTime', exerciseTime);
-    console.log('caloriesBurned:', caloriesBurned);
-    console.log('method:', false);
-    console.log('setList:', setList);
+    try {
+      const response = await useAxios.post(`/exercise/${regDate}`, {
+        exerciseName,
+        exerciseTime,
+        caloriesBurned,
+        method: false,
+        setList: setList,
+      });
 
-    // try {
-    //   const response = await useAxios.post(`/exercise/${regDate}`, {
-    //     exerciseName,
-    //     exerciseTime,
-    //     caloriesBurned,
-    //     method: false,
-    //     setList: setList,
-    //   });
-
-    //   if(response.status === httpStatusCode.OK) {
-    //     console.log('운동 등록 성공');
-    //     navigator('/exercise');
-    //   }
-    // } catch (err) {
-    //   console.log('운동 등록 에러:', err);
-    // }
+      if (response.status === httpStatusCode.OK) {
+        console.log('운동 등록 성공');
+        navigator('/exercise');
+      }
+    } catch (err) {
+      console.log('운동 등록 에러:', err);
+    }
   };
 
   return (

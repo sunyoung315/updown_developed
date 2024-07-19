@@ -1,15 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  BottomSheet,
-  Button,
-  Header,
-  IconButton,
-  Input,
-} from '@/components';
-import Form from './components/Form';
-import { Exercise, ExerciseInfo, ExerciseSet } from '@/types/type';
+import { Box, BottomSheet, Button, Header, IconButton } from '@/components';
+import { Exercise, ExerciseInfo } from '@/types/type';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import Running from '@/assets/images/running.png';
@@ -91,12 +83,6 @@ const ButtonBox = styled.div<{ $gap: number }>`
   gap: ${props => props.$gap}rem;
 `;
 
-const InputBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
 const ExercisePage = () => {
   const navigator = useNavigate();
 
@@ -106,86 +92,31 @@ const ExercisePage = () => {
 
   const regDate = localStorage.getItem('date');
 
-  // const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
-  // const [exerciseList, setExerciseList] = useState<Exercise[]>();
+  const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
+  const [exerciseList, setExerciseList] = useState<Exercise[]>();
   const [refreshed, setRefreshed] = useState<boolean>(false);
-  // 사진 등록 버튼 모달
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const exerciseInfo = {
-    exerciseRecordId: 1,
-    totalTime: 60,
-    totalCaloriesBurned: 532,
-    exerciseImg: '',
-  };
-
-  const exerciseList: Exercise[] = [
-    {
-      exerciseId: 1,
-      exerciseName: '달리기',
-      exerciseTime: 45,
-      caloriesBurned: 321,
-      method: true,
-      setList: [
-        {
-          exerciseSetId: 1,
-          exerciseCount: 0,
-          exerciseWeight: 0,
-          exerciseDistance: 2.5,
-        },
-      ],
-    },
-    {
-      exerciseId: 2,
-      exerciseName: '아령들기',
-      exerciseTime: 15,
-      caloriesBurned: 211,
-      method: false,
-      setList: [
-        {
-          exerciseSetId: 2,
-          exerciseCount: 12,
-          exerciseWeight: 3,
-          exerciseDistance: 0,
-        },
-        {
-          exerciseSetId: 3,
-          exerciseCount: 24,
-          exerciseWeight: 5,
-          exerciseDistance: 0,
-        },
-      ],
-    },
-    {
-      exerciseId: 3,
-      exerciseName: '팔굽혀펴기',
-      exerciseTime: 100,
-      caloriesBurned: 1011,
-      method: false,
-      setList: [],
-    },
-  ];
 
   // 운동 리스트 조회
   const getExerciseList = async () => {
     console.log('운동 리스트 조회');
-    // try {
-    //   const response = await useAxios.get(`/exercise/list/${regDate}`);
+    try {
+      const response = await useAxios.get(`/exercise/list/${regDate}`);
 
-    //   if (response.status === httpStatusCode.OK) {
-    //     setExerciseList(response.data.exerciseList);
-    //     setExerciseInfo(response.data.exerciseInfo);
-    //   } else if (response.status === httpStatusCode.NOCONTENT) {
-    //     setExerciseList(undefined);
-    //     setExerciseInfo(undefined);
-    //   }
-    // } catch (err) {
-    //   console.log('운동 리스트 조회 에러:', err);
-    // }
+      if (response.status === httpStatusCode.OK) {
+        setExerciseList(response.data.exerciseList);
+        setExerciseInfo(response.data.exerciseInfo);
+      } else if (response.status === httpStatusCode.NOCONTENT) {
+        setExerciseList(undefined);
+        setExerciseInfo(undefined);
+      }
+    } catch (err) {
+      console.log('운동 리스트 조회 에러:', err);
+    }
   };
 
   useEffect(() => {
-    // getExerciseList();
+    getExerciseList();
     setRefreshed(false);
   }, [refreshed]);
 
@@ -213,36 +144,36 @@ const ExercisePage = () => {
       formData.append('execiseImg', e.target.files[0]);
       if (regDate) formData.append('regDate', regDate);
 
-      // try {
-      //   const response = await useAxios.post('/exercise/img', formData, {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data',
-      //     },
-      //   });
+      try {
+        const response = await useAxios.post('/exercise/img', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
 
-      //   if (response.status === httpStatusCode.OK) {
-      //     getExerciseList();
-      //   }
-      // } catch (err) {
-      //   console.log('사진 등록 에러:', err);
-      // }
+        if (response.status === httpStatusCode.OK) {
+          getExerciseList();
+        }
+      } catch (err) {
+        console.log('사진 등록 에러:', err);
+      }
     }
   };
 
   // 사진 삭제
   const deleteImage = async () => {
     const exerciseRecordId = exerciseInfo?.exerciseRecordId;
-    // try {
-    //   const response = await useAxios.delete('/exercise/img', {
-    //     params: { exerciseRecordId },
-    //   });
+    try {
+      const response = await useAxios.delete('/exercise/img', {
+        params: { exerciseRecordId },
+      });
 
-    //   if (response.status === httpStatusCode.OK) {
-    //     getExerciseList();
-    //   }
-    // } catch (err) {
-    //   console.log('사진 삭제 에러:', err);
-    // }
+      if (response.status === httpStatusCode.OK) {
+        getExerciseList();
+      }
+    } catch (err) {
+      console.log('사진 삭제 에러:', err);
+    }
   };
 
   return (

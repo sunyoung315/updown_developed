@@ -24,9 +24,9 @@ const ExerciseSearchPage = () => {
   const regDate = localStorage.getItem('date');
 
   const [searchStr, setSearchStr] = useState<string>('');
-  // const [exerciseInfoList, setExerciseInfoList] = useState<exerciseResult[]>(
-  //   [],
-  // );
+  const [exerciseInfoList, setExerciseInfoList] = useState<exerciseResult[]>(
+    [],
+  );
   const exerciseRef = useRef<exerciseResult>({});
   const recentWeight = useRef<number>(51);
   const [exerciseTime, setExerciseTime] = useState<number>(0);
@@ -34,19 +34,6 @@ const ExerciseSearchPage = () => {
   const [setList, setSetList] = useState<ExerciseSet[]>([]);
   const [detailType, setDetailType] = useState<string>('count');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const exerciseInfoList = [
-    {
-      exerciseInfoId: 1,
-      exerciseName: '달리기',
-      met: 12,
-    },
-    {
-      exerciseInfoId: 2,
-      exerciseName: '자전거 타기',
-      met: 7,
-    },
-  ];
 
   const goBack = () => {
     navigator('/exercise');
@@ -95,48 +82,41 @@ const ExerciseSearchPage = () => {
   const searchExercise = async () => {
     console.log('운동 검색');
     console.log('searchStr:', searchStr);
-    // try {
-    //   const response = await useAxios.get('/exercise/search', {
-    //     params: { searchStr },
-    //   });
+    try {
+      const response = await useAxios.get('/exercise/search', {
+        params: { searchStr },
+      });
 
-    //   if (response.status === httpStatusCode.OK) {
-    //     setExerciseInfoList(response.data.exerciseInfoList);
-    //     recentWeight.current = response.data.recentWeight;
-    //   } else if (response.status === httpStatusCode.NOCONTENT) {
-    //     setExerciseInfoList([]);
-    //     recentWeight.current = 0;
-    //   }
-    // } catch (err) {
-    //   console.log('운동 검색 에러:', err);
-    // }
+      if (response.status === httpStatusCode.OK) {
+        setExerciseInfoList(response.data.exerciseInfoList);
+        recentWeight.current = response.data.recentWeight;
+      } else if (response.status === httpStatusCode.NOCONTENT) {
+        setExerciseInfoList([]);
+        recentWeight.current = 0;
+      }
+    } catch (err) {
+      console.log('운동 검색 에러:', err);
+    }
   };
 
   // 운동 등록
   const registExercise = async () => {
-    console.log('운동 등록');
-    console.log('exerciseName:', exerciseRef.current.exerciseName);
-    console.log('exerciseTime', exerciseTime);
-    console.log('caloriesBurned:', caloriesBurned);
-    console.log('method:', true);
-    console.log('setList:', setList);
+    try {
+      const response = await useAxios.post(`/exercise/${regDate}`, {
+        exerciseName: exerciseRef.current.exerciseName,
+        exerciseTime,
+        caloriesBurned,
+        method: true,
+        setList: setList,
+      });
 
-    // try {
-    //   const response = await useAxios.post(`/exercise/${regDate}`, {
-    //     exerciseName: exerciseRef.current.exerciseName,
-    //     exerciseTime,
-    //     caloriesBurned,
-    //     method: true,
-    //     setList: setList,
-    //   });
-
-    //   if(response.status === httpStatusCode.OK) {
-    //     console.log('운동 등록 성공');
-    //     closeModal();
-    //   }
-    // } catch (err) {
-    //   console.log('운동 등록 에러:', err);
-    // }
+      if (response.status === httpStatusCode.OK) {
+        console.log('운동 등록 성공');
+        closeModal();
+      }
+    } catch (err) {
+      console.log('운동 등록 에러:', err);
+    }
   };
 
   return (
