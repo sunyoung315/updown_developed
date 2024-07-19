@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { IconButton } from '@/components';
-import { boxProps } from '@/types/type';
+import { BottomSheet, Button, IconButton } from '@/components';
+import { boxProps, ExerciseSet } from '@/types/type';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import styled from 'styled-components';
+import Form from '@/pages/exercise/components/Form';
+import { useState } from 'react';
 
 const BoxWrapper = styled.div`
   width: 100%;
@@ -25,13 +27,19 @@ const Title = styled.div`
   align-items: flex-start;
 `;
 
-const Name = styled.span<{ $type: string }>`
-  font-size: 1.6rem;
+const TitleDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+`;
+
+const Name = styled.span<{ $type?: string }>`
+  font-size: 1.5rem;
   margin-left: ${props => (props.$type === 'exercise' ? '0.3rem' : 0)};
 `;
 
 const Record = styled.span`
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin-left: 0.7rem;
 `;
 
@@ -42,7 +50,7 @@ const Infos = styled.div`
 `;
 
 const MainInfo = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: ${props => props.theme.black};
 `;
 
@@ -51,7 +59,7 @@ const SubInfo = styled.span`
 `;
 
 const Calorie = styled.span`
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: ${props => props.theme.black};
 `;
 
@@ -70,14 +78,50 @@ const SetInfo = styled.div`
 `;
 
 const Box = (boxProps: boxProps) => {
-  const { type, info, setIsDeleted, dietId, category } = boxProps;
+  const { type, info, setRefreshed, dietId, category } = boxProps;
 
   const navigator = useNavigate();
-  const goFoodDetail = () => {
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [exerciseTime, setExerciseTime] = useState<number>(0);
+  const [caloriesBurned, setCaloriesBurned] = useState<number>(0);
+  const [setList, setSetList] = useState<ExerciseSet[]>([]);
+  const [detailType, setDetailType] = useState<string>('count');
+
+  const openModal = () => {
+    if (type === 'exercise') {
+      setExerciseTime(info.exerciseTime || 0);
+      setCaloriesBurned(info.caloriesBurned || 0);
+      setSetList(info.setList || []);
+
+      if (info.setList && info.setList[0]?.exerciseDistance) {
+        setDetailType('distance');
+      } else if (info.setList && info.setList[0]?.exerciseWeight) {
+        setDetailType('weight');
+      } else {
+        setDetailType('count');
+      }
+    }
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const goDetail = () => {
     if (type === 'diet') {
       navigator(`/diet/detail/${info.foodId}`, { state: { category, dietId } });
     } else if (type === 'exercise') {
-      // navigator(`/exercise/${info.exerciseId}`);
+      // 1. 직접 등록
+      if (!info.method)
+        navigator(`/exercise/detail/${info.exerciseId}`, {
+          state: { exercise: info },
+        });
+      // 2. 검색 등록
+      else {
+        openModal();
+      }
     }
   };
 
@@ -91,76 +135,115 @@ const Box = (boxProps: boxProps) => {
           params: { foodId: info.foodId },
         });
         if (response.status === httpStatusCode.OK) {
-          console.log('식단 삭제 성공');
-          setIsDeleted(true);
+          setRefreshed(true);
         }
       } catch (err) {
         console.log('식단 삭제 에러:', err);
       }
     } else if (type === 'exercise') {
-      console.log('운동 삭제');
+      try {
+        const response = await useAxios.delete(`/exercise/${info.exerciseId}`);
+
+        if (response.status === httpStatusCode.OK) {
+          setRefreshed(true);
+        }
+      } catch (err) {
+        console.log('운동 삭제 에러:', err);
+      }
     }
   };
 
-  const totalCount =
-    type === 'exercise'
-      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseCount || 0), 0)
-      : 0;
-  const totalWeight =
-    type === 'exercise'
-      ? info?.setList?.reduce((acc, set) => acc + (set?.exerciseWeight || 0), 0)
-      : 0;
-  const totalDistance =
-    type === 'exercise'
-      ? info?.setList?.reduce(
-          (acc, set) => acc + (set?.exerciseDistance || 0),
-          0,
-        )
-      : 0;
+  // 운동 수정
+  const updateExercise = async () => {
+    if (type === 'exercise') {
+      console.log('exerciseName:', info.exerciseName);
+      console.log('exerciseTime:', exerciseTime);
+      console.log('caloriesBurned:', caloriesBurned);
+      console.log('method:', true);
+      console.log('setList:', setList);
+      // try {
+      //   const response = await useAxios.put(`/exercise/${info.exerciseId}`, {
+      //     exerciseName: info.exerciseName,
+      //     exerciseTime: exerciseTime,
+      //     caloriesBurned: caloriesBurned,
+      //     method: true,
+      //     setList: setList,
+      //   });
+
+      //   if (response.status === httpStatusCode.OK) {
+      //     closeModal();
+      //     setRefreshed(true);
+      //   }
+      // } catch (err) {
+      //   console.log('운동 수정 오류:', err);
+      // }
+    }
+  };
 
   return (
-    <BoxWrapper onClick={goFoodDetail}>
-      <Title>
-        <div>
-          <Name $type={type}>
-            {type === 'diet' ? info.foodName : info.exerciseName}
-          </Name>
-          {type === 'exercise' && (
-            <Record>
-              총 {info.exerciseTime}분 / {info.caloriesBurned}kcal
-            </Record>
-          )}
-        </div>
-        <IconButton iconName="close" onClick={deleteInfo} size={1.2} />
-      </Title>
-      {type === 'diet' && (
-        <Infos>
-          <MainInfo>
-            {info.brandName} &nbsp;
-            <SubInfo>{info.foodIntake ? info.foodIntake + 'g' : ''}</SubInfo>
-          </MainInfo>
-          <Calorie>{info.calories} Kcal</Calorie>
-        </Infos>
-      )}
+    <>
+      <BoxWrapper onClick={goDetail}>
+        <Title>
+          <TitleDiv>
+            <Name $type={type}>
+              {type === 'diet' ? info.foodName : info.exerciseName}
+            </Name>
+            {type === 'exercise' && (
+              <Record>
+                총 {info.exerciseTime}분 / {info.caloriesBurned}kcal
+              </Record>
+            )}
+          </TitleDiv>
+          <IconButton iconName="close" onClick={deleteInfo} size={1.2} />
+        </Title>
+        {type === 'diet' && (
+          <Infos>
+            <MainInfo>
+              {info.brandName} &nbsp;
+              <SubInfo>{info.foodIntake ? info.foodIntake + 'g' : ''}</SubInfo>
+            </MainInfo>
+            <Calorie>{info.calories} Kcal</Calorie>
+          </Infos>
+        )}
+        {/* {type === 'exercise' && info.setList && info.setList.length > 0 && ( */}
+        {type === 'exercise' && (
+          <SetBox>
+            {info.setList?.map((set, idx) => (
+              <SetInfo key={set.exerciseSetId}>
+                <div>세트 {idx + 1}</div>
+                <div>
+                  {set.exerciseDistance
+                    ? `${set.exerciseDistance} km`
+                    : set.exerciseWeight
+                      ? `${set.exerciseWeight}kg X ${set.exerciseCount}회`
+                      : set.exerciseCount
+                        ? `${set.exerciseCount}회`
+                        : ''}
+                </div>
+              </SetInfo>
+            ))}
+          </SetBox>
+        )}
+      </BoxWrapper>
       {type === 'exercise' && (
-        <SetBox>
-          {info.setList?.map(set => (
-            <SetInfo>
-              <div>세트 {set.setNum}</div>
-              <div>
-                {set.exerciseDistance
-                  ? `${set.exerciseDistance} km`
-                  : set.exerciseWeight
-                    ? `${set.exerciseWeight}kg X ${set.exerciseCount}회`
-                    : set.exerciseCount
-                      ? `${set.exerciseCount}회`
-                      : ''}
-              </div>
-            </SetInfo>
-          ))}
-        </SetBox>
+        <BottomSheet
+          isOpen={isOpen}
+          onClose={closeModal}
+          title={info.exerciseName}
+        >
+          <Form
+            setExerciseTime={setExerciseTime}
+            exerciseTime={exerciseTime}
+            caloriesBurned={caloriesBurned}
+            detailType={detailType}
+            setDetailType={setDetailType}
+            setList={setList}
+            setSetList={setSetList}
+          />
+          <Button buttonName="수정하기" color="blue" onClick={updateExercise} />
+        </BottomSheet>
       )}
-    </BoxWrapper>
+    </>
   );
 };
 

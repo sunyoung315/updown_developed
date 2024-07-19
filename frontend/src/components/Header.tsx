@@ -17,7 +17,7 @@ const HeaderWrapper = styled.div<{ $isfixed?: boolean }>`
     top: 0;
     width: 100%;
     background-color: ${props.theme.white};
-    z-index: 1000;`
+    z-index: 10;`
       : ''}
 `;
 
@@ -64,7 +64,7 @@ const Header = (headerProps: headerProps) => {
     search,
     placeholder,
     onChange,
-    searchFood,
+    doSearch,
     nutrition,
     mypage,
     logout,
@@ -94,7 +94,7 @@ const Header = (headerProps: headerProps) => {
           <SearchInput
             onChange={onChange}
             placeholder={placeholder}
-            search={searchFood}
+            search={doSearch}
           />
           <Blank $search={search} />
         </>

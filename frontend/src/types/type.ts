@@ -46,7 +46,7 @@ export type foodInfo = {
 
 type commonProps = {
   type: 'diet' | 'exercise';
-  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefreshed: React.Dispatch<React.SetStateAction<boolean>>;
   category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   dietId?: number;
 };
@@ -113,7 +113,7 @@ export type headerProps = {
   search?: boolean;
   placeholder?: string;
   onChange?: React.Dispatch<React.SetStateAction<string>>;
-  searchFood?: () => void;
+  doSearch?: () => void;
   nutrition?: nutritionProps;
   mypage?: boolean;
   logout?: () => Promise<void>;
@@ -150,26 +150,32 @@ export type foodResult = {
 };
 
 export type exerciseResult = {
-  exerciseInfoId: number;
-  exerciseName: string;
-  met: number;
+  exerciseInfoId?: number;
+  exerciseName?: string;
+  met?: number;
 };
 
 // type에 따른 조건부 타입 지정
 type commonResultProps = {
   type: 'diet' | 'exercise';
-  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
-  dietId?: number;
 };
 
 type dietSearchResultProps = commonResultProps & {
   type: 'diet';
   result: foodResult;
+  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+  dietId: number;
+  exerciseRef?: React.MutableRefObject<exerciseResult>;
+  openModal?: () => void;
 };
 
 type exerciseSearchResultProps = commonResultProps & {
   type: 'exercise';
   result: exerciseResult;
+  category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+  dietId?: number;
+  exerciseRef: React.MutableRefObject<exerciseResult>;
+  openModal: () => void;
 };
 
 export type searchResultProps =
@@ -185,6 +191,8 @@ export type infoProps = {
   titleColor?: keyof typeof theme;
   unit?: string;
   ntr?: boolean;
+  size?: boolean;
+  unitdir?: boolean;
 };
 
 export type food = {
@@ -259,7 +267,7 @@ export type Exercise = {
 
 export type ExerciseSet = {
   exerciseSetId?: number;
-  setNum?: number;
+  // setNum?: number;
   exerciseCount?: number;
   exerciseWeight?: number;
   exerciseDistance?: number;
@@ -268,4 +276,15 @@ export type ExerciseSet = {
 export type WeightInfo = {
   weight: number;
   regDate: string;
+};
+
+export type formExProps = {
+  exerciseTime: number;
+  setExerciseTime: React.Dispatch<React.SetStateAction<number>>;
+  caloriesBurned: number;
+  setCaloriesBurned?: React.Dispatch<React.SetStateAction<number>>;
+  detailType: string;
+  setDetailType: React.Dispatch<React.SetStateAction<string>>;
+  setList: ExerciseSet[];
+  setSetList: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
 };

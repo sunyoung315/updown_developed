@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const InfoWrapper = styled.div<{
   $infodir: string | undefined;
   $titlecolor: string | undefined;
+  $size?: boolean;
 }>`
   height: ${props => (props.$infodir === 'row' ? 'auto' : '2.94rem')};
   display: ${props => (props.$infodir === 'row' ? 'flex' : 'grid')};
@@ -12,7 +13,8 @@ const InfoWrapper = styled.div<{
     props.$infodir === 'row' ? 'none' : 'repeat(2, 1fr)'};
   align-items: ${props => (props.$infodir === 'row' ? 'none' : 'center')};
   flex-direction: ${props => (props.$infodir === 'row' ? 'column' : 'row')};
-  gap: ${props => (props.$infodir === 'row' ? '0.3rem' : '1.2rem')};
+  gap: ${props =>
+    props.$infodir !== 'row' ? '1.2rem' : props.$size ? '1rem' : '0.3rem'};
   color: ${props =>
     props.$titlecolor === 'grey' ? props.theme.grey : props.theme.black};
 `;
@@ -21,13 +23,20 @@ const InfoTitle = styled.span`
   font-size: 1.13rem;
 `;
 
-const InfoContent = styled.label<{ $infodir?: string; $ntr?: boolean }>`
+const InfoContent = styled.label<{
+  $infodir?: string;
+  $ntr?: boolean;
+  $size?: boolean;
+  $unitdir?: boolean;
+}>`
   display: flex;
-  align-items: center;
-  justify-content: ${props => (props.$ntr ? 'flex-end' : 'space-between')};
-  gap: ${props => (props.$ntr ? '1rem' : '0')};
+  align-items: ${props => (props.$unitdir ? 'flex-end' : 'center')};
+  justify-content: ${props =>
+    props.$ntr ? 'flex-end' : props.$unitdir ? 'none' : 'space-between'};
+  gap: ${props => (props.$ntr ? '1rem' : props.$unitdir ? '0.5rem' : '0')};
   padding: 0.3rem;
-  font-size: ${props => (props.$infodir === 'row' ? '1.88rem' : '1.25rem')};
+  font-size: ${props =>
+    props.$infodir === 'row' && !props.$size ? '1.88rem' : '1.25rem'};
 `;
 
 const Unit = styled.span`
@@ -45,10 +54,12 @@ const Info = (infoProps: infoProps) => {
     titleColor,
     unit,
     ntr,
+    size,
+    unitdir,
   } = infoProps;
 
   return (
-    <InfoWrapper $infodir={infodir} $titlecolor={titleColor}>
+    <InfoWrapper $infodir={infodir} $titlecolor={titleColor} $size={size}>
       <InfoTitle>
         {title}
         {isRequired && (
@@ -57,7 +68,12 @@ const Info = (infoProps: infoProps) => {
           </span>
         )}
       </InfoTitle>
-      <InfoContent $infodir={infodir} $ntr={ntr}>
+      <InfoContent
+        $infodir={infodir}
+        $ntr={ntr}
+        $size={size}
+        $unitdir={unitdir}
+      >
         {content ? content : '-'}
         {unit && <Unit>{unit}</Unit>}
       </InfoContent>

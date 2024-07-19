@@ -57,7 +57,7 @@ const DietSearchPage = () => {
         search={true}
         placeholder="어떤 음식을 드셨나요?"
         onChange={setSearchStr}
-        searchFood={searchFood}
+        doSearch={searchFood}
         isFixed={true}
       />
       <FoodList>

@@ -12,7 +12,13 @@ import {
   DietRegistPage,
   DietSearchPage,
 } from './diet';
-import { ExercisePage } from './exercise';
+import {
+  ExerciseDetailPage,
+  ExerciseEditPage,
+  ExercisePage,
+  ExerciseRegistPage,
+  ExerciseSearchPage,
+} from './exercise';
 import MainPage from './main/MainPage';
 
 export {
@@ -27,5 +33,9 @@ export {
   DietPage,
   DietRegistPage,
   DietSearchPage,
+  ExerciseDetailPage,
+  ExerciseEditPage,
   ExercisePage,
+  ExerciseRegistPage,
+  ExerciseSearchPage,
 };

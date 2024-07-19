@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import useAxios from '@/util/http-commons';
+import { useNavigate } from 'react-router-dom';
 import { Box, BottomSheet, Button, Header, IconButton } from '@/components';
-import { Exercise } from '@/types/type';
+import { Exercise, ExerciseInfo } from '@/types/type';
+import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import Running from '@/assets/images/running.png';
 import styled from 'styled-components';
@@ -86,96 +86,39 @@ const ButtonBox = styled.div<{ $gap: number }>`
 const ExercisePage = () => {
   const navigator = useNavigate();
 
-  const location = useLocation();
-  const exerciseInfo = location.state.exerciseInfo;
-
-  const regDate = localStorage.getItem('date');
-
   const goMain = () => {
     navigator('/main');
   };
 
-  // const [exerciseList, setExerciseList] = useState<Exercise[]>();
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const regDate = localStorage.getItem('date');
+
+  const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
+  const [exerciseList, setExerciseList] = useState<Exercise[]>();
+  const [refreshed, setRefreshed] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const exerciseList: Exercise[] = [
-    {
-      exerciseId: 1,
-      exerciseName: '달리기',
-      exerciseTime: 45,
-      caloriesBurned: 321,
-      method: true,
-      setList: [
-        {
-          exerciseSetId: 1,
-          setNum: 1,
-          exerciseCount: 0,
-          exerciseWeight: 0,
-          exerciseDistance: 2.5,
-        },
-      ],
-    },
-    {
-      exerciseId: 2,
-      exerciseName: '아령들기',
-      exerciseTime: 15,
-      caloriesBurned: 211,
-      method: false,
-      setList: [
-        {
-          exerciseSetId: 2,
-          setNum: 1,
-          exerciseCount: 12,
-          exerciseWeight: 3,
-          exerciseDistance: 0,
-        },
-        {
-          exerciseSetId: 3,
-          setNum: 2,
-          exerciseCount: 24,
-          exerciseWeight: 5,
-          exerciseDistance: 0,
-        },
-      ],
-    },
-    {
-      exerciseId: 3,
-      exerciseName: '팔굽혀펴기',
-      exerciseTime: 100,
-      caloriesBurned: 1011,
-      method: false,
-      setList: [
-        {
-          exerciseSetId: 4,
-          setNum: 1,
-          exerciseCount: 12,
-          exerciseWeight: 0,
-          exerciseDistance: 0,
-        },
-      ],
-    },
-  ];
-
   // 운동 리스트 조회
-  // const getExerciseList = async () => {
-  //   try {
-  //     const response = await useAxios.get(`/exercise/list/${regDate}`);
+  const getExerciseList = async () => {
+    console.log('운동 리스트 조회');
+    try {
+      const response = await useAxios.get(`/exercise/list/${regDate}`);
 
-  //     if (response.status === httpStatusCode.OK) {
-  //       setExerciseList(response.data);
-  //     } else if (response.status === httpStatusCode.NOCONTENT) {
-  //       setExerciseList(undefined);
-  //     }
-  //   } catch (err) {
-  //     console.log('운동 리스트 조회 에러:', err);
-  //   }
-  // };
+      if (response.status === httpStatusCode.OK) {
+        setExerciseList(response.data.exerciseList);
+        setExerciseInfo(response.data.exerciseInfo);
+      } else if (response.status === httpStatusCode.NOCONTENT) {
+        setExerciseList(undefined);
+        setExerciseInfo(undefined);
+      }
+    } catch (err) {
+      console.log('운동 리스트 조회 에러:', err);
+    }
+  };
 
   useEffect(() => {
-    // getExerciseList();
-    setIsDeleted(false);
-  });
+    getExerciseList();
+    setRefreshed(false);
+  }, [refreshed]);
 
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -184,17 +127,54 @@ const ExercisePage = () => {
     imageInputRef.current?.click();
   };
 
+  // 사진 등록 모달 열기
   const openModal = () => {
     setIsOpen(true);
   };
 
+  // 사진 등록 모달 닫기
   const closeModal = () => {
     setIsOpen(false);
   };
 
-  const uploadImage = () => {};
+  // 운동 사진 등록
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const formData = new FormData();
+      formData.append('execiseImg', e.target.files[0]);
+      if (regDate) formData.append('regDate', regDate);
 
-  const deleteImage = () => {};
+      try {
+        const response = await useAxios.post('/exercise/img', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.status === httpStatusCode.OK) {
+          getExerciseList();
+        }
+      } catch (err) {
+        console.log('사진 등록 에러:', err);
+      }
+    }
+  };
+
+  // 사진 삭제
+  const deleteImage = async () => {
+    const exerciseRecordId = exerciseInfo?.exerciseRecordId;
+    try {
+      const response = await useAxios.delete('/exercise/img', {
+        params: { exerciseRecordId },
+      });
+
+      if (response.status === httpStatusCode.OK) {
+        getExerciseList();
+      }
+    } catch (err) {
+      console.log('사진 삭제 에러:', err);
+    }
+  };
 
   return (
     <>
@@ -263,26 +243,18 @@ const ExercisePage = () => {
             type="exercise"
             info={exercise}
             key={exercise.exerciseId}
-            setIsDeleted={setIsDeleted}
+            setRefreshed={setRefreshed}
           />
         ))}
         <ButtonWrapper>
           <Button
             buttonName="검색"
-            onClick={() =>
-              navigator('/exercise/search', {
-                state: { exerciseInfoId: exerciseInfo?.exerciseInfoId },
-              })
-            }
+            onClick={() => navigator('/exercise/search')}
             color="blue"
           />
           <Button
             buttonName="직접 등록"
-            onClick={() =>
-              navigator('/exercise/regist', {
-                state: { exerciseInfoId: exerciseInfo?.exerciseInfoId },
-              })
-            }
+            onClick={() => navigator('/exercise/regist')}
             color="blue"
           />
         </ButtonWrapper>
