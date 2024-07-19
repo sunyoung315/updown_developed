@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ExerciseSetList {
+public class SetList {
 
     private Integer exerciseSetId;
     private float exerciseCount;
