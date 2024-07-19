@@ -13,5 +13,5 @@ public class ExerciseList {
     private Integer exerciseTime;
     private float caloriesBurned;
     private Boolean method;
-    List<ExerciseSetList> exerciseSetList;
+    List<SetList> setList;
 }

@@ -8,9 +8,6 @@ import java.util.List;
 @Builder
 @Getter
 public class SearchExerciseListRes {
-    private Integer exerciseRecordId;
-    private Integer totalTime;
-    private float totalCaloriesBurned;
-    private String exerciseImg;
+    private SearchExerciseRes exerciseInfo;
     private List<ExerciseList> exerciseList;
 }
