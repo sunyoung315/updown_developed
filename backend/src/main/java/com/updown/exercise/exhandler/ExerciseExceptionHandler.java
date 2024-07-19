@@ -1,8 +1,6 @@
 package com.updown.exercise.exhandler;
 
-import com.updown.exercise.exception.ExerciseRecordExistedException;
-import com.updown.weight.exception.WeightExistedException;
-import com.updown.weight.exception.WeightNotFoundException;
+import com.updown.exercise.exception.ExerciseRecordNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,14 +30,13 @@ public class ExerciseExceptionHandler {
 //        return ResponseEntity.badRequest().body(errorMessage.toString());
 //    }
 
-    @ExceptionHandler(ExerciseRecordExistedException.class)
-    protected ResponseEntity<String> ExerciseRecordExistedExceptionHandler(ExerciseRecordExistedException e) {
+    @ExceptionHandler(ExerciseRecordNotFoundException.class)
+    protected ResponseEntity<String> ExerciseRecordNotFoundExceptionHandler(ExerciseRecordNotFoundException e) {
         StringBuilder errorMessage = new StringBuilder();
 
         makeErrorMessage(errorMessage, e);
 
-        errorMessage.append("해당 날짜에 이미 운동을 기록하였습니다.");
-        return ResponseEntity.badRequest().body(errorMessage.toString());
+        return ResponseEntity.noContent().build();
     }
 
 }
