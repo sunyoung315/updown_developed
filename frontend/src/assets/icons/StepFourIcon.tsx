@@ -1,6 +1,8 @@
 import theme from '@/styles/theme';
 
-const StepFourIcon = ({ fillColor }: { fillColor: keyof typeof theme }) => {
+const StepFourIcon = ({ color }: { color: keyof typeof theme }) => {
+  const fillColor = theme[color];
+
   return (
     <svg
       width="41"
