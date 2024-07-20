@@ -16,4 +16,6 @@ public interface ExerciseService {
     SearchExerciseListRes searchExerciseList(LocalDate regDate, Member member);
 
     void updateExercise(Integer exerciseId, Member member, UpdateExerciseReq updateExercise);
+
+    void deleteExercise(Integer exerciseId, Member member);
 }

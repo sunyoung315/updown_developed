@@ -144,12 +144,22 @@ public class ExerciseServiceImpl implements ExerciseService {
         // exerciseId로 운동 찾아서 수정, 저장
         Exercise exercise = exerciseRepository.findByExerciseId(exerciseId).orElseThrow(ExerciseNotFoundException::new);
 
+        // 수정 전의 시간, 칼로리소모
+        int originalExerciseTime = exercise.getExerciseTime();
+        float originalCaloriesBurned = exercise.getCaloriesBurned();
+
         exercise.setExerciseName(updateExerciseReq.getExerciseName());
         exercise.setExerciseTime(updateExerciseReq.getExerciseTime());
         exercise.setCaloriesBurned(updateExerciseReq.getCaloriesBurned());
         exercise.setMethod(updateExerciseReq.getMethod());
 
         exerciseRepository.save(exercise);
+
+        // exerciseRecord도 수정해야 함
+        ExerciseRecord exerciseRecord = exercise.getExerciseRecord();
+        exerciseRecord.setTotalTime(exerciseRecord.getTotalTime() - originalExerciseTime + updateExerciseReq.getExerciseTime());
+        exerciseRecord.setTotalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned() - originalCaloriesBurned + updateExerciseReq.getCaloriesBurned());
+        exerciseRecordRepository.save(exerciseRecord);
 
         // 해당 exercise를 가지는 기존 ExerciseSet을 가져옴
         List<ExerciseSet> existingSets = exerciseSetRepository.findByExercise(exercise);
@@ -189,7 +199,12 @@ public class ExerciseServiceImpl implements ExerciseService {
                 exerciseSetRepository.delete(existingSet);
             }
         }
+    }
 
+    @Override
+    public void deleteExercise(Integer exerciseId, Member member) {
+        Exercise exercise = exerciseRepository.findByExerciseId(exerciseId).orElseThrow(ExerciseNotFoundException::new);
+        exerciseRepository.delete(exercise);
     }
 }
 

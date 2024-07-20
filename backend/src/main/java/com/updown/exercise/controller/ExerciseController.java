@@ -69,4 +69,16 @@ public class ExerciseController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 운동 삭제
+     * @param exerciseId
+     * @param member
+     * @return
+     */
+    @DeleteMapping("/{exerciseId}")
+    ResponseEntity<?> deleteExercise(@PathVariable("exerciseId") Integer exerciseId, @AuthenticationPrincipal Member member){
+        exerciseService.deleteExercise(exerciseId, member);
+        return ResponseEntity.ok().build();
+    }
+
 }
