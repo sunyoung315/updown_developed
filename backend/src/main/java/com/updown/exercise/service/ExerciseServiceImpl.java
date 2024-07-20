@@ -1,6 +1,8 @@
 package com.updown.exercise.service;
 
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
+import com.updown.exercise.dto.req.SetListReq;
+import com.updown.exercise.dto.req.UpdateExerciseReq;
 import com.updown.exercise.dto.res.ExerciseList;
 import com.updown.exercise.dto.res.SetList;
 import com.updown.exercise.dto.res.SearchExerciseListRes;
@@ -9,6 +11,7 @@ import com.updown.exercise.entity.Exercise;
 import com.updown.exercise.entity.ExerciseInfo;
 import com.updown.exercise.entity.ExerciseRecord;
 import com.updown.exercise.entity.ExerciseSet;
+import com.updown.exercise.exception.ExerciseNotFoundException;
 import com.updown.exercise.exception.ExerciseRecordNotFoundException;
 import com.updown.exercise.repository.ExerciseRecordRepository;
 import com.updown.exercise.repository.ExerciseRepository;
@@ -20,7 +23,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -130,6 +136,59 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .exerciseInfo(exerciseInfo)
                 .exerciseList(exerciseLists)
                 .build();
+
+    }
+
+    @Override
+    public void updateExercise(Integer exerciseId, Member member, UpdateExerciseReq updateExerciseReq) {
+        // exerciseId로 운동 찾아서 수정, 저장
+        Exercise exercise = exerciseRepository.findByExerciseId(exerciseId).orElseThrow(ExerciseNotFoundException::new);
+
+        exercise.setExerciseName(updateExerciseReq.getExerciseName());
+        exercise.setExerciseTime(updateExerciseReq.getExerciseTime());
+        exercise.setCaloriesBurned(updateExerciseReq.getCaloriesBurned());
+        exercise.setMethod(updateExerciseReq.getMethod());
+
+        exerciseRepository.save(exercise);
+
+        // 해당 exercise를 가지는 기존 ExerciseSet을 가져옴
+        List<ExerciseSet> existingSets = exerciseSetRepository.findByExercise(exercise);
+
+        // 업데이트 요청된 세트를 맵으로 변환 (새로운 세트는 ID가 없음)
+        Map<Integer, SetListReq> setRequestMap = new HashMap<>();
+
+        for (SetListReq setListReq : updateExerciseReq.getSetList()) {
+            if (setListReq.getExerciseSetId() != null) { // 기존에 존재하던 set이라면
+                setRequestMap.put(setListReq.getExerciseSetId(), setListReq); // setRequestMap에 저장
+            } else { // 새로 추가된 set이라면 새로운 데이터로 저장
+                ExerciseSet newExerciseSet = ExerciseSet.builder()
+                        .exercise(exercise)
+                        .exerciseCount(setListReq.getExerciseCount())
+                        .exerciseWeight(setListReq.getExerciseWeight())
+                        .exerciseDistance(setListReq.getExerciseDistance())
+                        .build();
+                exerciseSetRepository.save(newExerciseSet);
+            }
+        }
+
+        // 기존 세트를 업데이트하거나 삭제
+        for (ExerciseSet existingSet : existingSets) {
+            // 업데이트 요청된 세트 중에서 현재 세트의 ID를 가진 세트 요청을 찾음
+            SetListReq setListReq = setRequestMap.get(existingSet.getExerciseSetId());
+            if (setListReq != null) {
+                // 요청된 세트가 존재하면 기존 세트를 업데이트
+                existingSet.setExerciseCount(setListReq.getExerciseCount());
+                existingSet.setExerciseWeight(setListReq.getExerciseWeight());
+                existingSet.setExerciseDistance(setListReq.getExerciseDistance());
+                // 변경된 세트를 저장
+                exerciseSetRepository.save(existingSet);
+                // 처리된 세트를 맵에서 제거하여 나중에 새로 추가될 필요가 없음을 표시
+                setRequestMap.remove(existingSet.getExerciseSetId());
+            } else {
+                // 요청된 세트가 존재하지 않으면 기존 세트를 삭제
+                exerciseSetRepository.delete(existingSet);
+            }
+        }
 
     }
 }

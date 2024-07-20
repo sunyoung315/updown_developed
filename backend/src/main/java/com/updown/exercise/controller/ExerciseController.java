@@ -1,6 +1,7 @@
 package com.updown.exercise.controller;
 
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
+import com.updown.exercise.dto.req.UpdateExerciseReq;
 import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
 import com.updown.exercise.service.ExerciseService;
@@ -53,6 +54,19 @@ public class ExerciseController {
     ResponseEntity<?> searchExerciseList(@PathVariable("regDate") LocalDate regDate, @AuthenticationPrincipal Member member){
         SearchExerciseListRes searchExerciseListRes = exerciseService.searchExerciseList(regDate,member);
         return ResponseEntity.ok().body(searchExerciseListRes);
+    }
+
+    /**
+     * 운동 수정
+     * @param exerciseId
+     * @param member
+     * @param updateExercise
+     * @return
+     */
+    @PutMapping("/{exerciseId}")
+    ResponseEntity<?> updateExercise(@PathVariable("exerciseId") Integer exerciseId, @AuthenticationPrincipal Member member, @RequestBody UpdateExerciseReq updateExercise){
+        exerciseService.updateExercise(exerciseId, member, updateExercise);
+        return ResponseEntity.ok().build();
     }
 
 }
