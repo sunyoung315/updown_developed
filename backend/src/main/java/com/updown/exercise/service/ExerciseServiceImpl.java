@@ -204,6 +204,16 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public void deleteExercise(Integer exerciseId, Member member) {
         Exercise exercise = exerciseRepository.findByExerciseId(exerciseId).orElseThrow(ExerciseNotFoundException::new);
+
+        // 관련된 ExerciseRecord를 가져오기
+        ExerciseRecord exerciseRecord = exercise.getExerciseRecord();
+
+        // ExerciseRecord에서 운동 세부 정보를 뺀다.
+        exerciseRecord.setTotalTime(exerciseRecord.getTotalTime() - exercise.getExerciseTime());
+        exerciseRecord.setTotalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned() - exercise.getCaloriesBurned());
+        exerciseRecordRepository.save(exerciseRecord);
+
+        //  Exercise 삭제.
         exerciseRepository.delete(exercise);
     }
 }
