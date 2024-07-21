@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { headerProps } from '@/types/type';
 import { SearchInput, IconButton, Info } from '@/components';
-import styled from 'styled-components';
 import BottomSheet from './BottomSheet';
+import styled from 'styled-components';
 
 const HeaderWrapper = styled.div<{ $isfixed?: boolean }>`
-  height: 4rem;
+  height: 3.7rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,7 +36,7 @@ const HeaderName = styled.div`
   line-height: 1.7rem;
 `;
 
-const Blank = styled.div<{ $search: boolean | undefined }>`
+const Blank = styled.div<{ $search?: boolean | undefined }>`
   display: inline-block;
   width: ${props => (props.$search ? '1rem' : '1.7rem')};
   height: 1.7rem;

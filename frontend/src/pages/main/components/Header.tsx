@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { dateProps } from '@/types/type';
 import { LeftArrow, RightArrow } from '@/assets/icons';
 import CalendarIcon from '@/assets/icons/calendar.svg';
@@ -31,6 +32,8 @@ const CalendarButton = styled.img`
 
 const Header = (dateProps: dateProps) => {
   const { date, setDate } = dateProps;
+
+  const navigator = useNavigate();
 
   const today = new Date();
   const todayYear = new Date(today).getFullYear();
@@ -66,7 +69,7 @@ const Header = (dateProps: dateProps) => {
         <LeftArrow />
       </button>
       <DateWrapper>
-        <button>
+        <button onClick={() => navigator('/calendar')}>
           <CalendarButton src={CalendarIcon} />
         </button>
         {todayYear === year && todayMonth === month && todayDay === day

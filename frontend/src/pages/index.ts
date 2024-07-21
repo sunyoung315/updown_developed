@@ -20,6 +20,7 @@ import {
   ExerciseSearchPage,
 } from './exercise';
 import MainPage from './main/MainPage';
+import CalendarPage from './calendar/CalendarPage';
 
 export {
   LoadingPage,
@@ -38,4 +39,5 @@ export {
   ExercisePage,
   ExerciseRegistPage,
   ExerciseSearchPage,
+  CalendarPage,
 };

@@ -37,7 +37,7 @@ const Modal = styled.div<{ $nomodal?: boolean }>`
   width: 100%;
   max-width: 430px;
   max-height: 90%;
-  padding: 1.5rem 0;
+  padding: 1.3rem 1.5rem;
   box-shadow: ${props =>
     props?.$nomodal ? 'none' : '0 -3px 10px rgba(0, 0, 0, 0.2)'};
   z-index: 15;
@@ -46,7 +46,6 @@ const Modal = styled.div<{ $nomodal?: boolean }>`
 `;
 
 const ModalTitle = styled.div`
-  padding: 0 2rem;
   font-size: 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -56,7 +55,6 @@ const ModalTitle = styled.div`
 `;
 
 const ModalContent = styled.div`
-  padding: 0 2rem;
   overflow-y: auto;
   flex-grow: 1;
 `;
