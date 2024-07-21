@@ -155,7 +155,7 @@ const MyPage = () => {
   return (
     <>
       <Header
-        iconName="close"
+        iconName="back"
         onClick={goBack}
         mypage={true}
         logout={logout}
