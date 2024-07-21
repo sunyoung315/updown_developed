@@ -115,6 +115,8 @@ const Form = (formExProps: formExProps) => {
     setSetList([
       ...setList,
       {
+        // 새로 추가하는 set의 id는 null로!
+        exerciseSetId: null,
         exerciseCount: 0,
         exerciseWeight: 0,
         exerciseDistance: 0,

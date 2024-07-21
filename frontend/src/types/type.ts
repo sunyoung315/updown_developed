@@ -49,6 +49,7 @@ type commonProps = {
   setRefreshed: React.Dispatch<React.SetStateAction<boolean>>;
   category?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   dietId?: number;
+  recentWeight?: number;
 };
 
 type dietCommonProps = commonProps & {
@@ -254,6 +255,7 @@ export type ExerciseInfo = {
   totalTime?: number;
   totalCaloriesBurned?: number;
   exerciseImg?: string;
+  recentWeight?: number;
 };
 
 export type Exercise = {
@@ -262,12 +264,12 @@ export type Exercise = {
   exerciseTime?: number;
   caloriesBurned?: number;
   method?: boolean;
+  met?: number;
   setList?: ExerciseSet[];
 };
 
 export type ExerciseSet = {
-  exerciseSetId?: number;
-  // setNum?: number;
+  exerciseSetId?: number | null;
   exerciseCount?: number;
   exerciseWeight?: number;
   exerciseDistance?: number;
