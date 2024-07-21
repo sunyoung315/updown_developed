@@ -94,6 +94,7 @@ const ExercisePage = () => {
 
   const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
   const [exerciseList, setExerciseList] = useState<Exercise[]>();
+  const recentWeight = useRef<number>(0);
   const [refreshed, setRefreshed] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -106,9 +107,11 @@ const ExercisePage = () => {
       if (response.status === httpStatusCode.OK) {
         setExerciseList(response.data.exerciseList);
         setExerciseInfo(response.data.exerciseInfo);
+        recentWeight.current = response.data.recentWeight;
       } else if (response.status === httpStatusCode.NOCONTENT) {
         setExerciseList(undefined);
         setExerciseInfo(undefined);
+        recentWeight.current = 0;
       }
     } catch (err) {
       console.log('운동 리스트 조회 에러:', err);
@@ -244,6 +247,7 @@ const ExercisePage = () => {
             info={exercise}
             key={exercise.exerciseId}
             setRefreshed={setRefreshed}
+            recentWeight={recentWeight.current}
           />
         ))}
         <ButtonWrapper>

@@ -1,11 +1,11 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BottomSheet, Button, IconButton } from '@/components';
+import Form from '@/pages/exercise/components/Form';
 import { boxProps, ExerciseSet } from '@/types/type';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import styled from 'styled-components';
-import Form from '@/pages/exercise/components/Form';
-import { useState } from 'react';
 
 const BoxWrapper = styled.div`
   width: 100%;
@@ -78,7 +78,7 @@ const SetInfo = styled.div`
 `;
 
 const Box = (boxProps: boxProps) => {
-  const { type, info, setRefreshed, dietId, category } = boxProps;
+  const { type, info, setRefreshed, dietId, category, recentWeight } = boxProps;
 
   const navigator = useNavigate();
 
@@ -108,6 +108,19 @@ const Box = (boxProps: boxProps) => {
   const closeModal = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (recentWeight && type === 'exercise') {
+      // 1분당 소모 칼로리 계산
+      const calories = (
+        (((info.met || 1) * (3.5 * recentWeight * exerciseTime)) / 1000) *
+        5
+      ).toFixed(1);
+
+      // 1분당 소모 칼로리 설명
+      setCaloriesBurned(Number(calories));
+    }
+  }, [exerciseTime]);
 
   const goDetail = () => {
     if (type === 'diet') {
@@ -161,22 +174,22 @@ const Box = (boxProps: boxProps) => {
       console.log('caloriesBurned:', caloriesBurned);
       console.log('method:', true);
       console.log('setList:', setList);
-      // try {
-      //   const response = await useAxios.put(`/exercise/${info.exerciseId}`, {
-      //     exerciseName: info.exerciseName,
-      //     exerciseTime: exerciseTime,
-      //     caloriesBurned: caloriesBurned,
-      //     method: true,
-      //     setList: setList,
-      //   });
+      try {
+        const response = await useAxios.put(`/exercise/${info.exerciseId}`, {
+          exerciseName: info.exerciseName,
+          exerciseTime: exerciseTime,
+          caloriesBurned: caloriesBurned,
+          method: true,
+          setList: setList,
+        });
 
-      //   if (response.status === httpStatusCode.OK) {
-      //     closeModal();
-      //     setRefreshed(true);
-      //   }
-      // } catch (err) {
-      //   console.log('운동 수정 오류:', err);
-      // }
+        if (response.status === httpStatusCode.OK) {
+          closeModal();
+          setRefreshed(true);
+        }
+      } catch (err) {
+        console.log('운동 수정 오류:', err);
+      }
     }
   };
 
