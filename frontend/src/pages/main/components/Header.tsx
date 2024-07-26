@@ -65,9 +65,7 @@ const Header = (dateProps: dateProps) => {
 
   return (
     <HeaderWrapper>
-      <button onClick={prevDate}>
-        <LeftArrow />
-      </button>
+      <LeftArrow onClick={prevDate} />
       <DateWrapper>
         <button onClick={() => navigator('/calendar')}>
           <CalendarButton src={CalendarIcon} />
@@ -80,9 +78,7 @@ const Header = (dateProps: dateProps) => {
               ? '내일'
               : selectedDate}
       </DateWrapper>
-      <button onClick={nextDate}>
-        <RightArrow />
-      </button>
+      <RightArrow onClick={nextDate} />
     </HeaderWrapper>
   );
 };

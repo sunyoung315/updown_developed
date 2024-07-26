@@ -290,3 +290,36 @@ export type formExProps = {
   setList: ExerciseSet[];
   setSetList: React.Dispatch<React.SetStateAction<ExerciseSet[]>>;
 };
+
+export type monthProps = {
+  selectedMonth: number;
+  changeMonth: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: number;
+};
+
+export type buttonRadioProps = {
+  type: string;
+  changeType: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+};
+
+export type calendarHeaderProps = {
+  year: number;
+  setYear: React.Dispatch<React.SetStateAction<number>>;
+  month: number;
+  setMonth: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export type calendarProps = {
+  year: number;
+  month: number;
+  selectedDate: string;
+  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+  type: string;
+};
+
+export type DayInfo = {
+  date: string;
+  month: string;
+  day: string;
+};
