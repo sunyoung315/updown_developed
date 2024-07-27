@@ -13,6 +13,7 @@ import ImgIcon from './ImgIcon';
 import DietIcon from './DietIcon';
 import ExerciseIcon from './ExerciseIcon';
 import WeightIcon from './WeightIcon';
+import TargetIcon from './TargetIcon';
 
 export {
   MaleIcon,
@@ -30,4 +31,5 @@ export {
   DietIcon,
   ExerciseIcon,
   WeightIcon,
+  TargetIcon,
 };

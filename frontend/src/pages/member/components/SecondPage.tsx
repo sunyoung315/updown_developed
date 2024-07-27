@@ -1,8 +1,8 @@
+import { TargetIcon } from '@/assets/icons';
 import { Button, Input, BottomSheet } from '@/components';
 import theme from '@/styles/theme';
 import { pageProps } from '@/types/type';
 import { useEffect, useState } from 'react';
-import TargetIcon from '@/assets/icons/target-icon.svg';
 import styled from 'styled-components';
 
 const Title = styled.div`
@@ -213,7 +213,7 @@ const SecondPage = (pageProps: pageProps) => {
             </BottomSheet>
           </Column>
           <Target>
-            <img src={TargetIcon} alt="icon" /> 목표 달성까지 약{' '}
+            <TargetIcon color={'darkpink'} /> 목표 달성까지 약{' '}
             <Period>{period}주</Period> 걸려요!
           </Target>
         </Box>

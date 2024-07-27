@@ -78,7 +78,7 @@ const Header = (dateProps: dateProps) => {
               ? '내일'
               : selectedDate}
       </DateWrapper>
-      <RightArrow onClick={nextDate} />
+      <RightArrow onClick={nextDate} isButton={true} />
     </HeaderWrapper>
   );
 };

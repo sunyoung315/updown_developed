@@ -1,5 +1,6 @@
 import theme from '@/styles/theme';
 import iconPaths from '@/styles/icon';
+import { LargeNumberLike } from 'crypto';
 
 export interface tokenState {
   checkToken: boolean;
@@ -316,6 +317,7 @@ export type calendarProps = {
   selectedDate: string;
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
   type: string;
+  dateList: string[];
 };
 
 export type DayInfo = {
@@ -323,3 +325,55 @@ export type DayInfo = {
   month: string;
   day: string;
 };
+
+type commonBoxProps = {
+  type: 'diet' | 'exercise' | 'weight';
+};
+
+type dietCalendarProps = commonBoxProps & {
+  type: 'diet';
+  selectedInfo: {
+    dietId: number;
+    category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+    totalCalories: number;
+    regDate: string;
+    foodList: {
+      foodId: number;
+      foodName: string;
+      foodIntake: number;
+      calories: number;
+    }[];
+  };
+};
+
+type exerciseCalendarProps = commonBoxProps & {
+  type: 'exercise';
+  selectedInfo: {
+    exerciseInfoId: number;
+    exerciseName: string;
+    exerciseTime: number;
+    caloriesBurned: number;
+    regDate: string;
+    setList: {
+      exerciseSetId: number;
+      exerciseCount: number;
+      exerciseWeight: number;
+      exerciseDistance: number;
+    }[];
+  };
+};
+
+type weightCalendarProps = commonBoxProps & {
+  type: 'weight';
+  selectedInfo: {
+    weightId: number;
+    weight: number;
+    targetWeight: number;
+    regDate: string;
+  };
+};
+
+export type calendarBoxProps =
+  | dietCalendarProps
+  | exerciseCalendarProps
+  | weightCalendarProps;

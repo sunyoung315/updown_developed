@@ -79,7 +79,8 @@ const DayContent = styled.div<{
 `;
 
 const Calendar = (calendarProps: calendarProps) => {
-  const { year, month, selectedDate, setSelectedDate, type } = calendarProps;
+  const { year, month, selectedDate, setSelectedDate, type, dateList } =
+    calendarProps;
 
   const [currDate, setCurrDate] = useState<Date>(new Date(year, month - 1, 1));
   const currMonth = useRef<number>(currDate.getMonth() + 1);
@@ -110,21 +111,12 @@ const Calendar = (calendarProps: calendarProps) => {
   const daysInMonth = days.map(day => ({
     date: format(day, 'yyyy-MM-dd'),
     month: format(day, 'MM'),
-    day: format(day, 'dd'),
+    day: format(day, 'd'),
   }));
 
   const selectDate = (date: string) => {
     setSelectedDate(date);
   };
-
-  const infoList = [
-    '2024-07-02',
-    '2024-07-05',
-    '2024-07-06',
-    '2024-07-17',
-    '2024-07-24',
-    '2024-07-27',
-  ];
 
   return (
     <div>
@@ -166,19 +158,19 @@ const Calendar = (calendarProps: calendarProps) => {
             >
               {day.day}
             </DayContent>
-            {infoList.includes(day.date) && type === 'diet' && (
+            {dateList.includes(day.date) && type === 'diet' && (
               <DietIcon
                 size={day.date === selectedDate ? 25 : 30}
                 color={day.date === selectedDate ? 'yellow' : 'orange'}
               />
             )}
-            {infoList.includes(day.date) && type === 'exercise' && (
+            {dateList.includes(day.date) && type === 'exercise' && (
               <ExerciseIcon
                 size={day.date === selectedDate ? 25 : 30}
                 color={day.date === selectedDate ? 'skyblue' : 'blue'}
               />
             )}
-            {infoList.includes(day.date) && type === 'weight' && (
+            {dateList.includes(day.date) && type === 'weight' && (
               <WeightIcon
                 size={day.date === selectedDate ? 25 : 30}
                 color={day.date === selectedDate ? 'green' : 'darkgreen'}
