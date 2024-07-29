@@ -102,6 +102,7 @@ const Box = (boxProps: boxProps) => {
         setDetailType('count');
       }
     }
+
     setIsOpen(true);
   };
 

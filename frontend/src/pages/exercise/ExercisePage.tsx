@@ -100,14 +100,13 @@ const ExercisePage = () => {
 
   // 운동 리스트 조회
   const getExerciseList = async () => {
-    console.log('운동 리스트 조회');
     try {
       const response = await useAxios.get(`/exercise/list/${regDate}`);
 
       if (response.status === httpStatusCode.OK) {
         setExerciseList(response.data.exerciseList);
         setExerciseInfo(response.data.exerciseInfo);
-        recentWeight.current = response.data.recentWeight;
+        recentWeight.current = response.data.exerciseInfo.recentWeight;
       } else if (response.status === httpStatusCode.NOCONTENT) {
         setExerciseList(undefined);
         setExerciseInfo(undefined);
@@ -144,7 +143,7 @@ const ExercisePage = () => {
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const formData = new FormData();
-      formData.append('execiseImg', e.target.files[0]);
+      formData.append('exerciseImg', e.target.files[0]);
       if (regDate) formData.append('regDate', regDate);
 
       try {
@@ -156,6 +155,7 @@ const ExercisePage = () => {
 
         if (response.status === httpStatusCode.OK) {
           getExerciseList();
+          closeModal();
         }
       } catch (err) {
         console.log('사진 등록 에러:', err);
@@ -167,12 +167,13 @@ const ExercisePage = () => {
   const deleteImage = async () => {
     const exerciseRecordId = exerciseInfo?.exerciseRecordId;
     try {
-      const response = await useAxios.delete('/exercise/img', {
-        params: { exerciseRecordId },
-      });
+      const response = await useAxios.delete(
+        `/exercise/img/${exerciseRecordId}`,
+      );
 
       if (response.status === httpStatusCode.OK) {
         getExerciseList();
+        closeModal();
       }
     } catch (err) {
       console.log('사진 삭제 에러:', err);
