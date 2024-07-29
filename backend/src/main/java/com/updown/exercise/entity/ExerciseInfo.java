@@ -22,7 +22,7 @@ public class ExerciseInfo {
     @Column(name = "exercise_name", nullable = false)
     private String exerciseInfoName;
 
-    @Column(name = "met")
+    @Column(name = "met", nullable = false)
     private float met;
 
 }

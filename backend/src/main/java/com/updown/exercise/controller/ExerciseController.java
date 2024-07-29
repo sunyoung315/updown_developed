@@ -1,11 +1,15 @@
 package com.updown.exercise.controller;
 
+import com.updown.diet.dto.req.UploadDietImgReq;
+import com.updown.diet.entity.DietCategory;
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
 import com.updown.exercise.dto.req.UpdateExerciseReq;
+import com.updown.exercise.dto.req.UploadExerciseImgReq;
 import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
 import com.updown.exercise.service.ExerciseService;
 import com.updown.member.entity.Member;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -81,4 +85,29 @@ public class ExerciseController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 운동 이미지 업로드
+     * @param member
+     * @param uploadExerciseImgReq
+     * @return
+     */
+    @Transactional
+    @PostMapping("/img")
+    public ResponseEntity<?> uploadDietImg(@AuthenticationPrincipal Member member, @ModelAttribute UploadExerciseImgReq uploadExerciseImgReq){
+        exerciseService.uploadExerciseImg(member, uploadExerciseImgReq);
+        return ResponseEntity.ok().build();
+    }
+
+//    /**
+//     * 운동 사진 삭제
+//     * @param dietId
+//     * @param member
+//     * @return
+//     */
+//    @Transactional
+//    @DeleteMapping("/img/{dietId}")
+//    public ResponseEntity<?> deleteDietImage(@PathVariable Integer dietId, @AuthenticationPrincipal Member member) {
+//        dietService.deleteDietImg(dietId, member);
+//        return ResponseEntity.noContent().build();
+//    }
 }

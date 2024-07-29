@@ -34,6 +34,10 @@ public class Exercise {
 
     @Column(name = "method", nullable = false)
     private Boolean method;
+
+    @Column(name = "met")
+    private float met;
+
 }
 
 

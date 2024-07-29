@@ -2,6 +2,7 @@ package com.updown.exercise.service;
 
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
 import com.updown.exercise.dto.req.UpdateExerciseReq;
+import com.updown.exercise.dto.req.UploadExerciseImgReq;
 import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
 import com.updown.member.entity.Member;
@@ -18,4 +19,6 @@ public interface ExerciseService {
     void updateExercise(Integer exerciseId, Member member, UpdateExerciseReq updateExercise);
 
     void deleteExercise(Integer exerciseId, Member member);
+
+    void uploadExerciseImg(Member member, UploadExerciseImgReq uploadDietImgReq);
 }

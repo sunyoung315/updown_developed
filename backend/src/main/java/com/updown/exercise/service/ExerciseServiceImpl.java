@@ -3,10 +3,11 @@ package com.updown.exercise.service;
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
 import com.updown.exercise.dto.req.SetListReq;
 import com.updown.exercise.dto.req.UpdateExerciseReq;
+import com.updown.exercise.dto.req.UploadExerciseImgReq;
 import com.updown.exercise.dto.res.ExerciseList;
-import com.updown.exercise.dto.res.SetList;
 import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
+import com.updown.exercise.dto.res.SetList;
 import com.updown.exercise.entity.Exercise;
 import com.updown.exercise.entity.ExerciseInfo;
 import com.updown.exercise.entity.ExerciseRecord;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -66,6 +66,9 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .exerciseTime(regsiterExerciseReq.getExerciseTime())
                 .caloriesBurned(regsiterExerciseReq.getCaloriesBurned())
                 .method(regsiterExerciseReq.getMethod())
+                .met(exerciseInfoRepository.findByExerciseInfoName(regsiterExerciseReq.getExerciseName())
+                        .map(ExerciseInfo::getMet)
+                        .orElse(0.0f)) // 값이 없으면 o.o
                 .build();
         exerciseRepository.save(exercise);
 
@@ -224,6 +227,11 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         //  Exercise 삭제.
         exerciseRepository.delete(exercise);
+    }
+
+    @Override
+    public void uploadExerciseImg(Member member, UploadExerciseImgReq uploadDietImgReq) {
+
     }
 }
 
