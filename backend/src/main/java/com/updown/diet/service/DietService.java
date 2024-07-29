@@ -32,6 +32,6 @@ public interface DietService {
 
     void uploadDietImg(DietCategory category, Member member, UploadDietImgReq uploadDietImgReq);
 
-    void deleteDietImg(Integer dietId, Member member);
+    void deleteDietImg(LocalDate regDate, DietCategory category, Member member);
 
 }

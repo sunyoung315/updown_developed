@@ -144,9 +144,9 @@ public class DietController {
      * @return
      */
     @Transactional
-    @DeleteMapping("/img/{dietId}")
-    public ResponseEntity<?> deleteDietImage(@PathVariable Integer dietId, @AuthenticationPrincipal Member member) {
-        dietService.deleteDietImg(dietId, member);
+    @DeleteMapping("/img/{regDate}")
+    public ResponseEntity<?> deleteDietImage(@PathVariable LocalDate regDate, @RequestParam DietCategory category, @AuthenticationPrincipal Member member) {
+        dietService.deleteDietImg(regDate, category, member);
         return ResponseEntity.ok().build();
     }
 

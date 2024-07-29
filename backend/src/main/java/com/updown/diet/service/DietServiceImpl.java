@@ -321,18 +321,18 @@ public class DietServiceImpl implements DietService {
     /**
      * 식단 이미지 삭제
      *
-     * @param dietId
+     * @param regDate
      * @param member
      */
     @Override
-    public void deleteDietImg(Integer dietId, Member member) {
-        Diet diet = dietRepository.findById(dietId).orElseThrow(DietNotFoundException::new);
+    public void deleteDietImg(LocalDate regDate, DietCategory category, Member member) {
+        Diet diet = dietRepository.findDietByMemberAndCategoryAndRegDate(member, category, regDate).orElseThrow(DietNotFoundException::new);
         if (diet.getDietImg() != null) {
             s3Uploader.delete(diet.getDietImg());
             diet.setDietImg(null);
             dietRepository.save(diet);
 
-            if(foodRepository.findByDietId(dietId).isEmpty()){
+            if(foodRepository.findByDietId(diet.getDietId()).isEmpty()){
                 dietRepository.delete(diet);
             }
         } else {
