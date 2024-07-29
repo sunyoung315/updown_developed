@@ -15,6 +15,7 @@ import {
   ExercisePage,
   ExerciseRegistPage,
   ExerciseSearchPage,
+  CalendarPage,
 } from '@/pages';
 import { BottomNav } from '@/components';
 import { getAccessToken, refreshAccessToken } from './api/auth';
@@ -89,6 +90,7 @@ function App() {
         <Route path="/exercise" element={<ExercisePage />} />
         <Route path="/exercise/regist" element={<ExerciseRegistPage />} />
         <Route path="/exercise/search" element={<ExerciseSearchPage />} />
+        <Route path="/calendar" element={<CalendarPage />} />
       </Routes>
       {showBottomNav && <BottomNav />}
     </AppWrapper>

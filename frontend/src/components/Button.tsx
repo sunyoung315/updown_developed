@@ -38,7 +38,7 @@ const Button = (props: buttonProps) => {
       $textcolor={textColor}
     >
       {buttonName}
-      {color === 'transparent' && <RightArrow size={20} />}
+      {color === 'transparent' && <RightArrow size={18} isButton={false} />}
     </ButtonWrapper>
   );
 };

@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken } from '@/api/auth';
-import { ImgIcon } from '@/assets/icons';
+import { ImgIcon, TargetIcon } from '@/assets/icons';
 import { Header, Button } from '@/components';
 import { tokenStore } from '@/store';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import { Member } from '@/types/type';
-import TargetIcon from '@/assets/icons/target-icon.svg';
 import Running from '@/assets/images/running.png';
 import styled from 'styled-components';
 
@@ -189,7 +188,7 @@ const MyPage = () => {
               </Column>
             </Content>
             <Target>
-              <img src={TargetIcon} alt="icon" /> 지금까지{' '}
+              <TargetIcon color={'darkpink'} /> 지금까지{' '}
               <Kilogram>{loseWeight} kg</Kilogram> 감량했어요!
             </Target>
           </Box>

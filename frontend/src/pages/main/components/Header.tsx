@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { dateProps } from '@/types/type';
 import { LeftArrow, RightArrow } from '@/assets/icons';
 import CalendarIcon from '@/assets/icons/calendar.svg';
@@ -32,6 +33,8 @@ const CalendarButton = styled.img`
 const Header = (dateProps: dateProps) => {
   const { date, setDate } = dateProps;
 
+  const navigator = useNavigate();
+
   const today = new Date();
   const todayYear = new Date(today).getFullYear();
   const todayMonth = new Date(today).getMonth();
@@ -62,11 +65,9 @@ const Header = (dateProps: dateProps) => {
 
   return (
     <HeaderWrapper>
-      <button onClick={prevDate}>
-        <LeftArrow />
-      </button>
+      <LeftArrow onClick={prevDate} />
       <DateWrapper>
-        <button>
+        <button onClick={() => navigator('/calendar')}>
           <CalendarButton src={CalendarIcon} />
         </button>
         {todayYear === year && todayMonth === month && todayDay === day
@@ -77,9 +78,7 @@ const Header = (dateProps: dateProps) => {
               ? '내일'
               : selectedDate}
       </DateWrapper>
-      <button onClick={nextDate}>
-        <RightArrow />
-      </button>
+      <RightArrow onClick={nextDate} isButton={true} />
     </HeaderWrapper>
   );
 };
