@@ -199,9 +199,6 @@ const DietPage = () => {
 
           getDietInfo();
           closeModal();
-        } else if (response.status === httpStatusCode.NOCONTENT) {
-          alert('식단을 먼저 등록하세요');
-          console.log('등록된 식단이 없습니다.');
         }
       } catch (err) {
         console.log('식단 사진 등록 에러:', err);
@@ -212,10 +209,12 @@ const DietPage = () => {
   // 식단 사진 삭제
   const deleteImage = async () => {
     try {
-      const response = await useAxios.delete(`/diet/img/${dietId}`);
+      const response = await useAxios.delete(`/diet/img/${regDate}`, {
+        params: { category },
+      });
       console.log('식단 사진 삭제 시도');
 
-      if (response.status === httpStatusCode.NOCONTENT) {
+      if (response.status === httpStatusCode.OK) {
         console.log('식단 사진 삭제 성공');
 
         getDietInfo();
