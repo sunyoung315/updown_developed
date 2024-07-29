@@ -13,10 +13,12 @@ import com.updown.exercise.entity.ExerciseRecord;
 import com.updown.exercise.entity.ExerciseSet;
 import com.updown.exercise.exception.ExerciseNotFoundException;
 import com.updown.exercise.exception.ExerciseRecordNotFoundException;
+import com.updown.exercise.repository.ExerciseInfoRepository;
 import com.updown.exercise.repository.ExerciseRecordRepository;
 import com.updown.exercise.repository.ExerciseRepository;
 import com.updown.exercise.repository.ExerciseSetRepository;
 import com.updown.member.entity.Member;
+import com.updown.weight.repository.WeightRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final ExerciseRecordRepository exerciseRecordRepository;
     private final ExerciseSetRepository exerciseSetRepository;
+    private final ExerciseInfoRepository exerciseInfoRepository;
+    private final WeightRepository weightRepository;
 
     @Override
     public void registerExercise(LocalDate regDate, Member member, RegsiterExerciseReq regsiterExerciseReq) {
@@ -89,6 +93,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .totalTime(exerciseRecord.getTotalTime())
                 .totalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned())
                 .exerciseImg(exerciseRecord.getExerciseImg())
+                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
                 .build();
     }
 
@@ -101,6 +106,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .totalTime(exerciseRecord.getTotalTime())
                 .totalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned())
                 .exerciseImg(exerciseRecord.getExerciseImg())
+                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
                 .build();
 
         // 해당 운동기록 Id를 가지는 운동 찾기
@@ -127,6 +133,9 @@ public class ExerciseServiceImpl implements ExerciseService {
                     .exerciseTime(exercise.getExerciseTime())
                     .caloriesBurned(exercise.getCaloriesBurned())
                     .method(exercise.getMethod())
+                    .met(exerciseInfoRepository.findByExerciseInfoName(exercise.getExerciseName())
+                            .map(ExerciseInfo::getMet)
+                            .orElse(0.0f)) // 값이 없으면 o.o
                     .setList(setList)
                     .build();
             exerciseLists.add(exerciseList);

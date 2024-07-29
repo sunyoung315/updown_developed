@@ -13,5 +13,6 @@ public class ExerciseList {
     private Integer exerciseTime;
     private float caloriesBurned;
     private Boolean method;
+    private float met;
     List<SetList> setList;
 }
