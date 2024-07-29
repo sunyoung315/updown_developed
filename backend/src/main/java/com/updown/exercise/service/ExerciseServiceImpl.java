@@ -140,9 +140,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                     .exerciseTime(exercise.getExerciseTime())
                     .caloriesBurned(exercise.getCaloriesBurned())
                     .method(exercise.getMethod())
-                    .met(exerciseInfoRepository.findByExerciseInfoName(exercise.getExerciseName())
-                            .map(ExerciseInfo::getMet)
-                            .orElse(0.0f)) // 값이 없으면 o.o
+                    .met(exerciseRepository.findByExerciseId(exercise.getExerciseId()).get().getMet()) // 값이 없으면 o.o
                     .setList(setList)
                     .build();
             exerciseLists.add(exerciseList);
