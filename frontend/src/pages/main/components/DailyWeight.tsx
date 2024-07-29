@@ -70,6 +70,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   const [isRecord, setIsRecord] = useState<boolean>(false);
   const todayRef = useRef<WeightInfo>();
   const [weight, setWeight] = useState<number>(0);
+  const [inputValue, setInputValue] = useState<number>(weight);
   const xRef = useRef<string[]>([]);
   const yRef = useRef<number[]>([]);
   const bmiRef = useRef<number>(0);
@@ -114,6 +115,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
   };
 
   const closeModal = () => {
+    setInputValue(weight);
     setIsOpen(false);
   };
 
@@ -127,24 +129,30 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
 
   const registWeight = async () => {
     try {
-      const response = await useAxios.post('/weight', { weight, regDate });
+      const response = await useAxios.post('/weight', {
+        weight: inputValue,
+        regDate,
+      });
 
       if (response.status === httpStatusCode.OK) {
         getWeightInfo();
-        closeModal();
+        setIsOpen(false);
       }
     } catch (err) {
       console.log('몸무게 등록 오류:', err);
     }
   };
 
-  const updataWeight = async () => {
+  const updateWeight = async () => {
     try {
-      const response = await useAxios.put('/weight', { weight, regDate });
+      const response = await useAxios.put('/weight', {
+        weight: inputValue,
+        regDate,
+      });
 
       if (response.status === httpStatusCode.OK) {
         getWeightInfo();
-        closeModal();
+        setIsOpen(false);
       }
     } catch (err) {
       console.log('몸무게 수정 에러:', err);
@@ -186,10 +194,15 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
       </Content>
       <BottomSheet isOpen={isOpen} onClose={closeModal} title="몸무게 입력">
         <ModalContent>
-          <Input value={weight} onChange={setWeight} isBig={true} unit="kg" />
+          <Input
+            value={inputValue}
+            onChange={setInputValue}
+            isBig={true}
+            unit="kg"
+          />
           <Button
             buttonName={!todayRef.current ? '등록하기' : '수정하기'}
-            onClick={!todayRef.current ? registWeight : updataWeight}
+            onClick={!todayRef.current ? registWeight : updateWeight}
             color="darkgreen"
           />
         </ModalContent>

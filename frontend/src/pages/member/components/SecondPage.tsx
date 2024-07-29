@@ -63,6 +63,7 @@ const SecondPage = (pageProps: pageProps) => {
   const { data, setData, next, onClick, targetCalories } = pageProps;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<number>(data.targetCalories);
 
   const [period, setPeriod] = useState<number>(0);
 
@@ -144,6 +145,7 @@ const SecondPage = (pageProps: pageProps) => {
   }, [TDEE, data.targetCalories]);
 
   const openModal = () => {
+    setInputValue(data.targetCalories);
     setIsOpen(true);
   };
 
@@ -151,12 +153,13 @@ const SecondPage = (pageProps: pageProps) => {
     setIsOpen(false);
   };
 
-  const changeTargetCalories = (data: { name: string; value: number }) => {
-    const { name, value } = data;
+  const changeTargetCalories = () => {
     setData(prevData => ({
       ...prevData,
-      [name]: value,
+      targetCalories: inputValue,
     }));
+
+    closeModal();
   };
 
   return (
@@ -197,16 +200,15 @@ const SecondPage = (pageProps: pageProps) => {
               <ModalContent $margin={targetCalories}>
                 <Input
                   unit="kcal"
-                  onChange={changeTargetCalories}
-                  value={data.targetCalories}
+                  value={inputValue}
+                  onChange={setInputValue}
                   isBig={true}
-                  name="targetCalories"
                   step={0.1}
                   signup={true}
                 />
                 <Button
                   buttonName="입력완료"
-                  onClick={closeModal}
+                  onClick={changeTargetCalories}
                   color="purple"
                 />
               </ModalContent>

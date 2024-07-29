@@ -18,7 +18,7 @@ const InputName = styled.span`
 const InputLabel = styled.label<{ $isbig?: boolean; $signup?: boolean }>`
   background-color: ${props => props.theme.lightgrey};
   width: ${props =>
-    !props?.$isbig ? '100%' : props?.$signup ? '12rem' : '10.2rem'};
+    !props?.$isbig ? '100%' : props?.$signup ? '12.5rem' : '10.2rem'};
   border-radius: 0.5rem;
   height: ${props => (props?.$isbig ? '5rem' : '2.94rem')};
   display: flex;
