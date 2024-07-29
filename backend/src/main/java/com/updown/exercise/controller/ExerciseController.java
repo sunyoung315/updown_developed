@@ -108,6 +108,6 @@ public class ExerciseController {
     @DeleteMapping("/img/{exerciseRecordId}")
     public ResponseEntity<?> deleteDietImage(@PathVariable Integer exerciseRecordId, @AuthenticationPrincipal Member member) {
         exerciseService.deleteExerciseImg(exerciseRecordId, member);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
