@@ -10,4 +10,5 @@ public class SearchExerciseRes {
     private Integer totalTime;
     private float totalCaloriesBurned;
     private String exerciseImg;
+    private float recentWeight;
 }

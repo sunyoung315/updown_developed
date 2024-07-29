@@ -19,10 +19,10 @@ public class ExerciseInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer exerciseInfoId;
 
-    @Column(name = "exercise_info_name", nullable = false)
+    @Column(name = "exercise_name", nullable = false)
     private String exerciseInfoName;
 
-    @Column(name = "met", nullable = false)
+    @Column(name = "met")
     private float met;
 
 }
