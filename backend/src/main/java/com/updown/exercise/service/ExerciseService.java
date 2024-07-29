@@ -20,5 +20,7 @@ public interface ExerciseService {
 
     void deleteExercise(Integer exerciseId, Member member);
 
-    void uploadExerciseImg(Member member, UploadExerciseImgReq uploadDietImgReq);
+    void uploadExerciseImg(Member member, UploadExerciseImgReq uploadExerciseImgReq);
+
+    void deleteExerciseImg(Integer exerciseRecordId, Member member);
 }

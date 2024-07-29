@@ -1,5 +1,7 @@
 package com.updown.exercise.service;
 
+import com.updown.common.S3Uploader;
+import com.updown.exercise.exception.ImgDeleteFailureException;
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
 import com.updown.exercise.dto.req.SetListReq;
 import com.updown.exercise.dto.req.UpdateExerciseReq;
@@ -14,6 +16,7 @@ import com.updown.exercise.entity.ExerciseRecord;
 import com.updown.exercise.entity.ExerciseSet;
 import com.updown.exercise.exception.ExerciseNotFoundException;
 import com.updown.exercise.exception.ExerciseRecordNotFoundException;
+import com.updown.exercise.exception.ImgUploadFailureException;
 import com.updown.exercise.repository.ExerciseInfoRepository;
 import com.updown.exercise.repository.ExerciseRecordRepository;
 import com.updown.exercise.repository.ExerciseRepository;
@@ -39,6 +42,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseSetRepository exerciseSetRepository;
     private final ExerciseInfoRepository exerciseInfoRepository;
     private final WeightRepository weightRepository;
+    private final S3Uploader s3Uploader;
 
     @Override
     public void registerExercise(LocalDate regDate, Member member, RegsiterExerciseReq regsiterExerciseReq) {
@@ -120,7 +124,7 @@ public class ExerciseServiceImpl implements ExerciseService {
             List<ExerciseSet> exerciseSetListTmp = exerciseSetRepository.findByExercise(exercise);
             List<SetList> setList = new ArrayList<>();
 
-            for(ExerciseSet exerciseSet : exerciseSetListTmp){
+            for (ExerciseSet exerciseSet : exerciseSetListTmp) {
                 SetList setList1 = SetList.builder()
                         .exerciseSetId(exerciseSet.getExerciseSetId())
                         .exerciseCount(exerciseSet.getExerciseCount())
@@ -230,8 +234,49 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public void uploadExerciseImg(Member member, UploadExerciseImgReq uploadDietImgReq) {
+    public void uploadExerciseImg(Member member, UploadExerciseImgReq uploadExerciseImgReq) {
+        // RegDate에 해당하는 ExerciseRecord 데이터가 없다면 새로 생성해서 이미지 넣자
+        ExerciseRecord exerciseRecord = exerciseRecordRepository.findByMemberAndRegDate(member, uploadExerciseImgReq.getRegDate())
+                .orElseGet(() -> createNewExerciseRecord(uploadExerciseImgReq.getRegDate(), member));
+        try {
+            // 기존 이미지가 있으면 삭제
+            if (exerciseRecord.getExerciseImg() != null) {
+                s3Uploader.delete(exerciseRecord.getExerciseImg());
+            }
+            // 새 이미지 업로드
+            String storedFileName = s3Uploader.upload(uploadExerciseImgReq.getExerciseImg(), "exercise");
+            exerciseRecord.setExerciseImg(storedFileName);
+            exerciseRecordRepository.save(exerciseRecord);
+        } catch (Exception e) {
+            throw new ImgUploadFailureException(e);
+        }
+    }
 
+    private ExerciseRecord createNewExerciseRecord(LocalDate regDate, Member member) {
+        ExerciseRecord exerciseRecord = ExerciseRecord.builder()
+                .member(member)
+                .regDate(regDate)
+                .build();
+        return exerciseRecordRepository.save(exerciseRecord);
+    }
+
+    /**
+     * 운동 이미지 삭제
+     *
+     * @param exerciseRecordId
+     * @param member
+     */
+    @Override
+    public void deleteExerciseImg(Integer exerciseRecordId, Member member) {
+        ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(exerciseRecordId).orElseThrow(ExerciseRecordNotFoundException::new);
+        if (exerciseRecord.getExerciseImg() != null) {
+            s3Uploader.delete(exerciseRecord.getExerciseImg());
+            exerciseRecord.setExerciseImg(null);
+            exerciseRecordRepository.save(exerciseRecord);
+
+        } else {
+            throw new ImgDeleteFailureException();
+        }
     }
 }
 

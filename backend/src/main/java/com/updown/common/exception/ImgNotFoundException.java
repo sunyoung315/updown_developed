@@ -1,4 +1,4 @@
-package com.updown.diet.exception;
+package com.updown.common.exception;
 
 import lombok.experimental.StandardException;
 

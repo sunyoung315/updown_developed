@@ -1,15 +1,14 @@
-package com.updown.exercise.exhandler;
+package com.updown.common.exhandler;
 
-import com.updown.exercise.exception.ImgDeleteFailureException;
-import com.updown.exercise.exception.ImgUploadFailureException;
-import com.updown.exercise.exception.ExerciseNotFoundException;
-import com.updown.exercise.exception.ExerciseRecordNotFoundException;
+import com.updown.common.exception.ImgDeleteFailureException;
+import com.updown.common.exception.ImgNotFoundException;
+import com.updown.common.exception.ImgUploadFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackages = {"com.updown.exercise"})
-public class ExerciseExceptionHandler {
+@RestControllerAdvice(basePackages = {"com.updown.common"})
+public class S3ExceptionHandler {
 
     private void makeErrorMessage(StringBuilder errorMessage, Exception e) {
         StackTraceElement[] stackTrace = e.getStackTrace();
@@ -23,24 +22,6 @@ public class ExerciseExceptionHandler {
         }
     }
 
-    @ExceptionHandler(ExerciseNotFoundException.class)
-    protected ResponseEntity<String> ExerciseNotFoundExceptionHandler(ExerciseNotFoundException e) {
-        StringBuilder errorMessage = new StringBuilder();
-
-        makeErrorMessage(errorMessage, e);
-
-        errorMessage.append("해당 아이디에 해당하는 운동이 존재하지 않습니다.");
-        return ResponseEntity.badRequest().body(errorMessage.toString());
-    }
-
-    @ExceptionHandler(ExerciseRecordNotFoundException.class)
-    protected ResponseEntity<String> ExerciseRecordNotFoundExceptionHandler(ExerciseRecordNotFoundException e) {
-        StringBuilder errorMessage = new StringBuilder();
-
-        makeErrorMessage(errorMessage, e);
-
-        return ResponseEntity.noContent().build();
-    }
 
     @ExceptionHandler(ImgUploadFailureException.class)
     protected ResponseEntity<String> ImgUploadFailureExceptionHandler(ImgUploadFailureException e) {
@@ -49,6 +30,16 @@ public class ExerciseExceptionHandler {
         makeErrorMessage(errorMessage, e);
 
         errorMessage.append("사진 업로드에 실패했습니다.");
+        return ResponseEntity.badRequest().body(errorMessage.toString());
+    }    
+    
+    @ExceptionHandler(ImgNotFoundException.class)
+    protected ResponseEntity<String> ImgNotFoundExceptionHandler(ImgNotFoundException e) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        makeErrorMessage(errorMessage, e);
+
+        errorMessage.append("삭제할 사진이 없습니다.");
         return ResponseEntity.badRequest().body(errorMessage.toString());
     }
 
@@ -61,6 +52,4 @@ public class ExerciseExceptionHandler {
         errorMessage.append("사진 삭제를 실패했습니다.");
         return ResponseEntity.badRequest().body(errorMessage.toString());
     }
-
-
 }

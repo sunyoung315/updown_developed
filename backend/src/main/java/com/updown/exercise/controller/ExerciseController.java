@@ -98,16 +98,16 @@ public class ExerciseController {
         return ResponseEntity.ok().build();
     }
 
-//    /**
-//     * 운동 사진 삭제
-//     * @param dietId
-//     * @param member
-//     * @return
-//     */
-//    @Transactional
-//    @DeleteMapping("/img/{dietId}")
-//    public ResponseEntity<?> deleteDietImage(@PathVariable Integer dietId, @AuthenticationPrincipal Member member) {
-//        dietService.deleteDietImg(dietId, member);
-//        return ResponseEntity.noContent().build();
-//    }
+    /**
+     * 운동 사진 삭제
+     * @param exerciseRecordId
+     * @param member
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/img/{exerciseRecordId}")
+    public ResponseEntity<?> deleteDietImage(@PathVariable Integer exerciseRecordId, @AuthenticationPrincipal Member member) {
+        exerciseService.deleteExerciseImg(exerciseRecordId, member);
+        return ResponseEntity.noContent().build();
+    }
 }

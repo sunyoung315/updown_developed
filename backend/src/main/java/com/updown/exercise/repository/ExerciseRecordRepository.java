@@ -12,4 +12,5 @@ import java.util.Optional;
 @Repository
 public interface ExerciseRecordRepository extends JpaRepository<ExerciseRecord, Integer> {
     Optional<ExerciseRecord> findByMemberAndRegDate(Member member, LocalDate regDate);
+
 }

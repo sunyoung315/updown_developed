@@ -15,7 +15,6 @@ import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -292,7 +291,7 @@ public class DietServiceImpl implements DietService {
     @Transactional
     public void uploadDietImg(DietCategory category, Member member, UploadDietImgReq uploadDietImgReq) {
         // dietId에 해당하는 Diet 데이터가 없다면 새로 생성해서 이미지 넣자
-        Diet diet = dietRepository.findByCategoryAndRegDate(category, uploadDietImgReq.getRegDate())
+        Diet diet = dietRepository.findByMemberAndCategoryAndRegDate(member, category, uploadDietImgReq.getRegDate())
                 .orElseGet(() -> createNewDiet(category, uploadDietImgReq.getRegDate(), member));
 
         try {
@@ -337,7 +336,7 @@ public class DietServiceImpl implements DietService {
                 dietRepository.delete(diet);
             }
         } else {
-            throw new ImgNotFoundException();
+            throw new ImgDeleteFailureException();
         }
     }
 
