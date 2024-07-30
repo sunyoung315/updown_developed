@@ -23,4 +23,9 @@ public interface DietRepository extends JpaRepository<Diet, Integer> {
     List<Diet> findByMemberAndRegDate(Member member, LocalDate regDate);
 
     Optional<Diet> findByMemberAndCategoryAndRegDate(Member member, DietCategory category, LocalDate regDate);
+    @Query("SELECT d FROM Diet AS d WHERE d.member = :member AND YEAR(d.regDate) = :year AND MONTH(d.regDate) = :month")
+    List<Diet> findByMemberAndYearAndMonth(Member member, Integer year, Integer month);
+
+
+
 }
