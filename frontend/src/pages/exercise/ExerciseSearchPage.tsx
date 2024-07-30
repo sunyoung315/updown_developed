@@ -80,8 +80,6 @@ const ExerciseSearchPage = () => {
 
   // 운동 검색
   const searchExercise = async () => {
-    console.log('운동 검색');
-    console.log('searchStr:', searchStr);
     try {
       const response = await useAxios.get('/exercise/search', {
         params: { searchStr },
@@ -111,7 +109,6 @@ const ExerciseSearchPage = () => {
       });
 
       if (response.status === httpStatusCode.OK) {
-        console.log('운동 등록 성공');
         closeModal();
       }
     } catch (err) {

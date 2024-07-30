@@ -139,6 +139,12 @@ const Form = (formExProps: formExProps) => {
       e.target.value = e.target.value.slice(1);
     }
 
+    // 소수점 첫째자리까지만 입력 가능(횟수인 경우 정수만 입력 가능)
+    if (!/^\d+(\.\d{0,1})?$/.test(e.target.value)) {
+      if (key === 'exerciseCount') e.target.value = e.target.value.slice(0, 0);
+      else e.target.value = e.target.value.slice(0, -1);
+    }
+
     if (setList && setSetList) {
       const updateSetList = [...setList];
       updateSetList[idx][key] = Number(e.target.value);
