@@ -59,6 +59,15 @@ const Period = styled.span`
   font-size: 1.4rem;
 `;
 
+const SmallButton = styled.button`
+  background-color: ${props => props.theme.lightgreen};
+  color: ${props => props.theme.darkgreen};
+  border-radius: 1rem;
+  width: 5.2rem;
+  height: 2.2rem;
+  font-size: 1.15rem;
+`;
+
 const SecondPage = (pageProps: pageProps) => {
   const { data, setData, next, onClick, targetCalories } = pageProps;
 
@@ -183,14 +192,7 @@ const SecondPage = (pageProps: pageProps) => {
           <div>내 목표 섭취 칼로리</div>
           <Column $color="black">
             <div style={{ fontSize: '2rem' }}>{data.targetCalories} kcal</div>
-            <Button
-              buttonName="목표 수정"
-              onClick={openModal}
-              color="lightgreen"
-              size={5.63}
-              radius={1}
-              textColor="darkgreen"
-            />
+            <SmallButton onClick={openModal}>목표 수정</SmallButton>
             <BottomSheet
               isOpen={isOpen}
               onClose={closeModal}
