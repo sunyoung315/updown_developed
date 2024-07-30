@@ -1,21 +1,18 @@
 package com.updown.exercise.service;
 
 import com.updown.common.S3Uploader;
-import com.updown.exercise.exception.ImgDeleteFailureException;
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
 import com.updown.exercise.dto.req.SetListReq;
 import com.updown.exercise.dto.req.UpdateExerciseReq;
 import com.updown.exercise.dto.req.UploadExerciseImgReq;
-import com.updown.exercise.dto.res.ExerciseList;
-import com.updown.exercise.dto.res.SearchExerciseListRes;
-import com.updown.exercise.dto.res.SearchExerciseRes;
-import com.updown.exercise.dto.res.SetList;
+import com.updown.exercise.dto.res.*;
 import com.updown.exercise.entity.Exercise;
 import com.updown.exercise.entity.ExerciseInfo;
 import com.updown.exercise.entity.ExerciseRecord;
 import com.updown.exercise.entity.ExerciseSet;
 import com.updown.exercise.exception.ExerciseNotFoundException;
 import com.updown.exercise.exception.ExerciseRecordNotFoundException;
+import com.updown.exercise.exception.ImgDeleteFailureException;
 import com.updown.exercise.exception.ImgUploadFailureException;
 import com.updown.exercise.repository.ExerciseInfoRepository;
 import com.updown.exercise.repository.ExerciseRecordRepository;
@@ -70,7 +67,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .exerciseTime(regsiterExerciseReq.getExerciseTime())
                 .caloriesBurned(regsiterExerciseReq.getCaloriesBurned())
                 .method(regsiterExerciseReq.getMethod())
-                .met(exerciseInfoRepository.findByExerciseInfoName(regsiterExerciseReq.getExerciseName())
+                .met(exerciseInfoRepository.findByExerciseName(regsiterExerciseReq.getExerciseName())
                         .map(ExerciseInfo::getMet)
                         .orElse(0.0f)) // 값이 없으면 o.o
                 .build();
@@ -275,6 +272,16 @@ public class ExerciseServiceImpl implements ExerciseService {
         } else {
             throw new ImgDeleteFailureException();
         }
+    }
+
+    @Override
+    public SearchExerciseInfo searchExerciseInfo(Member member, String searchStr) {
+        List<ExerciseInfo> exerciseInfos = exerciseInfoRepository.findExerciseInfoByExerciseInfoName(searchStr);
+
+        return SearchExerciseInfo.builder()
+                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
+                .exerciseInfoList(exerciseInfos)
+                .build();
     }
 }
 

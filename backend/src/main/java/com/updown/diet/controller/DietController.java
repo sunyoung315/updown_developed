@@ -139,7 +139,8 @@ public class DietController {
 
     /**
      * 식단 사진 삭제
-     * @param dietId
+     * @param regDate
+     * @param category
      * @param member
      * @return
      */
