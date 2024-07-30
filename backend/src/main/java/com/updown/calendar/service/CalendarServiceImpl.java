@@ -1,17 +1,23 @@
 package com.updown.calendar.service;
 
-import com.updown.calendar.dto.req.CalendarReq;
 import com.updown.calendar.dto.res.CalendarDietRes;
+import com.updown.calendar.dto.res.CalendarExerciseRes;
 import com.updown.calendar.dto.res.FoodRes;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.Food;
 import com.updown.diet.repository.DietRepository;
 import com.updown.diet.repository.FoodRepository;
+import com.updown.exercise.dto.res.SetList;
+import com.updown.exercise.entity.Exercise;
+import com.updown.exercise.entity.ExerciseRecord;
+import com.updown.exercise.entity.ExerciseSet;
+import com.updown.exercise.repository.ExerciseRecordRepository;
+import com.updown.exercise.repository.ExerciseRepository;
+import com.updown.exercise.repository.ExerciseSetRepository;
 import com.updown.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +28,11 @@ import java.util.List;
 public class CalendarServiceImpl implements CalendarService{
     private final DietRepository dietRepository;
     private final FoodRepository foodRepository;
+    private final ExerciseRecordRepository exerciseRecordRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final ExerciseSetRepository exerciseSetRepository;
     @Override
     public List<CalendarDietRes> searchCalendarDiet(Member member,Integer year,  Integer month) {
-
         List<CalendarDietRes> calenderDietResList = new ArrayList<>();
         // 연월에 해당하는 diet 가져오기
         List<Diet> dietList = dietRepository.findByMemberAndYearAndMonth(member, year, month);
@@ -54,5 +62,45 @@ public class CalendarServiceImpl implements CalendarService{
             calenderDietResList.add(calendarDietRes);
         }
         return calenderDietResList;
+    }
+
+    @Override
+    public List<CalendarExerciseRes> searchCalendarExercise(Member member, Integer year, Integer month) {
+        List<CalendarExerciseRes> calendarExerciseResList = new ArrayList<>();
+        // 연월에 해당하는 exerciseRecord 가져오기
+        List<ExerciseRecord> exerciseRecordList = exerciseRecordRepository.findByMemberAndYearAndMonth(member, year, month);
+        for(ExerciseRecord exerciseRecord : exerciseRecordList){
+            // 해당 exerciseRecord에 해당하는 exercise 가져오기
+            List<Exercise> exerciseList = exerciseRepository.findByExerciseRecord(exerciseRecord);
+            for(Exercise exercise : exerciseList){
+                // 해당 exercise에 해당하는 exerciseSet가져오기
+                List<ExerciseSet> exerciseSetList = exerciseSetRepository.findByExercise(exercise);
+                List<SetList> setLists = new ArrayList<>();
+                for(ExerciseSet exerciseSet : exerciseSetList){
+                    // setList 저장
+                    SetList setList = SetList.builder()
+                            .exerciseSetId(exerciseSet.getExerciseSetId())
+                            .exerciseCount(exerciseSet.getExerciseCount())
+                            .exerciseWeight(exerciseSet.getExerciseWeight())
+                            .exerciseDistance(exerciseSet.getExerciseDistance())
+                            .build();
+                    setLists.add(setList);
+                }
+
+                // CalendarExerciseRes 생성
+                CalendarExerciseRes calendarExerciseRes = CalendarExerciseRes.builder()
+                        .exerciseId(exercise.getExerciseId())
+                        .exerciseName(exercise.getExerciseName())
+                        .exerciseTime(exercise.getExerciseTime())
+                        .caloriesBurned(exercise.getCaloriesBurned())
+                        .regDate(exerciseRecord.getRegDate())
+                        .setList(setLists)
+                        .build();
+
+                calendarExerciseResList.add(calendarExerciseRes);
+            }
+
+        }
+        return calendarExerciseResList;
     }
 }
