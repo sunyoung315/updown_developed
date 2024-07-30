@@ -67,24 +67,25 @@ const Column = styled.div`
 
 const Target = styled.div`
   margin-top: 3rem;
-  text-align: right;
   color: ${props => props.theme.grey};
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 0.3rem;
 `;
 
 const Kilogram = styled.span`
   color: ${props => props.theme.black};
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 `;
 
 const TextButton = styled.button`
   color: ${props => props.theme.grey};
   text-decoration: underline;
-  font-size: 1rem;
+  font-size: 0.9rem;
   position: absolute;
   bottom: 0;
   right: 0;
-  // bottom: 4.5rem;
-  // right: 2.1rem;
 `;
 
 const MyPage = () => {
@@ -101,7 +102,11 @@ const MyPage = () => {
         if (response.status === httpStatusCode.OK) {
           setMyInfo(response.data);
           // 가장 최근 등록한 몸무게와 최초 몸무게의 차
-          setLoseWeight(response.data?.nowWeight - response.data?.recentWeight);
+          setLoseWeight(
+            Math.round(
+              (response.data?.nowWeight - response.data?.recentWeight) * 10,
+            ) / 10,
+          );
         }
       } catch (err) {
         console.log('마이페이지 조회 에러:', err);
@@ -123,7 +128,6 @@ const MyPage = () => {
     try {
       const response = await useAxios.get('/auth/logout');
       if (response.status === httpStatusCode.OK) {
-        console.log('로그아웃 성공');
         // 로그아웃 후 access token 초기화
         setAccessToken('');
         navigator('/');
@@ -188,8 +192,10 @@ const MyPage = () => {
               </Column>
             </Content>
             <Target>
-              <TargetIcon color={'darkpink'} /> 지금까지{' '}
-              <Kilogram>{loseWeight} kg</Kilogram> 감량했어요!
+              <TargetIcon color={'darkpink'} size={17} />
+              <div>
+                지금까지 <Kilogram>{loseWeight} kg</Kilogram> 감량했어요!
+              </div>
             </Target>
           </Box>
         </div>
