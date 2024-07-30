@@ -1,13 +1,14 @@
 import { TargetIcon } from '@/assets/icons';
 import theme from '@/styles/theme';
 import { calendarBoxProps } from '@/types/type';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const BoxWrapper = styled.div`
   border: 0.1rem solid #eeeeee;
   border-radius: 0.4rem;
   background-color: ${props => props.theme.white};
-  padding: 0.7rem;
+  padding: 0.7rem 0.9rem 0.7rem 0.7rem;
 `;
 
 const Header = styled.div<{ $type: string }>`
@@ -18,7 +19,7 @@ const Header = styled.div<{ $type: string }>`
   gap: 0.8rem;
 `;
 
-const Category = styled.div<{ $type: string }>`
+const Category = styled.div<{ $type: string; $isclicked: boolean }>`
   display: inline-block;
   border-radius: 0.4rem;
   background-color: ${props =>
@@ -27,16 +28,19 @@ const Category = styled.div<{ $type: string }>`
       : props.$type === 'exercise'
         ? props.theme.blue
         : props.theme.darkgreen};
-  width: auto;
-  height: 1.6rem;
+  max-width: 50%;
+  height: auto;
   font-size: 1rem;
   color: ${props => props.theme.white};
-  text-align: center;
+  text-align: left;
   padding: 0.3rem 0.6rem;
+  overflow: hidden;
+  text-overflow: ${props => (props.$isclicked ? 'break-word' : 'ellipsis')};
+  white-space: ${props => (props.$isclicked ? 'break-normal' : 'nowrap')};
 `;
 
 const BigText = styled.span<{ $type: string }>`
-  font-size: ${props => (props.$type === 'weight' ? '1.5rem' : '1.2rem')};
+  font-size: ${props => (props.$type === 'weight' ? '1.4rem' : '1.15rem')};
 `;
 
 const DetailInfoWrapper = styled.div`
@@ -64,10 +68,16 @@ const Info = styled.div`
 `;
 
 const Box = ({ type, selectedInfo }: calendarBoxProps) => {
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+
   return (
     <BoxWrapper>
       <Header $type={type}>
-        <Category $type={type}>
+        <Category
+          $type={type}
+          $isclicked={isClicked}
+          onClick={() => setIsClicked(!isClicked)}
+        >
           {type === 'diet'
             ? selectedInfo.category === 'BREAKFAST'
               ? '아침'
@@ -85,9 +95,11 @@ const Box = ({ type, selectedInfo }: calendarBoxProps) => {
         </Category>
         <BigText $type={type}>
           {type === 'diet'
-            ? '총' + selectedInfo.totalCalories + 'kcal'
+            ? selectedInfo.totalCalories === 0
+              ? '단식😷'
+              : '총 ' + selectedInfo.totalCalories + 'kcal'
             : type === 'exercise'
-              ? '총' +
+              ? '총 ' +
                 selectedInfo.exerciseTime +
                 '분 ' +
                 selectedInfo.caloriesBurned +
@@ -95,7 +107,7 @@ const Box = ({ type, selectedInfo }: calendarBoxProps) => {
               : ''}
         </BigText>
       </Header>
-      {type === 'diet' && selectedInfo.foodList && (
+      {type === 'diet' && selectedInfo?.foodList?.length > 0 && (
         <DetailInfoWrapper>
           {selectedInfo.foodList.map(food => (
             <DetailInfo key={food.foodId} $type={type}>
@@ -110,7 +122,7 @@ const Box = ({ type, selectedInfo }: calendarBoxProps) => {
           ))}
         </DetailInfoWrapper>
       )}
-      {type === 'exercise' && selectedInfo.setList && (
+      {type === 'exercise' && selectedInfo?.setList?.length > 0 && (
         <DetailInfoWrapper>
           {selectedInfo.setList.map((set: any, idx: number) => (
             <DetailInfo key={set.exerciseSetId} $type={type}>

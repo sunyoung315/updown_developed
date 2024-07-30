@@ -1,6 +1,5 @@
 import theme from '@/styles/theme';
 import iconPaths from '@/styles/icon';
-import { LargeNumberLike } from 'crypto';
 
 export interface tokenState {
   checkToken: boolean;
@@ -377,3 +376,27 @@ export type calendarBoxProps =
   | dietCalendarProps
   | exerciseCalendarProps
   | weightCalendarProps;
+
+export type CalendarDiet = {
+  dietId: number;
+  category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+  totalCalories: number;
+  regDate: string;
+  foodList: foodInfo[];
+};
+
+export type CalendarExercise = {
+  exerciseId: number;
+  exerciseName: string;
+  exerciseTime: number;
+  caloriesBurned: number;
+  regDate: string;
+  setList: ExerciseSet[];
+};
+
+export type CalendarWeight = {
+  weightId: number;
+  weight: number;
+  targetWeight: number;
+  regDate: string;
+};
