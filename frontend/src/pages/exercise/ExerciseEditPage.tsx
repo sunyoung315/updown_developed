@@ -55,7 +55,6 @@ const ExerciseEditPage = () => {
       });
 
       if (response.status === httpStatusCode.OK) {
-        console.log('운동 수정 성공');
         navigator(`/exercise/detail/${exercise.exerciseId}`, {
           state: {
             exercise: {

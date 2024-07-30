@@ -17,7 +17,7 @@ const BoxWrapper = styled.div`
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.6rem;
   cursor: pointer;
 `;
 
@@ -29,18 +29,19 @@ const Title = styled.div`
 
 const TitleDiv = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
 `;
 
 const Name = styled.span<{ $type?: string }>`
-  font-size: 1.5rem;
-  margin-left: ${props => (props.$type === 'exercise' ? '0.3rem' : 0)};
+  font-size: 1.3em;
+  margin-left: ${props => (props.$type === 'exercise' ? '0.2rem' : 0)};
 `;
 
-const Record = styled.span`
+const Record = styled.div`
   font-size: 1.1rem;
-  margin-left: 0.7rem;
+  margin-left: 0.2rem;
 `;
 
 const Infos = styled.div`
@@ -170,11 +171,6 @@ const Box = (boxProps: boxProps) => {
   // 운동 수정
   const updateExercise = async () => {
     if (type === 'exercise') {
-      console.log('exerciseName:', info.exerciseName);
-      console.log('exerciseTime:', exerciseTime);
-      console.log('caloriesBurned:', caloriesBurned);
-      console.log('method:', true);
-      console.log('setList:', setList);
       try {
         const response = await useAxios.put(`/exercise/${info.exerciseId}`, {
           exerciseName: info.exerciseName,
@@ -219,8 +215,7 @@ const Box = (boxProps: boxProps) => {
             <Calorie>{info.calories} Kcal</Calorie>
           </Infos>
         )}
-        {/* {type === 'exercise' && info.setList && info.setList.length > 0 && ( */}
-        {type === 'exercise' && (
+        {type === 'exercise' && info.setList && info.setList.length > 0 && (
           <SetBox>
             {info.setList?.map((set, idx) => (
               <SetInfo key={set.exerciseSetId}>

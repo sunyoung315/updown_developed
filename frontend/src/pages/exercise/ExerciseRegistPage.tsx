@@ -42,7 +42,6 @@ const ExerciseRegistPage = () => {
       });
 
       if (response.status === httpStatusCode.OK) {
-        console.log('운동 등록 성공');
         navigator('/exercise');
       }
     } catch (err) {
