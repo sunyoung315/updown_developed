@@ -23,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DietServiceImpl implements DietService {
     private final DietRepository dietRepository;
     private final FoodRepository foodRepository;
