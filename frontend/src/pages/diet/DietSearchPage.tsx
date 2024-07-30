@@ -17,6 +17,11 @@ const FoodList = styled.div`
   padding: 0rem 2rem 4.75rem 2rem;
 `;
 
+const Image = styled.img`
+  margin: 4rem 3rem;
+  opacity: 0.25;
+`;
+
 const DietSearchPage = () => {
   const navigator = useNavigate();
 
@@ -61,17 +66,19 @@ const DietSearchPage = () => {
         isFixed={true}
       />
       <FoodList>
-        {foodInfoList
-          ? foodInfoList.map((food: foodResult) => (
-              <SearchResult
-                result={food}
-                type="diet"
-                category={category}
-                key={food.foodInfoId}
-                dietId={dietId}
-              />
-            ))
-          : ''}
+        {foodInfoList && foodInfoList.length > 0 ? (
+          foodInfoList.map((food: foodResult) => (
+            <SearchResult
+              result={food}
+              type="diet"
+              category={category}
+              key={food.foodInfoId}
+              dietId={dietId}
+            />
+          ))
+        ) : (
+          <Image src="/images/search.png" alt="img" />
+        )}
       </FoodList>
     </DietSearchPageWrapper>
   );

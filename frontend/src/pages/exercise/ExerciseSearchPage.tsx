@@ -18,6 +18,11 @@ const ExerciseList = styled.div`
   padding: 0rem 2rem 4.75rem 2rem;
 `;
 
+const Image = styled.img`
+  margin: 4rem 3rem;
+  opacity: 0.25;
+`;
+
 const ExerciseSearchPage = () => {
   const navigator = useNavigate();
 
@@ -128,15 +133,19 @@ const ExerciseSearchPage = () => {
         isFixed={true}
       />
       <ExerciseList>
-        {exerciseInfoList.map((exerciseInfo: exerciseResult) => (
-          <SearchResult
-            key={exerciseInfo.exerciseInfoId}
-            result={exerciseInfo}
-            type="exercise"
-            exerciseRef={exerciseRef}
-            openModal={openModal}
-          />
-        ))}
+        {exerciseInfoList.length > 0 ? (
+          exerciseInfoList.map((exerciseInfo: exerciseResult) => (
+            <SearchResult
+              key={exerciseInfo.exerciseInfoId}
+              result={exerciseInfo}
+              type="exercise"
+              exerciseRef={exerciseRef}
+              openModal={openModal}
+            />
+          ))
+        ) : (
+          <Image src="/images/search.png" alt="img" />
+        )}
       </ExerciseList>
       <BottomSheet
         isOpen={isOpen}
