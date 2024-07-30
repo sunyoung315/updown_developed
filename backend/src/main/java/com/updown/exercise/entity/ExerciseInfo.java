@@ -20,7 +20,7 @@ public class ExerciseInfo {
     private Integer exerciseInfoId;
 
     @Column(name = "exercise_name", nullable = false)
-    private String exerciseInfoName;
+    private String exerciseName;
 
     @Column(name = "met", nullable = false)
     private float met;

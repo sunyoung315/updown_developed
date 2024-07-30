@@ -2,11 +2,14 @@ package com.updown.exercise.controller;
 
 import com.updown.diet.dto.req.UploadDietImgReq;
 import com.updown.diet.entity.DietCategory;
+import com.updown.diet.entity.FoodInfo;
 import com.updown.exercise.dto.req.RegsiterExerciseReq;
 import com.updown.exercise.dto.req.UpdateExerciseReq;
 import com.updown.exercise.dto.req.UploadExerciseImgReq;
+import com.updown.exercise.dto.res.SearchExerciseInfo;
 import com.updown.exercise.dto.res.SearchExerciseListRes;
 import com.updown.exercise.dto.res.SearchExerciseRes;
+import com.updown.exercise.entity.ExerciseInfo;
 import com.updown.exercise.service.ExerciseService;
 import com.updown.member.entity.Member;
 import jakarta.transaction.Transactional;
@@ -16,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -109,5 +113,15 @@ public class ExerciseController {
     public ResponseEntity<?> deleteDietImage(@PathVariable Integer exerciseRecordId, @AuthenticationPrincipal Member member) {
         exerciseService.deleteExerciseImg(exerciseRecordId, member);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchExerciseInfo(@AuthenticationPrincipal Member member, @RequestParam String searchStr){
+        SearchExerciseInfo searchExerciseInfo = exerciseService.searchExerciseInfo(member, searchStr);
+
+        if(!searchExerciseInfo.getExerciseInfoList().isEmpty()){
+            return ResponseEntity.ok(searchExerciseInfo);
+        }
+        return ResponseEntity.noContent().build();
     }
 }
