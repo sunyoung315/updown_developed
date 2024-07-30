@@ -2,6 +2,7 @@ package com.updown.calendar.service;
 
 import com.updown.calendar.dto.res.CalendarDietRes;
 import com.updown.calendar.dto.res.CalendarExerciseRes;
+import com.updown.calendar.dto.res.CalendarWeight;
 import com.updown.calendar.dto.res.FoodRes;
 import com.updown.diet.entity.Diet;
 import com.updown.diet.entity.Food;
@@ -15,6 +16,8 @@ import com.updown.exercise.repository.ExerciseRecordRepository;
 import com.updown.exercise.repository.ExerciseRepository;
 import com.updown.exercise.repository.ExerciseSetRepository;
 import com.updown.member.entity.Member;
+import com.updown.weight.entity.Weight;
+import com.updown.weight.repository.WeightRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ public class CalendarServiceImpl implements CalendarService{
     private final ExerciseRecordRepository exerciseRecordRepository;
     private final ExerciseRepository exerciseRepository;
     private final ExerciseSetRepository exerciseSetRepository;
+    private final WeightRepository weightRepository;
     @Override
     public List<CalendarDietRes> searchCalendarDiet(Member member,Integer year,  Integer month) {
         List<CalendarDietRes> calenderDietResList = new ArrayList<>();
@@ -102,5 +106,21 @@ public class CalendarServiceImpl implements CalendarService{
 
         }
         return calendarExerciseResList;
+    }
+
+    @Override
+    public List<CalendarWeight> searchCalendarWeight(Member member, Integer year, Integer month) {
+        List<CalendarWeight> calendarWeightList = new ArrayList<>();
+        List<Weight> weightList = weightRepository.findByMemberAndYearAndMonth(member,year,month);
+        for(Weight weight : weightList){
+            CalendarWeight calendarWeight = CalendarWeight.builder()
+                    .weightId(weight.getWeightId())
+                    .weight(weight.getWeight())
+                    .targetWeight(member.getTargetWeight())
+                    .regDate(weight.getRegDate())
+                    .build();
+            calendarWeightList.add(calendarWeight);
+        }
+        return calendarWeightList;
     }
 }

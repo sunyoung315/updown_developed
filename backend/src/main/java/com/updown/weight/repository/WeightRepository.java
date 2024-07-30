@@ -1,5 +1,6 @@
 package com.updown.weight.repository;
 
+import com.updown.exercise.entity.ExerciseRecord;
 import com.updown.member.entity.Member;
 import com.updown.weight.entity.Weight;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,8 @@ public interface WeightRepository extends JpaRepository<Weight, Integer> {
     List<Weight> findRecentWeightsByMemberIdAndRegDate(@Param("memberId") Integer memberId, @Param("regDate") LocalDate regDate);
 
     Optional<Weight> findByMemberAndRegDate(Member member, LocalDate regDate);
+
+    @Query("SELECT w FROM Weight AS w WHERE w.member =:member AND YEAR(w.regDate) = :year AND MONTH(w.regDate) = :month ")
+    List<Weight> findByMemberAndYearAndMonth(Member member, Integer year, Integer month);
+
 }

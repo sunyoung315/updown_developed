@@ -2,6 +2,7 @@ package com.updown.calendar.controller;
 
 import com.updown.calendar.dto.res.CalendarDietRes;
 import com.updown.calendar.dto.res.CalendarExerciseRes;
+import com.updown.calendar.dto.res.CalendarWeight;
 import com.updown.calendar.service.CalendarService;
 import com.updown.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,22 @@ public class CalendarController {
         return ResponseEntity.ok().body(calenderDietResList);
     }
 
+    /**
+     * 연월에 해당하는 운동 조회
+     * @param member
+     * @param year
+     * @param month
+     * @return
+     */
     @GetMapping("/exercise")
     ResponseEntity<?> searchCalendarExercie(@AuthenticationPrincipal Member member,@RequestParam Integer year, @RequestParam Integer month) {
-        List<CalendarExerciseRes> calendarExerciseRes = calendarService.searchCalendarExercise(member, year, month);
-        return ResponseEntity.ok().body(calendarExerciseRes);
+        List<CalendarExerciseRes> calendarExerciseResList = calendarService.searchCalendarExercise(member, year, month);
+        return ResponseEntity.ok().body(calendarExerciseResList);
+    }
+
+    @GetMapping("/weight")
+    ResponseEntity<?> searchCalendarWeight(@AuthenticationPrincipal Member member, @RequestParam Integer year, @RequestParam Integer month){
+        List<CalendarWeight> calendarWeightList = calendarService.searchCalendarWeight(member, year, month);
+        return ResponseEntity.ok().body(calendarWeightList);
     }
 }
