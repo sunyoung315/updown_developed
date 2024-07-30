@@ -1,7 +1,7 @@
-import FastIcon from '@/assets/icons/fast-icon.svg';
-import HomeIcon from '@/assets/icons/home-icon.svg';
-import MypageIcon from '@/assets/icons/mypage-icon.svg';
-import { useNavigate } from 'react-router-dom';
+import { HomeIcon, MyPageIcon, CalendarIcon } from '@/assets/icons';
+import theme from '@/styles/theme';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const BottomNavWrapper = styled.div`
@@ -24,16 +24,43 @@ const BottomNavWrapper = styled.div`
 const Button = styled.button`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 0.2rem;
+  padding-top: 0.3rem;
 `;
 
-const ButtonName = styled.div`
-  font-size: 0.7rem;
-  color: ${props => props.theme.grey};
+const ButtonName = styled.div<{
+  $iscalendar?: boolean;
+  $ismain?: boolean;
+  $ismypage?: boolean;
+}>`
+  font-size: 0.8rem;
+  color: ${props =>
+    props.$iscalendar
+      ? props.theme.orange
+      : props.$ismain
+        ? props.theme.darkgreen
+        : props.$ismypage
+          ? props.theme.darkpink
+          : props.theme.grey};
 `;
 
 const BottomNav = () => {
   const navigator = useNavigate();
+  const location = useLocation();
+
+  const [path, setPath] = useState<string>('');
+
+  useEffect(() => {
+    const url = location.pathname;
+    if (url.substring(0, 7) === '/mypage') setPath('mypage');
+    else if (url.substring(0, 5) === '/main') setPath('main');
+    else if (url.substring(0, 9) === '/calendar') setPath('calendar');
+    else setPath('');
+  }, [location.pathname]);
+
+  useEffect(() => {});
 
   const goMain = () => {
     navigator('/main');
@@ -43,19 +70,26 @@ const BottomNav = () => {
     navigator('/mypage');
   };
 
+  const goCalendar = () => {
+    navigator('/calendar');
+  };
+
   return (
     <BottomNavWrapper>
-      <Button>
-        <img src={FastIcon} alt="fast" />
-        <ButtonName>단식</ButtonName>
+      <Button onClick={goCalendar}>
+        <CalendarIcon
+          color={path === 'calendar' ? 'orange' : 'grey'}
+          size={25.5}
+        />
+        <ButtonName $iscalendar={path === 'calendar'}>달력</ButtonName>
       </Button>
       <Button onClick={goMain}>
-        <img src={HomeIcon} alt="home" />
-        <ButtonName>홈</ButtonName>
+        <HomeIcon color={path === 'main' ? 'darkgreen' : 'grey'} />
+        <ButtonName $ismain={path === 'main'}>홈</ButtonName>
       </Button>
       <Button onClick={goMyPage}>
-        <img src={MypageIcon} alt="mypage" />
-        <ButtonName>마이</ButtonName>
+        <MyPageIcon color={path === 'mypage' ? 'darkpink' : 'grey'} />
+        <ButtonName $ismypage={path === 'mypage'}>마이</ButtonName>
       </Button>
     </BottomNavWrapper>
   );

@@ -14,6 +14,9 @@ import DietIcon from './DietIcon';
 import ExerciseIcon from './ExerciseIcon';
 import WeightIcon from './WeightIcon';
 import TargetIcon from './TargetIcon';
+import HomeIcon from './HomeIcon';
+import MyPageIcon from './MyPageIcon';
+import CalendarIcon from './CalendarIcon';
 
 export {
   MaleIcon,
@@ -32,4 +35,7 @@ export {
   ExerciseIcon,
   WeightIcon,
   TargetIcon,
+  HomeIcon,
+  MyPageIcon,
+  CalendarIcon,
 };
