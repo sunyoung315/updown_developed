@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { dateProps } from '@/types/type';
-import { LeftArrow, RightArrow } from '@/assets/icons';
-import CalendarIcon from '@/assets/icons/calendar.svg';
+import { CalendarIcon, LeftArrow, RightArrow } from '@/assets/icons';
 import styled from 'styled-components';
 
 const HeaderWrapper = styled.div`
@@ -23,11 +22,6 @@ const DateWrapper = styled.span`
   justify-content: space-between;
   align-items: center;
   gap: 0.6rem;
-`;
-
-const CalendarButton = styled.img`
-  width: 1.1rem;
-  height: 1.1rem;
 `;
 
 const Header = (dateProps: dateProps) => {
@@ -68,7 +62,7 @@ const Header = (dateProps: dateProps) => {
       <LeftArrow onClick={prevDate} />
       <DateWrapper>
         <button onClick={() => navigator('/calendar')}>
-          <CalendarButton src={CalendarIcon} />
+          <CalendarIcon size={17} color="black" />
         </button>
         {todayYear === year && todayMonth === month && todayDay === day
           ? '오늘'
