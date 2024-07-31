@@ -39,6 +39,9 @@ const ImageBox = styled.div`
   margin-left: auto;
   margin-right: auto;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ImageIcon = styled.div`
@@ -48,7 +51,8 @@ const ImageIcon = styled.div`
 `;
 
 const Image = styled.img`
-  width: 90%;
+  max-width: 90%;
+  max-height: 90%;
   margin: 5%;
 `;
 
