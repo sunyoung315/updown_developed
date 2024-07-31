@@ -17,7 +17,8 @@ const HeaderWrapper = styled.div<{ $isfixed?: boolean }>`
     top: 0;
     width: 100%;
     background-color: ${props.theme.white};
-    z-index: 10;`
+    z-index: 10;
+    max-width: 430px;`
       : ''}
 `;
 
