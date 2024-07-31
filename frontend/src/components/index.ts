@@ -8,6 +8,7 @@ import Input from './Input';
 import SearchInput from './SearchInput';
 import SearchResult from './SearchResult';
 import BottomSheet from './BottomSheet';
+import Modal from './Modal';
 
 export {
   BottomNav,
@@ -20,4 +21,5 @@ export {
   SearchInput,
   SearchResult,
   BottomSheet,
+  Modal,
 };

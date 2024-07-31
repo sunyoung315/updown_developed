@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import { SummaryInfo } from '@/types/type';
 import theme from '@/styles/theme';
 
-const ProgressBar = ({ info }: { info: SummaryInfo }) => {
+const ProgressBar = ({
+  info,
+  color,
+}: {
+  info: SummaryInfo;
+  color: keyof typeof theme;
+}) => {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
@@ -37,7 +43,7 @@ const ProgressBar = ({ info }: { info: SummaryInfo }) => {
         cy="100%"
       />
       <circle
-        stroke={theme['darkpink']}
+        stroke={theme[color]}
         fill="transparent"
         strokeWidth="30"
         r={radius}

@@ -239,6 +239,7 @@ export type Member = {
   activeLevel: '거의없음' | '적음' | '보통' | '많음' | '매우많음' | '';
   targetCalories: number;
   recentWeight?: number;
+  themeNum?: number;
 };
 
 export type pageProps = {
@@ -408,4 +409,22 @@ export type SummaryInfo = {
   totalFat: number;
   targetCalories: number;
   totalCaloriesBurned: number;
+  themeNum: number;
+};
+
+export type modalProps = {
+  isOpen?: boolean;
+  onClose?: () => void;
+  title?: string;
+  children?: React.ReactNode;
+};
+
+export type themeProps = {
+  name: string;
+  imgName: string;
+  backgroundColor: keyof typeof theme;
+  color: keyof typeof theme;
+  isSelected: boolean;
+  idx: number;
+  setSelectedTheme: React.Dispatch<React.SetStateAction<number>>;
 };

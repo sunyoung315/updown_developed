@@ -1,4 +1,7 @@
+import { themeProps } from '@/types/type';
+
 const theme = {
+  lightred: '#F6A3A3',
   red: '#CC6363',
   white: '#FFFEFC',
   pink: '#F4BFC5',
@@ -16,7 +19,53 @@ const theme = {
   darkgrey: '#242424',
   black: '#262626',
   transparent: 'transparent',
+  lightpurple: '#DEBEE1',
   purple: '#AC81B0',
+  lightcobalt: '#CAD6F4',
+  cobalt: '#6C8EE3',
+  lightcoral: '#F9A88F',
+  coral: '#F4764E',
+  lightemerald: '#C7F1C3',
+  emerald: '#A0D77E',
 };
 
 export default theme;
+
+export const themeList = [
+  {
+    name: '운동냥이',
+    imgName: 'bodybuilder-cat',
+    backgroundColor: 'pink',
+    color: 'darkpink',
+  },
+  {
+    name: '집냥이',
+    imgName: 'house-cat',
+    backgroundColor: 'lightpurple',
+    color: 'purple',
+  },
+  {
+    name: '흥냥이',
+    imgName: 'music-cat',
+    backgroundColor: 'lightcobalt',
+    color: 'cobalt',
+  },
+  {
+    name: '명상냥이',
+    imgName: 'yoga-cat',
+    backgroundColor: 'lightred',
+    color: 'red',
+  },
+  {
+    name: '꽃냥이',
+    imgName: 'flower-cat',
+    backgroundColor: 'lightcoral',
+    color: 'coral',
+  },
+  {
+    name: '휴식냥이',
+    imgName: 'rest-cat',
+    backgroundColor: 'lightemerald',
+    color: 'emerald',
+  },
+] as themeProps[];

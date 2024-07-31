@@ -1,10 +1,16 @@
 import theme from '@/styles/theme';
 
-const ImgIcon = ({ fillColor }: { fillColor: keyof typeof theme }) => {
+const ImgIcon = ({
+  fillColor,
+  onClick,
+}: {
+  fillColor: keyof typeof theme;
+  onClick: () => void;
+}) => {
   const color = theme[fillColor];
 
   return (
-    <>
+    <button onClick={onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="49"
@@ -67,7 +73,7 @@ const ImgIcon = ({ fillColor }: { fillColor: keyof typeof theme }) => {
           </clipPath>
         </defs>
       </svg>
-    </>
+    </button>
   );
 };
 

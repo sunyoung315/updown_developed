@@ -15,6 +15,7 @@ const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0.8rem;
   position: fixed;
+  z-index: 100;
 `;
 
 const DateWrapper = styled.span`

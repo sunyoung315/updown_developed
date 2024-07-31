@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken } from '@/api/auth';
 import { ImgIcon, TargetIcon } from '@/assets/icons';
-import { Header, Button } from '@/components';
+import { Header, Button, Modal } from '@/components';
 import { tokenStore } from '@/store';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
+import theme, { themeList } from '@/styles/theme';
+import ThemeBox from './components/ThemeBox';
 import { Member } from '@/types/type';
-import Running from '@/assets/images/running.png';
 import styled from 'styled-components';
 
 const MyPageWrapper = styled.div`
@@ -17,17 +18,17 @@ const MyPageWrapper = styled.div`
   position: relative;
 `;
 
-const ImageBox = styled.div`
+const ImageBox = styled.div<{ $color: keyof typeof theme }>`
   width: 8rem;
   height: 8rem;
   border-radius: 0.5rem;
-  background-color: ${props => props.theme.pink};
+  background-color: ${props => theme[props.$color]};
   margin-left: auto;
   margin-right: auto;
   position: relative;
 `;
 
-const ImageIcon = styled.button`
+const ImageIcon = styled.div`
   position: absolute;
   bottom: -11%;
   right: -13%;
@@ -88,11 +89,29 @@ const TextButton = styled.button`
   right: 0;
 `;
 
+const ChildrenWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+`;
+
 const MyPage = () => {
   const { checkToken } = tokenStore();
 
   const [myInfo, setMyInfo] = useState<Member>();
+  const [myTheme, setMyTheme] = useState<number>(0);
   const [loseWeight, setLoseWeight] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedTheme, setSelectedTheme] = useState<number>(0);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const getMyPageInfo = async () => {
@@ -101,6 +120,8 @@ const MyPage = () => {
 
         if (response.status === httpStatusCode.OK) {
           setMyInfo(response.data);
+          setMyTheme(response.data.themeNum);
+          setSelectedTheme(response.data.themeNum);
           // 가장 최근 등록한 몸무게와 최초 몸무게의 차
           setLoseWeight(
             Math.round(
@@ -155,6 +176,21 @@ const MyPage = () => {
     }
   };
 
+  // 테마 변경
+  const changeTheme = async () => {
+    try {
+      const response = await useAxios.put('/mypage/theme', {
+        params: { themeNum: selectedTheme },
+      });
+
+      if (response.status === httpStatusCode.OK) {
+        setMyTheme(selectedTheme);
+      }
+    } catch (err) {
+      console.log('테마 변경 에러:', err);
+    }
+  };
+
   return (
     <>
       <Header
@@ -165,10 +201,34 @@ const MyPage = () => {
         headerName="마이페이지"
       />
       <MyPageWrapper>
-        <ImageBox>
-          <Image src={Running} alt="themeImg" />
+        <ImageBox $color={themeList[myTheme].backgroundColor}>
+          <Image
+            src={`/images/${themeList[myTheme].imgName}.png`}
+            alt="themeImg"
+          />
           <ImageIcon>
-            <ImgIcon fillColor="darkpink" />
+            <ImgIcon fillColor={themeList[myTheme].color} onClick={openModal} />
+            <Modal isOpen={isOpen} onClose={closeModal} title="테마 선택">
+              <ChildrenWrapper>
+                {themeList.map((theme, idx) => (
+                  <ThemeBox
+                    name={theme.name}
+                    imgName={theme.imgName}
+                    backgroundColor={theme.backgroundColor}
+                    color={theme.color}
+                    isSelected={idx === selectedTheme}
+                    key={idx}
+                    idx={idx}
+                    setSelectedTheme={setSelectedTheme}
+                  />
+                ))}
+              </ChildrenWrapper>
+              <Button
+                buttonName="테마 변경하기"
+                color="darkgrey"
+                onClick={changeTheme}
+              />
+            </Modal>
           </ImageIcon>
         </ImageBox>
         <Hr />
