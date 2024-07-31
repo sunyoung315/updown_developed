@@ -6,7 +6,7 @@ const ProgressBar = ({ info }: { info: SummaryInfo }) => {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
-    const targetProgress = (info.dietTotalIntake / info.targetCalories) * 100;
+    const targetProgress = (info.dietTotalCalories / info.targetCalories) * 100;
     setProgress(targetProgress);
 
     const interval = setInterval(() => {

@@ -402,7 +402,7 @@ export type CalendarWeight = {
 };
 
 export type SummaryInfo = {
-  dietTotalIntake: number;
+  dietTotalCalories: number;
   totalCarbohydrate: number;
   totalProtein: number;
   totalFat: number;

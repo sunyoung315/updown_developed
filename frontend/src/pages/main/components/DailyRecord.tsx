@@ -99,7 +99,7 @@ const CalorieInfo = styled.div`
 const DailyRecord = () => {
   const regDate = localStorage.getItem('date');
   const [info, setInfo] = useState<SummaryInfo>({
-    dietTotalIntake: 0,
+    dietTotalCalories: 0,
     totalCarbohydrate: 0,
     totalProtein: 0,
     totalFat: 0,
@@ -116,7 +116,7 @@ const DailyRecord = () => {
       if (response.status === httpStatusCode.OK) {
         const info = response.data;
         setInfo({
-          dietTotalIntake: info.dietTotalIntake,
+          dietTotalCalories: info.dietTotalCalories,
           totalCarbohydrate: info.totalCarbohydrate,
           totalProtein: info.totalProtein,
           totalFat: info.totalFat,
@@ -148,7 +148,7 @@ const DailyRecord = () => {
         <Gram style={{ paddingRight: '0' }}>{info.totalFat} g</Gram>
       </NutritionWrapper>
       <div>
-        <Calorie>{info.dietTotalIntake}</Calorie>
+        <Calorie>{info.dietTotalCalories}</Calorie>
         <span> / </span>
         <span>{info.targetCalories}</span>
         <span> kcal</span>
@@ -162,7 +162,7 @@ const DailyRecord = () => {
         <span>{info.totalCaloriesBurned} kcal 소모</span>
         <span>|</span>
         <img src={DietIcon} alt="icon" />
-        <span>{info.dietTotalIntake} kcal 섭취</span>
+        <span>{info.dietTotalCalories} kcal 섭취</span>
       </CalorieInfo>
     </DailyRecordWrapper>
   );
