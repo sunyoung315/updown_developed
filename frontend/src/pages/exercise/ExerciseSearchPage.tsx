@@ -115,6 +115,7 @@ const ExerciseSearchPage = () => {
 
       if (response.status === httpStatusCode.OK) {
         closeModal();
+        navigator('/exercise');
       }
     } catch (err) {
       console.log('운동 등록 에러:', err);
