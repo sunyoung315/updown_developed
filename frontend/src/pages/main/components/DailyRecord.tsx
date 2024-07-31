@@ -5,13 +5,13 @@ import { httpStatusCode } from '@/util/http-status';
 import { SummaryInfo } from '@/types/type';
 import DietIcon from '@/assets/icons/restaurant.svg';
 import BurnedIcon from '@/assets/icons/burned-icon.svg';
-import Running from '@/assets/images/running.png';
 import styled from 'styled-components';
+import theme, { themeList } from '@/styles/theme';
 
-const DailyRecordWrapper = styled.div`
+const DailyRecordWrapper = styled.div<{ $color: keyof typeof theme }>`
   width: 100%;
   height: 30rem;
-  background-color: ${props => props.theme.pink};
+  background-color: ${props => theme[props.$color]};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,10 +29,10 @@ const TitleWrapper = styled.div`
   font-size: 1.25rem;
 `;
 
-const ShareButtonWrapper = styled.button`
+const ShareButtonWrapper = styled.button<{ $color: keyof typeof theme }>`
   width: 4.5rem;
   padding: 0.4rem;
-  background-color: ${props => props.theme.darkpink};
+  background-color: ${props => theme[props.$color]};
   font-size: 1rem;
   color: ${props => props.theme.white};
   border-radius: 0.5rem;
@@ -46,12 +46,12 @@ const NutritionWrapper = styled.div`
   align-items: center;
 `;
 
-const Nutrition = styled.span`
+const Nutrition = styled.span<{ $color: keyof typeof theme }>`
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 50%;
   background-color: ${props => props.theme.white};
-  color: ${props => props.theme.pink};
+  color: ${props => theme[props.$color]};
   font-size: 1rem;
   text-align: center;
   line-height: 1.25rem;
@@ -105,6 +105,7 @@ const DailyRecord = () => {
     totalFat: 0,
     targetCalories: 1,
     totalCaloriesBurned: 0,
+    themeNum: 0,
   });
 
   const getSummaryInfo = async () => {
@@ -122,6 +123,7 @@ const DailyRecord = () => {
           totalFat: info.totalFat,
           targetCalories: info.targetCalories,
           totalCaloriesBurned: info.totalCaloriesBurned,
+          themeNum: info.themeNum,
         });
       }
     } catch (err) {
@@ -134,17 +136,25 @@ const DailyRecord = () => {
   }, [regDate]);
 
   return (
-    <DailyRecordWrapper>
+    <DailyRecordWrapper $color={themeList[info.themeNum].backgroundColor}>
       <TitleWrapper>
         <span>하루 기록</span>
-        <ShareButtonWrapper>공유하기</ShareButtonWrapper>
+        <ShareButtonWrapper $color={themeList[info.themeNum].color}>
+          공유하기
+        </ShareButtonWrapper>
       </TitleWrapper>
       <NutritionWrapper>
-        <Nutrition>탄</Nutrition>
+        <Nutrition $color={themeList[info.themeNum].backgroundColor}>
+          탄
+        </Nutrition>
         <Gram>{info.totalCarbohydrate} g</Gram>
-        <Nutrition>단</Nutrition>
+        <Nutrition $color={themeList[info.themeNum].backgroundColor}>
+          단
+        </Nutrition>
         <Gram>{info.totalProtein} g</Gram>
-        <Nutrition>지</Nutrition>
+        <Nutrition $color={themeList[info.themeNum].backgroundColor}>
+          지
+        </Nutrition>
         <Gram style={{ paddingRight: '0' }}>{info.totalFat} g</Gram>
       </NutritionWrapper>
       <div>
@@ -154,8 +164,11 @@ const DailyRecord = () => {
         <span> kcal</span>
       </div>
       <ProgressBarWrapper>
-        <ProgressBarBox info={info} />
-        <Image src={Running} alt="img" />
+        <ProgressBarBox info={info} color={themeList[info.themeNum].color} />
+        <Image
+          src={`/images/${themeList[info.themeNum].imgName}.png`}
+          alt="img"
+        />
       </ProgressBarWrapper>
       <CalorieInfo>
         <img src={BurnedIcon} alt="icon" />
