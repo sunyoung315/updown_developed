@@ -68,6 +68,7 @@ public class SummaryServiceImpl implements SummaryService {
                 .totalFat(totalFat)
                 .targetCalories(member.getTargetCalories())
                 .totalCaloriesBurned(totalCaloriesBurned)
+                .themeNum(member.getThemeNum())
                 .build();
     }
 }

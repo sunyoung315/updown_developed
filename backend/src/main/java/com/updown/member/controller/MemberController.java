@@ -27,18 +27,6 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-//    /**
-//     * 목표 칼로리 수정
-//     * @param member
-//     * @param targetCalories
-//     * @return
-//     */
-//    @PutMapping("/calorie")
-//    public ResponseEntity<?> updateCalorie(@AuthenticationPrincipal Member member, @RequestParam("targetCalories") Integer targetCalories){
-//        memberService.updateCalorie(member,targetCalories);
-//        return ResponseEntity.ok().build();
-//    }
-
     /**
      * 개인정보 조회
      * @param member
@@ -48,5 +36,11 @@ public class MemberController {
     public ResponseEntity<?> searchMyInfo(@AuthenticationPrincipal Member member){
         SearchMyInfoRes searchMyInfoRes = memberService.searchMyInfo(member);
         return ResponseEntity.ok().body(searchMyInfoRes);
+    }
+
+    @PutMapping("/theme")
+    public ResponseEntity<?> changeTheme(@AuthenticationPrincipal Member member,@RequestParam Integer themeNum){
+        memberService.changeTheme(member, themeNum);
+        return ResponseEntity.ok().build();
     }
 }

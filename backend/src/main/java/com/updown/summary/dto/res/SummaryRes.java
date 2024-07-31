@@ -12,4 +12,5 @@ public class SummaryRes {
     private float totalFat;
     private Integer targetCalories;
     private float totalCaloriesBurned;
+    private Integer themeNum;
 }

@@ -12,4 +12,6 @@ public interface MemberService {
 //    void updateCalorie(Member member, Integer targetCalories);
 
     SearchMyInfoRes searchMyInfo(Member member);
+
+    void changeTheme(Member member, Integer themeNum);
 }

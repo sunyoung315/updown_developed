@@ -68,6 +68,9 @@ public class Member implements OAuth2User {
     @Column(name = "fast_during_time")
     private Integer fastDuringTime;
 
+    @Column(name = "theme_num")
+    private Integer themeNum;
+
 
     @Override
     public Map<String, Object> getAttributes() {
