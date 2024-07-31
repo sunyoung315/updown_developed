@@ -87,7 +87,7 @@ const ExerciseSearchPage = () => {
   const searchExercise = async () => {
     try {
       const response = await useAxios.get('/exercise/search', {
-        params: { searchStr },
+        params: { regDate, searchStr },
       });
 
       if (response.status === httpStatusCode.OK) {
