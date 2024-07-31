@@ -111,6 +111,7 @@ const MyPage = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+    setSelectedTheme(myTheme);
   };
 
   useEffect(() => {
@@ -179,12 +180,13 @@ const MyPage = () => {
   // 테마 변경
   const changeTheme = async () => {
     try {
-      const response = await useAxios.put('/mypage/theme', {
+      const response = await useAxios.put('/mypage/theme', null, {
         params: { themeNum: selectedTheme },
       });
 
       if (response.status === httpStatusCode.OK) {
         setMyTheme(selectedTheme);
+        setIsOpen(false);
       }
     } catch (err) {
       console.log('테마 변경 에러:', err);
