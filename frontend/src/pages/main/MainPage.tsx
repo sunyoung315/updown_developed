@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Header,
   DailyRecord,
@@ -7,6 +7,7 @@ import {
   DailyExercise,
 } from './components';
 import styled from 'styled-components';
+import { format } from 'date-fns';
 
 const ContentsWrapper = styled.div`
   padding-top: 3rem;
@@ -14,29 +15,22 @@ const ContentsWrapper = styled.div`
 `;
 
 const MainPage = () => {
-  const today = new Date();
+  const selectedDate = localStorage.getItem('date');
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const [date, setDate] = useState<string>(today);
 
-  const [date, setDate] = useState(today);
-
-  const year = new Date(date).getFullYear();
-  const month = new Date(date).getMonth();
-  const day = new Date(date).getDate();
-
-  const regDate =
-    year.toString() +
-    '-' +
-    (month < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) +
-    '-' +
-    (day < 10 ? '0' + day.toString() : day.toString());
+  useEffect(() => {
+    if (selectedDate) setDate(selectedDate);
+  }, [date]);
 
   return (
     <>
       <Header date={date} setDate={setDate} />
       <ContentsWrapper>
         <DailyRecord />
-        <DailyDiet regDate={regDate} />
-        <DailyWeight regDate={regDate} />
-        <DailyExercise regDate={regDate} />
+        <DailyDiet regDate={date} />
+        <DailyWeight regDate={date} />
+        <DailyExercise regDate={date} />
       </ContentsWrapper>
     </>
   );
