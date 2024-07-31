@@ -24,7 +24,7 @@ const Title = styled.div`
 
 const TitleButton = styled.button<{ $color: boolean }>`
   color: ${props => (props.$color ? props.theme.black : props.theme.darkgreen)};
-  font-size: 1.25rem;
+  font-size: 1.4rem;
 `;
 
 const Content = styled.div`

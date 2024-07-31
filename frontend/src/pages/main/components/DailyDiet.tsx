@@ -18,7 +18,7 @@ const TitleWrapper = styled.div`
   padding-right: 1.8rem;
   padding-top: 1.6rem;
   padding-bottom: 1.6rem;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
 `;
 
 const DietWrapper = styled.div`
