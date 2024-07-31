@@ -1,6 +1,7 @@
 package com.updown.weight.service;
 
 import com.updown.member.entity.Member;
+import com.updown.member.repository.MemberRepository;
 import com.updown.weight.dto.req.RegisterWeightReq;
 import com.updown.weight.dto.res.SearchWeightRes;
 import com.updown.weight.entity.Weight;
@@ -23,6 +24,7 @@ import java.util.List;
 public class WeightServiceImpl implements WeightService{
 
     private final WeightRepository weightRepository;
+    private final MemberRepository memberRepository;
     @Override
     public void registerWeight(Member member, RegisterWeightReq registerWeightReq) {
         // 해당 날짜에 아직 등록이 안되어있다면 등록
@@ -34,6 +36,13 @@ public class WeightServiceImpl implements WeightService{
                     .regDate(registerWeightReq.getRegDate())
                     .build();
             weightRepository.save(weight);
+            // member의 현재 체중 갱신이 필요하면 갱신
+            // 가장 최근 날짜의 체중을 가져와서 현재 체중과 다르면 갱신
+            float recentWeight = weightRepository.findMostRecentWeightByMemberId(member.getMemberId());
+            if(recentWeight != member.getNowWeight()){
+                member.setNowWeight(recentWeight);
+                memberRepository.save(member);
+            }
         }else{ // 이미 등록 되어있다면 예외처리
             throw new WeightExistedException();
         }
@@ -41,11 +50,19 @@ public class WeightServiceImpl implements WeightService{
 
     @Override
     public void updateWeight(Member member, RegisterWeightReq registerWeightReq) {
+        // 해당 날짜에 맞는 체중 가져오기
         Weight weight = weightRepository.findByMemberAndRegDate(member, registerWeightReq.getRegDate()).orElseThrow(WeightNotFoundException::new);
-
+        // 해당 체중 수정
         weight.setWeight(registerWeightReq.getWeight());
-
+        // 체중 저장
         weightRepository.save(weight);
+        // member의 현재 체중 갱신이 필요하면 갱신
+        // 가장 최근 날짜의 체중을 가져와서 현재 체중과 다르면 갱신
+        float recentWeight = weightRepository.findMostRecentWeightByMemberId(member.getMemberId());
+        if(recentWeight != member.getNowWeight()){
+            member.setNowWeight(recentWeight);
+            memberRepository.save(member);
+        }
     }
 
     @Override
