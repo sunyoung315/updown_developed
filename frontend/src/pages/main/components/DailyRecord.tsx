@@ -82,10 +82,10 @@ const ProgressBarBox = styled(ProgressBar)`
 `;
 
 const Image = styled.img`
-  width: 40%;
+  width: 9rem;
   position: absolute;
   bottom: -10%;
-  left: 30%;
+  left: 26%;
 `;
 
 const CalorieInfo = styled.div`
