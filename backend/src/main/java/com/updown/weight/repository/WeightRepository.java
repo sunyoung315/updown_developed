@@ -18,6 +18,10 @@ import java.util.Optional;
 @Repository
 public interface WeightRepository extends JpaRepository<Weight, Integer> {
 
+    // 해당 날짜 기준 가장 최근 등록 체중 조회
+    @Query("SELECT w.weight FROM Weight w WHERE w.member.memberId = :memberId AND w.regDate <= :regDate ORDER BY w.regDate DESC LIMIT 1")
+    float findMostRecentWeightByMemberIdAndRegDate(@Param("memberId") Integer memberId, @Param("regDate") LocalDate regDate);
+
     // 가장 최근 등록 체중 조회
     @Query("SELECT w.weight FROM Weight w WHERE w.member.memberId = :memberId ORDER BY w.regDate DESC LIMIT 1")
     float findMostRecentWeightByMemberId(@Param("memberId") Integer memberId);

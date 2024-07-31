@@ -97,7 +97,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .totalTime(exerciseRecord.getTotalTime())
                 .totalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned())
                 .exerciseImg(exerciseRecord.getExerciseImg())
-                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
+                .recentWeight(weightRepository.findMostRecentWeightByMemberIdAndRegDate(member.getMemberId(), regDate))
                 .build();
     }
 
@@ -110,7 +110,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .totalTime(exerciseRecord.getTotalTime())
                 .totalCaloriesBurned(exerciseRecord.getTotalCaloriesBurned())
                 .exerciseImg(exerciseRecord.getExerciseImg())
-                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
+                .recentWeight(weightRepository.findMostRecentWeightByMemberIdAndRegDate(member.getMemberId(), regDate))
                 .build();
 
         // 해당 운동기록 Id를 가지는 운동 찾기
@@ -275,11 +275,11 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public SearchExerciseInfo searchExerciseInfo(Member member, String searchStr) {
+    public SearchExerciseInfo searchExerciseInfo(Member member, String searchStr, LocalDate regDate) {
         List<ExerciseInfo> exerciseInfos = exerciseInfoRepository.findExerciseInfoByExerciseInfoName(searchStr);
 
         return SearchExerciseInfo.builder()
-                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
+                .recentWeight(weightRepository.findMostRecentWeightByMemberIdAndRegDate(member.getMemberId(), regDate))
                 .exerciseInfoList(exerciseInfos)
                 .build();
     }
