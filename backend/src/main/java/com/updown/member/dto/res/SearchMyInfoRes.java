@@ -18,4 +18,5 @@ public class SearchMyInfoRes {
     private MemberActivity activeLevel;
     private Integer targetCalories;
     private float recentWeight;
+    private Integer themeNum;
 }

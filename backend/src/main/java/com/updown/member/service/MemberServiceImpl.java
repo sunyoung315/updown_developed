@@ -33,17 +33,6 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
         }
     }
 
-//    @Override
-//    public void updateCalorie(Member member, Integer targetCalories) {
-//        try {
-//            member.setTargetCalories(targetCalories);
-//
-//            memberRepository.save(member);
-//        }catch (Exception e){
-//            throw new NotUpdateMyInfoException(e);
-//        }
-//    }
-
     @Override
     public SearchMyInfoRes searchMyInfo(Member member) {
         // 존재하는지, 탈퇴한 멤버인지 확인
@@ -58,9 +47,21 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
                 .activeLevel(member.getActiveLevel())
                 .targetCalories(member.getTargetCalories())
                 .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
+                .themeNum(member.getThemeNum())
                 .build();
 
         return searchMyInfoRes;
+    }
+
+    /**
+     * 테마 색 변경
+     * @param member
+     * @param themeNum
+     */
+    @Override
+    public void changeTheme(Member member, Integer themeNum) {
+        member.setThemeNum(themeNum);
+        memberRepository.save(member);
     }
 
     /**
