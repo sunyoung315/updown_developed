@@ -30,7 +30,7 @@ public class SummaryServiceImpl implements SummaryService {
         // 해당 날짜에 해당하는 diet찾기
         List<Diet> dietList = dietRepository.findByMemberAndRegDate(member, regDate);
 
-        float dietTotalIntake = 0;
+        float dietTotalCalories = 0;
         float totalCarbohydrate = 0;
         float totalProtein = 0;
         float totalFat = 0;
@@ -42,7 +42,7 @@ public class SummaryServiceImpl implements SummaryService {
         }
         for (Diet diet : dietList) {
             // diet들의 섭취량 더하기
-            dietTotalIntake += diet.getDietTotalIntake(); // 총 식단별 총 섭취량 더하기
+            dietTotalCalories += diet.getDietTotalCalories(); // 총 식단별 총 섭취량 더하기
 
             Integer dietId = diet.getDietId();
             NutritionSummaryRes nutritionSummaryRes = null;
@@ -62,7 +62,7 @@ public class SummaryServiceImpl implements SummaryService {
         }
 
         return SummaryRes.builder()
-                .dietTotalIntake(dietTotalIntake)
+                .dietTotalCalories(dietTotalCalories)
                 .totalCarbohydrate(totalCarbohydrate)
                 .totalProtein(totalProtein)
                 .totalFat(totalFat)
