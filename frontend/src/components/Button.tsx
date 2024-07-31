@@ -11,18 +11,18 @@ const ButtonWrapper = styled.button<{
   $textcolor?: keyof typeof theme;
 }>`
   width: ${props => (props?.$size ? `${props?.$size}rem` : '100%')};
-  height: ${props => (props?.$color === 'transparent' ? '2rem' : '2.5rem')};
+  height: ${props => (props?.$color === 'transparent' ? '2rem' : '2.2rem')};
   background-color: ${props => theme[props.$color]};
   color: ${props =>
     props?.$textcolor ? theme[props.$textcolor] : props.theme.white};
   font-size: ${props =>
-    props?.$color === 'transparent' ? '1.13rem' : '1.25rem'};
+    props?.$color === 'transparent' ? '1.13rem' : '1.2rem'};
   border-radius: ${props =>
     props?.$dir === 'top'
       ? '0.5rem 0.5rem 0 0'
       : props?.$dir === 'bottom'
         ? '0 0 0.5rem 0.5rem'
-        : `${props?.$radius || '0.5'}rem`};
+        : `${props?.$radius || '0.6'}rem`};
 `;
 
 const Button = (props: buttonProps) => {

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { Button } from '@/components';
 import { Box, ButtonRadio, Calendar, Header } from './components';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
@@ -41,8 +43,20 @@ const NoInfo = styled.div`
   padding: 1rem;
 `;
 
+const ButtonWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1.3rem;
+  column-gap: 1.3rem;
+  padding: 1rem 0 1rem;
+`;
+
 const CalendarPage = () => {
+  const navigator = useNavigate();
+
   const date = localStorage.getItem('date');
+
+  const today = format(new Date(), 'yyyy-MM-dd');
 
   // 달력의 년, 월
   const [year, setYear] = useState<number>(Number(date?.substring(0, 4)) || 0);
@@ -218,6 +232,36 @@ const CalendarPage = () => {
             )}
           </BoxWrapper>
         </InfoWrapper>
+        <ButtonWrapper>
+          <Button
+            buttonName="오늘 날짜로 이동"
+            onClick={() => {
+              localStorage.setItem('date', today);
+              navigator('/main');
+            }}
+            color={
+              type === 'diet'
+                ? 'orange'
+                : type === 'exercise'
+                  ? 'blue'
+                  : 'darkgreen'
+            }
+          />
+          <Button
+            buttonName="선택 날짜로 이동"
+            onClick={() => {
+              localStorage.setItem('date', selectedDate);
+              navigator('/main');
+            }}
+            color={
+              type === 'diet'
+                ? 'orange'
+                : type === 'exercise'
+                  ? 'blue'
+                  : 'darkgreen'
+            }
+          />
+        </ButtonWrapper>
       </CalendarPageWrapper>
     </>
   );

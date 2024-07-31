@@ -15,8 +15,8 @@ export interface Diet {
 }
 
 export type dateProps = {
-  date: Date;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  date: string;
+  setDate: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type diet = {
