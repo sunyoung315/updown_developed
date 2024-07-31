@@ -6,7 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class SummaryRes {
-    private float dietTotalIntake;
+    private float dietTotalCalories;
     private float totalCarbohydrate;
     private float totalProtein;
     private float totalFat;
