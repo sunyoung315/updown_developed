@@ -400,3 +400,12 @@ export type CalendarWeight = {
   targetWeight: number;
   regDate: string;
 };
+
+export type SummaryInfo = {
+  dietTotalIntake: number;
+  totalCarbohydrate: number;
+  totalProtein: number;
+  totalFat: number;
+  targetCalories: number;
+  totalCaloriesBurned: number;
+};

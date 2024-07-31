@@ -5,6 +5,7 @@ import DailyWeight from './DailyWeight';
 import DailyExercise from './DailyExercise';
 import RecordChart from './RecordChart';
 import BmiChart from './BmiChart';
+import ProgressBar from './ProgressBar';
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   DailyExercise,
   RecordChart,
   BmiChart,
+  ProgressBar,
 };
