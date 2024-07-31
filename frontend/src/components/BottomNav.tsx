@@ -1,7 +1,6 @@
-import { HomeIcon, MyPageIcon, CalendarIcon } from '@/assets/icons';
-import theme from '@/styles/theme';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { HomeIcon, MyPageIcon, CalendarIcon } from '@/assets/icons';
 import styled from 'styled-components';
 
 const BottomNavWrapper = styled.div`
