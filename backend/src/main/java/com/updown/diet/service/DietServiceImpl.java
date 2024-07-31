@@ -62,7 +62,7 @@ public class DietServiceImpl implements DietService {
                     .totalCarbohydrate(foodRepository.findCarbohydrateByDiet(dietId))
                     .build();
 
-            foodIdList = foodRepository.findByDietId(dietId); // foodId가져오기
+//            foodIdList = foodRepository.findByDietId(dietId); // foodId가져오기
 
             foodList = new ArrayList<>();
 
