@@ -21,12 +21,12 @@ const theme = {
   transparent: 'transparent',
   lightpurple: '#DEBEE1',
   purple: '#AC81B0',
-  lightcobalt: '#CAD6F4',
+  lightcobalt: '#B9CBFA',
   cobalt: '#6C8EE3',
   lightcoral: '#F9A88F',
   coral: '#F4764E',
-  lightemerald: '#C7F1C3',
-  emerald: '#A0D77E',
+  lightemerald: '#ACE3A8',
+  emerald: '#83C65B',
 };
 
 export default theme;

@@ -19,8 +19,8 @@ const MyPageWrapper = styled.div`
 `;
 
 const ImageBox = styled.div<{ $color: keyof typeof theme }>`
-  width: 8rem;
-  height: 8rem;
+  width: 10rem;
+  height: 10rem;
   border-radius: 0.5rem;
   background-color: ${props => theme[props.$color]};
   margin-left: auto;
@@ -35,8 +35,8 @@ const ImageIcon = styled.div`
 `;
 
 const Image = styled.img`
-  width: 90%;
-  margin: 5%;
+  width: 84%;
+  margin: 8%;
 `;
 
 const Hr = styled.div`

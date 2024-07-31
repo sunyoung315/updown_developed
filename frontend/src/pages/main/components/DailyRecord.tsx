@@ -139,9 +139,6 @@ const DailyRecord = () => {
     <DailyRecordWrapper $color={themeList[info.themeNum].backgroundColor}>
       <TitleWrapper>
         <span>하루 기록</span>
-        <ShareButtonWrapper $color={themeList[info.themeNum].color}>
-          공유하기
-        </ShareButtonWrapper>
       </TitleWrapper>
       <NutritionWrapper>
         <Nutrition $color={themeList[info.themeNum].backgroundColor}>
