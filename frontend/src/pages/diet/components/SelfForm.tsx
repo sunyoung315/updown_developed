@@ -100,7 +100,7 @@ const SelfForm = (formProps: formProps) => {
         console.log(response);
         if (response.status === httpStatusCode.OK) {
           console.log('식단 수정 성공');
-          navigator(`/diet/detail/${foodId}`);
+          navigator(`/diet/detail/${foodId}`, { state: { category } });
         }
       } catch (err) {
         console.log('식단 수정 에러: ', err);

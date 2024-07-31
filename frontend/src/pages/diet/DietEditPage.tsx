@@ -24,9 +24,19 @@ const DietEditPage = () => {
     <DietEditWrapper>
       <Header iconName="back" onClick={goBack} headerName="음식 수정" />
       {food.method ? (
-        <SearchForm food={food} buttonName="수정완료" foodId={foodId} />
+        <SearchForm
+          food={food}
+          buttonName="수정완료"
+          foodId={foodId}
+          category={category}
+        />
       ) : (
-        <SelfForm food={food} buttonName="수정완료" foodId={foodId} />
+        <SelfForm
+          food={food}
+          buttonName="수정완료"
+          foodId={foodId}
+          category={category}
+        />
       )}
     </DietEditWrapper>
   );
