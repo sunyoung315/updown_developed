@@ -27,5 +27,5 @@ public interface ExerciseService {
 
     void deleteExerciseImg(Integer exerciseRecordId, Member member);
 
-    SearchExerciseInfo searchExerciseInfo(Member member, String searchStr);
+    SearchExerciseInfo searchExerciseInfo(Member member, String searchStr, LocalDate regDate);
 }

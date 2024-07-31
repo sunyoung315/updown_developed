@@ -116,8 +116,8 @@ public class ExerciseController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchExerciseInfo(@AuthenticationPrincipal Member member, @RequestParam String searchStr){
-        SearchExerciseInfo searchExerciseInfo = exerciseService.searchExerciseInfo(member, searchStr);
+    public ResponseEntity<?> searchExerciseInfo(@AuthenticationPrincipal Member member, @RequestParam String searchStr, @RequestParam LocalDate regDate){
+        SearchExerciseInfo searchExerciseInfo = exerciseService.searchExerciseInfo(member, searchStr, regDate);
 
         if(!searchExerciseInfo.getExerciseInfoList().isEmpty()){
             return ResponseEntity.ok(searchExerciseInfo);
