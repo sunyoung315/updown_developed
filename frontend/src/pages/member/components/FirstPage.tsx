@@ -167,7 +167,7 @@ const FirstPage = (pageProps: pageProps) => {
         />
         <Input
           inputDir="row"
-          inputName="현재 체중"
+          inputName="시작 체중"
           unit="kg"
           onChange={handleChange}
           value={data.nowWeight}
