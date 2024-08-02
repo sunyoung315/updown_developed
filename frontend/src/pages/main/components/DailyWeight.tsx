@@ -90,6 +90,7 @@ const DailyWeight = ({ regDate }: { regDate: string }) => {
 
         // 오늘 날짜의 몸무게만 추출
         setWeight(todayInfo?.weight || 0);
+        setInputValue(todayInfo?.weight || 0);
 
         // bmi 지수 계산
         bmiRef.current = todayInfo?.weight / Math.pow(height / 100, 2) || 0;
