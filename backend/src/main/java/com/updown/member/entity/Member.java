@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -56,20 +57,11 @@ public class Member implements OAuth2User {
     @Column(name = "target_calories", nullable = false)
     private Integer targetCalories;
 
-    @Column(name = "fast_start_date")
-    private Date fastStartDate;
-
-    @Column(name = "fast_start_time")
-    private Time fastStartTime;
-
-    @Column(name = "fast_period")
-    private Integer fastPeriod;
-
-    @Column(name = "fast_during_time")
-    private Integer fastDuringTime;
-
     @Column(name = "theme_num")
     private Integer themeNum;
+
+    @Column(name = "reg_date")
+    private LocalDate regDate;
 
 
     @Override
