@@ -5,6 +5,7 @@ import com.updown.member.dto.res.SearchMyInfoRes;
 import com.updown.member.entity.Member;
 import com.updown.member.exception.NotUpdateMyInfoException;
 import com.updown.member.repository.MemberRepository;
+import com.updown.weight.entity.Weight;
 import com.updown.weight.repository.WeightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -28,6 +29,12 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
             member.setActiveLevel(myInfo.getActiveLevel());
 
             memberRepository.save(member);
+
+            // member의 now_weight를 weight의 멤버의 regDate와 같은 값 찾아서 변경
+            Weight weight = weightRepository.findByMemberAndRegDate(member, member.getRegDate()).get();
+            weight.setWeight(member.getNowWeight());
+            weightRepository.save(weight);
+
         }catch (Exception e){
             throw new NotUpdateMyInfoException(e);
         }
