@@ -36,13 +36,13 @@ public class WeightServiceImpl implements WeightService{
                     .regDate(registerWeightReq.getRegDate())
                     .build();
             weightRepository.save(weight);
-            // member의 현재 체중 갱신이 필요하면 갱신
-            // 가장 최근 날짜의 체중을 가져와서 현재 체중과 다르면 갱신
-            float recentWeight = weightRepository.findMostRecentWeightByMemberId(member.getMemberId());
-            if(recentWeight != member.getNowWeight()){
-                member.setNowWeight(recentWeight);
+
+            // 만약 등록 날짜가 회원가입 날짜라면 member의 now_weight 수정
+            if(registerWeightReq.getRegDate() == member.getRegDate()){
+                member.setNowWeight(registerWeightReq.getWeight());
                 memberRepository.save(member);
             }
+
         }else{ // 이미 등록 되어있다면 예외처리
             throw new WeightExistedException();
         }
@@ -56,13 +56,13 @@ public class WeightServiceImpl implements WeightService{
         weight.setWeight(registerWeightReq.getWeight());
         // 체중 저장
         weightRepository.save(weight);
-        // member의 현재 체중 갱신이 필요하면 갱신
-        // 가장 최근 날짜의 체중을 가져와서 현재 체중과 다르면 갱신
-        float recentWeight = weightRepository.findMostRecentWeightByMemberId(member.getMemberId());
-        if(recentWeight != member.getNowWeight()){
-            member.setNowWeight(recentWeight);
+
+        // 만약 등록 날짜가 회원가입 날짜라면 member의 now_weight 수정
+        if(registerWeightReq.getRegDate().equals(member.getRegDate())){
+            member.setNowWeight(registerWeightReq.getWeight());
             memberRepository.save(member);
         }
+
     }
 
     @Override

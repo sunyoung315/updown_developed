@@ -90,6 +90,7 @@ public class AuthServiceImpl implements AuthService{
                 .gender(signUpReq.getGender())
                 .activeLevel(signUpReq.getActiveLevel())
                 .themeNum(0)
+                .regDate(LocalDate.now())
                 .build();
 
         Weight weight = Weight.builder()
