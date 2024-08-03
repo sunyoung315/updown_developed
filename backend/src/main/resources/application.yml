@@ -25,9 +25,8 @@ spring:
         use_sql_comments: true
   data:
     redis:
-      host: localhost
+      host: updown.run
       port: 6379
-  jwt:
     secret: NiwgcnInBfUM27lY4FOev97y0eSzxBFEPMgcTpr8ZrU=
   security:
     oauth2:
