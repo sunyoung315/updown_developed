@@ -27,6 +27,7 @@ spring:
     redis:
       host: updown.run
       port: 6379
+  jwt:
     secret: NiwgcnInBfUM27lY4FOev97y0eSzxBFEPMgcTpr8ZrU=
   security:
     oauth2:
@@ -42,7 +43,7 @@ spring:
             client-id: f2c2997e17162c11e27d08ea2b904d5e
             client-secret: DNGedRz0MhC7PHufXc2aJtCiXP62xZiw
             client-authentication-method: client_secret_post
-            redirect-uri: https://updown.run/login/oauth2/code/kakao
+            redirect-uri: http://updown.run/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-name: kakao
             scope: account_email
@@ -58,6 +59,3 @@ cloud:
       auto: false
     stack:
       auto: false
-
-
-
