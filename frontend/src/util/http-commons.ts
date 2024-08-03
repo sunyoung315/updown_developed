@@ -3,7 +3,7 @@ import { getAccessToken, refreshAccessToken } from '@/api/auth.ts';
 import { httpStatusCode } from './http-status';
 
 // const VITE_APP_BASE_URL = import.meta.env.VITE_APP_BASE_URL;
-const VITE_APP_BASE_URL = 'https://updown.run:8080';
+const VITE_APP_BASE_URL = 'https://updown.run';
 
 const useAxios = axios.create({
   baseURL: VITE_APP_BASE_URL,
