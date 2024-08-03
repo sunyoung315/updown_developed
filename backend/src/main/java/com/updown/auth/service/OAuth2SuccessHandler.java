@@ -35,7 +35,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 리프레시 토큰 쿠키에 담기
         jwtTokenProvider.createRefreshTokenCookie(refreshToken, response);
 
-        String targetUrl = "http://localhost:3000/load";
+        String targetUrl = "https://updown.run/load";
 
         String urlWithTokens = UriComponentsBuilder.fromUriString(targetUrl)
                 .build().toUriString();
