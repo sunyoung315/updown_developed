@@ -11,7 +11,8 @@ public class MyInfo {
     private MemberGender gender;
     private int age;
     private float height;
-    private  float nowWeight;
+    private float nowWeight;
     private float targetWeight;
+    private Integer targetCalories;
     private MemberActivity activeLevel;
 }
