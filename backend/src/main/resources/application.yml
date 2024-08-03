@@ -8,7 +8,7 @@ spring:
     import:
       - optional:file:.env[.properties]
   datasource:
-    url: jdbc:mariadb://updown.run/updown?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mariadb://43.200.9.203:3306/updown?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: updown
     driver-class-name: org.mariadb.jdbc.Driver
@@ -20,10 +20,10 @@ spring:
   jpa:
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
         show_sql: true
         format_sql: true
         use_sql_comments: true
-        dialect: org.hibernate.dialect.MySQLDialect
   data:
     redis:
       host: updown.run
