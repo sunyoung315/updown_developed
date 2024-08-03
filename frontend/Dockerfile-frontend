@@ -10,6 +10,9 @@ COPY . .
 # Install dependencies
 RUN npm install
 
+# Copy tsconfig.json
+COPY tsconfig.json ./
+
 # Build the React app
 RUN npm run build
 
