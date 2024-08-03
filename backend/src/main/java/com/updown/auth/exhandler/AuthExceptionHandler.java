@@ -1,5 +1,6 @@
 package com.updown.auth.exhandler;
 
+import com.updown.auth.exception.MemberExistException;
 import com.updown.auth.exception.MemberNotFoundException;
 import com.updown.auth.exception.TokenNotValidException;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,17 @@ public class AuthExceptionHandler {
         makeErrorMessage(errorMessage, e);
 
         errorMessage.append("토큰이 유효하지 않습니다.");
+        return ResponseEntity.badRequest().body(errorMessage.toString());
+    }
+
+    @ExceptionHandler(MemberExistException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected ResponseEntity<String> MemberExistExceptionHandler(MemberExistException e) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        makeErrorMessage(errorMessage, e);
+
+        errorMessage.append("이미 존재하는 회원입니다.");
         return ResponseEntity.badRequest().body(errorMessage.toString());
     }
 
