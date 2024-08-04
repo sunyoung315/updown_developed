@@ -150,8 +150,9 @@ const MyPage = () => {
     try {
       const response = await useAxios.get('/auth/logout');
       if (response.status === httpStatusCode.OK) {
-        // 로그아웃 후 access token 초기화
+        // 로그아웃 후 access token, local storage 초기화
         setAccessToken('');
+        localStorage.clear();
         navigator('/');
       }
     } catch (err) {
@@ -168,8 +169,9 @@ const MyPage = () => {
     try {
       const response = await useAxios.delete('/auth/delete');
       if (response.status === httpStatusCode.OK) {
-        console.log('회원탈퇴 성공');
+        // 회원 탈퇴 후 access token, local storage 초기화
         setAccessToken('');
+        localStorage.clear();
         navigator('/');
       }
     } catch (err) {
