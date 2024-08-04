@@ -134,7 +134,6 @@ const DietPage = () => {
 
       // 아직 등록되지 않은 식단인 경우
       if (response.status === httpStatusCode.OK) {
-        console.log('식사별 식단 리스트 조회 성공');
         setDietImg(response.data.dietImg);
         setNutrition(response.data.nutrition);
         setFoodList(response.data.foodList);
@@ -199,8 +198,6 @@ const DietPage = () => {
         );
 
         if (response.status === httpStatusCode.OK) {
-          console.log('식단 사진 등록 성공');
-
           getDietInfo();
           closeModal();
         }
@@ -216,11 +213,8 @@ const DietPage = () => {
       const response = await useAxios.delete(`/diet/img/${regDate}`, {
         params: { category },
       });
-      console.log('식단 사진 삭제 시도');
 
       if (response.status === httpStatusCode.OK) {
-        console.log('식단 사진 삭제 성공');
-
         getDietInfo();
         closeModal();
       }
