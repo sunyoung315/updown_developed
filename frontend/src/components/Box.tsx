@@ -5,6 +5,8 @@ import Form from '@/pages/exercise/components/Form';
 import { boxProps, ExerciseSet } from '@/types/type';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
+import Swal from 'sweetalert2';
+import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 const BoxWrapper = styled.div`
@@ -170,6 +172,14 @@ const Box = (boxProps: boxProps) => {
 
   // 운동 수정
   const updateExercise = async () => {
+    if (exerciseTime === 0)
+      return Swal.fire({
+        text: '운동 시간을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['skyblue'],
+        confirmButtonColor: theme['blue'],
+      });
+
     if (type === 'exercise') {
       try {
         const response = await useAxios.put(`/exercise/${info.exerciseId}`, {
@@ -185,7 +195,7 @@ const Box = (boxProps: boxProps) => {
           setRefreshed(true);
         }
       } catch (err) {
-        console.log('운동 수정 오류:', err);
+        console.log('운동 수정 에러:', err);
       }
     }
   };
