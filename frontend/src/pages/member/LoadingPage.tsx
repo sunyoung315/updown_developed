@@ -130,7 +130,6 @@ const LoadingPage = () => {
         // 신규 회원
         else if (response.status === httpStatusCode.ACCEPTED) {
           setAccessToken(response.data);
-          console.log('로그인: ', response.data);
           // 회원가입 페이지로 이동!
           navigator('/signup');
         }
