@@ -5,6 +5,8 @@ import Form from './components/Form';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import { ExerciseSet } from '@/types/type';
+import Swal from 'sweetalert2';
+import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 const ExerciseRegistPageWrapper = styled.div`
@@ -32,6 +34,28 @@ const ExerciseRegistPage = () => {
 
   // 운동 등록
   const registExercise = async () => {
+    if (exerciseName.replace(/\s+/g, '') === '')
+      return Swal.fire({
+        text: '운동 이름을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['skyblue'],
+        confirmButtonColor: theme['blue'],
+      });
+    else if (exerciseTime === 0)
+      return Swal.fire({
+        text: '운동 시간을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['skyblue'],
+        confirmButtonColor: theme['blue'],
+      });
+    else if (caloriesBurned === 0)
+      return Swal.fire({
+        text: '소모 칼로리를 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['skyblue'],
+        confirmButtonColor: theme['blue'],
+      });
+
     try {
       const response = await useAxios.post(`/exercise/${regDate}`, {
         exerciseName,
