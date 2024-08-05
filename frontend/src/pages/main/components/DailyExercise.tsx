@@ -67,8 +67,10 @@ const Text = styled.div`
   align-items: center;
 `;
 
-const DailyExercise = ({ regDate }: { regDate: string }) => {
+const DailyExercise = () => {
   const navigator = useNavigate();
+
+  const regDate = localStorage.getItem('date');
 
   const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
 

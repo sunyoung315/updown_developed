@@ -4,6 +4,7 @@ import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import { setAccessToken } from '@/api/auth';
 import styled, { keyframes } from 'styled-components';
+import { format } from 'date-fns';
 
 const LoadWrapper = styled.div`
   width: 100%;
@@ -124,12 +125,16 @@ const LoadingPage = () => {
         // 기존 회원
         if (response.status === httpStatusCode.OK) {
           setAccessToken(response.data);
+          // 날짜는 오늘 날짜로 셋팅
+          localStorage.setItem('date', format(new Date(), 'yyyy-MM-dd'));
           // 메인페이지로 이동!
           navigator('/main');
         }
         // 신규 회원
         else if (response.status === httpStatusCode.ACCEPTED) {
           setAccessToken(response.data);
+          // 날짜는 오늘 날짜로 셋팅
+          localStorage.setItem('date', format(new Date(), 'yyyy-MM-dd'));
           // 회원가입 페이지로 이동!
           navigator('/signup');
         }

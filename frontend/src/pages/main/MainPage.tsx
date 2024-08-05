@@ -17,20 +17,16 @@ const ContentsWrapper = styled.div`
 const MainPage = () => {
   const selectedDate = localStorage.getItem('date');
   const today = format(new Date(), 'yyyy-MM-dd');
-  const [date, setDate] = useState<string>(today);
-
-  useEffect(() => {
-    if (selectedDate) setDate(selectedDate);
-  }, [date]);
+  const [date, setDate] = useState<string>(selectedDate || today);
 
   return (
     <>
       <Header date={date} setDate={setDate} />
       <ContentsWrapper>
         <DailyRecord />
-        <DailyDiet regDate={date} />
-        <DailyWeight regDate={date} />
-        <DailyExercise regDate={date} />
+        <DailyDiet />
+        <DailyWeight />
+        <DailyExercise />
       </ContentsWrapper>
     </>
   );

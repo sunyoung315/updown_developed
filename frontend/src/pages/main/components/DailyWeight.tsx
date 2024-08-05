@@ -65,7 +65,9 @@ const LineChartWrapper = styled.div`
   margin: 1rem 0 1.5rem;
 `;
 
-const DailyWeight = ({ regDate }: { regDate: string }) => {
+const DailyWeight = () => {
+  const regDate = localStorage.getItem('date');
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isRecord, setIsRecord] = useState<boolean>(false);
   const todayRef = useRef<WeightInfo>();
