@@ -8,7 +8,7 @@ spring:
     import:
       - optional:file:.env[.properties]
   datasource:
-    url: jdbc:mariadb://43.200.9.203:3306/updown?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mariadb://mariadb:3306/updown?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: updown
     driver-class-name: org.mariadb.jdbc.Driver
