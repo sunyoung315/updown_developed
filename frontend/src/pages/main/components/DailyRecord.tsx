@@ -29,15 +29,6 @@ const TitleWrapper = styled.div`
   font-size: 1.4rem;
 `;
 
-const ShareButtonWrapper = styled.button<{ $color: keyof typeof theme }>`
-  width: 4.5rem;
-  padding: 0.4rem;
-  background-color: ${props => theme[props.$color]};
-  font-size: 1rem;
-  color: ${props => props.theme.white};
-  border-radius: 0.5rem;
-`;
-
 const NutritionWrapper = styled.div`
   margin-bottom: 1rem;
   margin-top: 0.8rem;
@@ -98,6 +89,7 @@ const CalorieInfo = styled.div`
 
 const DailyRecord = () => {
   const regDate = localStorage.getItem('date');
+
   const [info, setInfo] = useState<SummaryInfo>({
     dietTotalCalories: 0,
     totalCarbohydrate: 0,

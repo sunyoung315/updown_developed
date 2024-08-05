@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import OneDiet from './OneDiet';
 import styled from 'styled-components';
 import useAxios from '@/util/http-commons';
+import { format } from 'date-fns';
 import { Diet } from '@/types/type';
 
 const DailyDietWrapper = styled.div`
@@ -30,7 +31,10 @@ const DietWrapper = styled.div`
   padding-right: 1.3rem;
 `;
 
-const DailyDiet = ({ regDate }: { regDate: string }) => {
+const DailyDiet = () => {
+  const regDate =
+    localStorage.getItem('date') || format(new Date(), 'yyyy-MM-dd');
+
   const [todayDiet, setTodayDiet] = useState<Diet[]>([]);
   const [breakfastFast, setBreakfastFast] = useState<boolean>(false);
   const [lunchFast, setLunchFast] = useState<boolean>(false);

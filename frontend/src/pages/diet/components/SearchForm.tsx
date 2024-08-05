@@ -1,10 +1,12 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Info, Input } from '@/components';
 import { formProps } from '@/types/type';
-import { useState, useEffect } from 'react';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
+import Swal from 'sweetalert2';
+import theme from '@/styles/theme';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 const InputWrapper = styled.div`
   padding: 0.5rem 2rem 1rem 2rem;
@@ -101,6 +103,15 @@ const SearchForm = (formProps: formProps) => {
   const navigator = useNavigate();
 
   const handleClick = async () => {
+    // 섭취량이 0이면 리턴(공백제거 후 검사)
+    if (foodIntake === 0)
+      return Swal.fire({
+        text: '섭취량을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['yellow'],
+        confirmButtonColor: theme['orange'],
+      });
+
     if (buttonName === '등록하기') {
       try {
         const response = await useAxios.post(`/diet/${category}`, {
@@ -108,7 +119,6 @@ const SearchForm = (formProps: formProps) => {
           regDate,
         });
         if (response.status === httpStatusCode.OK) {
-          console.log('식단 등록 성공');
           const dietId = response.data;
           navigator(`/diet/${category}`, { state: { dietId } });
         }
@@ -117,11 +127,8 @@ const SearchForm = (formProps: formProps) => {
       }
     } else if (buttonName === '수정완료') {
       try {
-        console.log(newInfo);
         const response = await useAxios.put(`/diet/${foodId}`, newInfo);
-        console.log(response);
         if (response.status === httpStatusCode.OK) {
-          console.log('식단 수정 성공');
           navigator(`/diet/detail/${foodId}`, { state: { category } });
         }
       } catch (err) {

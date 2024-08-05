@@ -5,6 +5,8 @@ import { BottomSheet, Button, Header, SearchResult } from '@/components';
 import { httpStatusCode } from '@/util/http-status';
 import useAxios from '@/util/http-commons';
 import { exerciseResult, ExerciseSet } from '@/types/type';
+import Swal from 'sweetalert2';
+import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 const ExerciseSearchPageWrapper = styled.div`
@@ -85,6 +87,14 @@ const ExerciseSearchPage = () => {
 
   // 운동 검색
   const searchExercise = async () => {
+    if (searchStr.replace(/\s+/g, '') === '')
+      return Swal.fire({
+        text: '검색어를 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['skyblue'],
+        confirmButtonColor: theme['blue'],
+      });
+
     try {
       const response = await useAxios.get('/exercise/search', {
         params: { regDate, searchStr },
@@ -104,6 +114,14 @@ const ExerciseSearchPage = () => {
 
   // 운동 등록
   const registExercise = async () => {
+    if (exerciseTime === 0)
+      return Swal.fire({
+        text: '운동 시간을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['skyblue'],
+        confirmButtonColor: theme['blue'],
+      });
+
     try {
       const response = await useAxios.post(`/exercise/${regDate}`, {
         exerciseName: exerciseRef.current.exerciseName,

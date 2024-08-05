@@ -45,6 +45,14 @@ const GlobalStyle = createGlobalStyle`
     input::placeholder {
         color: ${theme.grey};
     }
+    .swal2-popup {
+        font-family: "omyudapretty";
+        width: 70%;
+        padding-top: 1rem;
+    }
+    .swal2-icon {
+        margin: 0 auto;
+    }
 `;
 
 export default GlobalStyle;

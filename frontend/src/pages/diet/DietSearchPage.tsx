@@ -1,9 +1,11 @@
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Header, SearchResult } from '@/components';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
 import { foodResult } from '@/types/type';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 const DietSearchPageWrapper = styled.div`
@@ -39,6 +41,15 @@ const DietSearchPage = () => {
 
   const searchFood = async () => {
     setFoodInfoList(undefined);
+    // 검색어를 입력하지 않으면 리턴(공백제거 후 검사)
+    if (searchStr.replace(/\s+/g, '') === '')
+      return Swal.fire({
+        text: '검색어를 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['yellow'],
+        confirmButtonColor: theme['orange'],
+      });
+
     try {
       const response = await useAxios.get('/diet/search', {
         params: { searchStr },
