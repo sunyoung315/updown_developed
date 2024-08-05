@@ -48,6 +48,7 @@ const DailyDiet = () => {
       });
 
       if (response.status === httpStatusCode.OK) {
+        console.log(response.data);
         setTodayDiet(response.data);
 
         const diets = response.data;
