@@ -4,7 +4,7 @@ import { httpStatusCode } from '@/util/http-status';
 import useAxios from '@/util/http-commons';
 import { Button } from '@/components';
 import { ExerciseInfo } from '@/types/type';
-import Running from '@/assets/images/running.png';
+import Running from '/images/running.png';
 import Burned from '@/assets/icons/burned-icon.svg';
 import styled from 'styled-components';
 
