@@ -1,10 +1,10 @@
-import kakao from '@/assets/images/kakao_btn.png';
+import kakao from '/images/kakao_btn.png';
 import styled from 'styled-components';
 
 const MainPageWrapper = styled.div`
   width: 100%;
   height: 100vh;
-  background-image: url('src/assets/images/mainpage.png');
+  background-image: url('/images/mainpage.png');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -25,6 +25,7 @@ const LoginButton = styled.img`
 `;
 
 const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+
 const KAKAO_AUTH_URI = `${BASE_URL}/oauth2/authorization/kakao`;
 
 const LoginPage = () => {

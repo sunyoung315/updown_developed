@@ -4,7 +4,7 @@ import { Box, BottomSheet, Button, Header, IconButton } from '@/components';
 import { Exercise, ExerciseInfo } from '@/types/type';
 import useAxios from '@/util/http-commons';
 import { httpStatusCode } from '@/util/http-status';
-import Running from '@/assets/images/running.png';
+import Running from '/images/running.png';
 import styled from 'styled-components';
 
 const SummaryWrapper = styled.div`
