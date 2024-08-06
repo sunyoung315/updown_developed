@@ -132,7 +132,7 @@ const DailyWeight = () => {
 
   const registWeight = async () => {
     try {
-      const response = await useAxios.post('/weight', {
+      const response = await useAxios.post('/weight/record', {
         weight: inputValue,
         regDate,
       });
@@ -148,7 +148,7 @@ const DailyWeight = () => {
 
   const updateWeight = async () => {
     try {
-      const response = await useAxios.put('/weight', {
+      const response = await useAxios.put('/weight/record', {
         weight: inputValue,
         regDate,
       });
