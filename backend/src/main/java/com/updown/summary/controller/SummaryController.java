@@ -16,8 +16,8 @@ import java.time.LocalDate;
 public class SummaryController {
     private final SummaryService summaryService;
 
-    @GetMapping
-    ResponseEntity<?> searchSummary(@AuthenticationPrincipal Member member, @RequestParam LocalDate regDate){
+    @GetMapping("/{regDate}")
+    ResponseEntity<?> searchSummary(@AuthenticationPrincipal Member member, @PathVariable("regDate") LocalDate regDate){
         SummaryRes summaryRes = summaryService.searchSummary(member, regDate);
         return ResponseEntity.ok().body(summaryRes);
     }

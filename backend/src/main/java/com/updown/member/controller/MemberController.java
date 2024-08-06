@@ -32,7 +32,7 @@ public class MemberController {
      * @param member
      * @return
      */
-    @GetMapping
+    @GetMapping("/info")
     public ResponseEntity<?> searchMyInfo(@AuthenticationPrincipal Member member){
         SearchMyInfoRes searchMyInfoRes = memberService.searchMyInfo(member);
         return ResponseEntity.ok().body(searchMyInfoRes);
