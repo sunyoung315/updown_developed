@@ -21,7 +21,7 @@ public class MemberController {
      * @param myInfo
      * @return
      */
-    @PutMapping
+    @PutMapping("/info")
     public ResponseEntity<?> updateMyInfo(@AuthenticationPrincipal Member member, @RequestBody MyInfo myInfo){
         memberService.updateMyInfo(member, myInfo);
         return ResponseEntity.ok().build();

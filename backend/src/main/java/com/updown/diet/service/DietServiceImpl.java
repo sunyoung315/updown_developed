@@ -302,7 +302,9 @@ public class DietServiceImpl implements DietService {
             }
             // 새 이미지 업로드
             String storedFileName = s3Uploader.upload(uploadDietImgReq.getDietImg(), "diet");
+            System.out.println("storedFileName = " + storedFileName);
             diet.setDietImg(storedFileName);
+            System.out.println("diet.getDietImg() = " + diet.getDietImg());
             dietRepository.save(diet);
         } catch (Exception e) {
             throw new ImgUploadFailureException(e);
