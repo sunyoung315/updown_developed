@@ -102,9 +102,7 @@ const DailyRecord = () => {
 
   const getSummaryInfo = async () => {
     try {
-      const response = await useAxios<SummaryInfo>('/summary', {
-        params: { regDate },
-      });
+      const response = await useAxios<SummaryInfo>(`/summary/${regDate}`);
 
       if (response.status === httpStatusCode.OK) {
         const info = response.data;
