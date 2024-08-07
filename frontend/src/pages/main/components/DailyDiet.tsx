@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import useAxios from '@/util/http-commons';
 import { format } from 'date-fns';
 import { Diet } from '@/types/type';
+import { httpStatusCode } from '@/util/http-status';
 
 const DailyDietWrapper = styled.div`
   width: 100%;
@@ -32,8 +33,7 @@ const DietWrapper = styled.div`
 `;
 
 const DailyDiet = () => {
-  const regDate =
-    localStorage.getItem('date') || format(new Date(), 'yyyy-MM-dd');
+  const regDate = localStorage.getItem('date');
 
   const [todayDiet, setTodayDiet] = useState<Diet[]>([]);
   const [breakfastFast, setBreakfastFast] = useState<boolean>(false);
@@ -43,23 +43,25 @@ const DailyDiet = () => {
 
   const getTodayDiet = async () => {
     try {
-      const response = await useAxios.get('/diet', {
-        params: { regDate },
-      });
-      setTodayDiet(response.data);
+      const response = await useAxios.get(`/diet/daily/${regDate}`);
 
-      const diets = response.data;
-      const breakfast = diets?.find(
-        (diet: Diet) => diet.category === 'BREAKFAST',
-      );
-      const lunch = diets?.find((diet: Diet) => diet.category === 'LUNCH');
-      const dinner = diets?.find((diet: Diet) => diet.category === 'DINNER');
-      const snack = diets?.find((diet: Diet) => diet.category === 'SNACK');
+      if (response.status === httpStatusCode.OK) {
+        console.log(response.data);
+        setTodayDiet(response.data);
 
-      setBreakfastFast(breakfast?.isFast || false);
-      setLunchFast(lunch?.isFast || false);
-      setDinnerFast(dinner?.isFast || false);
-      setSnackFast(snack?.isFast || false);
+        const diets = response.data;
+        const breakfast = diets?.find(
+          (diet: Diet) => diet.category === 'BREAKFAST',
+        );
+        const lunch = diets?.find((diet: Diet) => diet.category === 'LUNCH');
+        const dinner = diets?.find((diet: Diet) => diet.category === 'DINNER');
+        const snack = diets?.find((diet: Diet) => diet.category === 'SNACK');
+
+        setBreakfastFast(breakfast?.isFast || false);
+        setLunchFast(lunch?.isFast || false);
+        setDinnerFast(dinner?.isFast || false);
+        setSnackFast(snack?.isFast || false);
+      }
     } catch (err) {
       console.log('일별 식단 정보 조회 에러:', err);
     }
@@ -99,28 +101,28 @@ const DailyDiet = () => {
         <OneDiet
           diet={todayDiet?.find(diet => diet.category === 'BREAKFAST')}
           category="BREAKFAST"
-          regDate={regDate}
+          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
           fast={breakfastFast}
           setFast={(value: boolean) => handleFastChange('BREAKFAST', value)}
         />
         <OneDiet
           diet={todayDiet?.find(diet => diet.category === 'LUNCH')}
           category="LUNCH"
-          regDate={regDate}
+          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
           fast={lunchFast}
           setFast={(value: boolean) => handleFastChange('LUNCH', value)}
         />
         <OneDiet
           diet={todayDiet?.find(diet => diet.category === 'DINNER')}
           category="DINNER"
-          regDate={regDate}
+          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
           fast={dinnerFast}
           setFast={(value: boolean) => handleFastChange('DINNER', value)}
         />
         <OneDiet
           diet={todayDiet?.find(diet => diet.category === 'SNACK')}
           category="SNACK"
-          regDate={regDate}
+          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
           fast={snackFast}
           setFast={(value: boolean) => handleFastChange('SNACK', value)}
         />

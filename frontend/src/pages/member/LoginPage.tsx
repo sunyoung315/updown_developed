@@ -24,7 +24,9 @@ const LoginButton = styled.img`
   width: 50%;
 `;
 
-const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+
+// const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+const BASE_URL = 'https://updown.run';
 
 const KAKAO_AUTH_URI = `${BASE_URL}/oauth2/authorization/kakao`;
 

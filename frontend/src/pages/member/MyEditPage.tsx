@@ -29,7 +29,7 @@ const MyEditPage = () => {
   // 기본정보 수정
   const editMyInfo = async () => {
     try {
-      const response = await useAxios.put('/mypage', data);
+      const response = await useAxios.put('/mypage/info', data);
       if (response.status === httpStatusCode.OK) {
         navigator('/mypage');
       }

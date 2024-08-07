@@ -117,7 +117,7 @@ const MyPage = () => {
   useEffect(() => {
     const getMyPageInfo = async () => {
       try {
-        const response = await useAxios.get('/mypage');
+        const response = await useAxios.get('/mypage/info');
 
         if (response.status === httpStatusCode.OK) {
           setMyInfo(response.data);
