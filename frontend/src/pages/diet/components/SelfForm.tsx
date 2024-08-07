@@ -129,7 +129,7 @@ const SelfForm = (formProps: formProps) => {
         inputDir="row"
         inputType="text"
         inputName="음식 이름"
-        placeholder="음식 이름 (최대 20자)"
+        placeholder="음식 이름 (최대 15자)"
         isRequired={true}
         starColor="orange"
         onChange={setFoodName}
@@ -139,7 +139,7 @@ const SelfForm = (formProps: formProps) => {
         inputDir="row"
         inputType="text"
         inputName="브랜드 이름"
-        placeholder="브랜드 이름 (최대 20자)"
+        placeholder="브랜드 이름 (최대 15자)"
         onChange={setBrandName}
         value={brandName}
       />
