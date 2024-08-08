@@ -18,7 +18,7 @@ const HeaderWrapper = styled.div`
   z-index: 100;
 `;
 
-const DateWrapper = styled.span`
+const DateWrapper = styled.button`
   font-size: 1.2rem;
   display: flex;
   justify-content: space-between;
@@ -48,10 +48,8 @@ const Header = (dateProps: dateProps) => {
   return (
     <HeaderWrapper>
       <LeftArrow onClick={prevDate} />
-      <DateWrapper>
-        <button onClick={() => navigator('/calendar')}>
-          <CalendarIcon size={17} color="black" />
-        </button>
+      <DateWrapper onClick={() => navigator('/calendar')}>
+        <CalendarIcon size={17} color="black" />
         {date === today
           ? '오늘'
           : date === format(sub(today, { days: 1 }), 'yyyy-MM-dd')

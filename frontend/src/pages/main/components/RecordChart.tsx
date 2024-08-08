@@ -38,6 +38,7 @@ const RecordChart = ({
           color: theme.black,
           align: 'end',
           anchor: 'end',
+          offset: 1,
         },
       },
     ],
@@ -82,8 +83,8 @@ const RecordChart = ({
           display: false,
         },
         afterDataLimits: (scale: { max: number; min: number }) => {
-          scale.max = scale.max + 2;
-          scale.min = scale.min - 2;
+          scale.max = scale.max + 15;
+          scale.min = scale.min - 15;
         },
       },
     },
