@@ -46,7 +46,6 @@ const DailyDiet = () => {
       const response = await useAxios.get(`/diet/daily/${regDate}`);
 
       if (response.status === httpStatusCode.OK) {
-        console.log(response.data);
         setTodayDiet(response.data);
 
         const diets = response.data;
