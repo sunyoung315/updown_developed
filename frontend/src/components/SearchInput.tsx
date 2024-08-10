@@ -26,6 +26,13 @@ const SearchInput = (searchProps: searchProps) => {
     }
   };
 
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      search();
+    }
+  };
+
   return (
     <SearchWrapper htmlFor="input">
       <InputBox
@@ -34,6 +41,7 @@ const SearchInput = (searchProps: searchProps) => {
         placeholder={placeholder}
         onChange={handleChange}
         size={27}
+        onKeyDown={handleEnter}
       />
       <button onClick={search}>
         <SearchIcon color="grey" />
