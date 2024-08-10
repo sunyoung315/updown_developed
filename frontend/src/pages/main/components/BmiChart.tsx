@@ -1,0 +1,181 @@
+import { Doughnut } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  ChartData,
+  Plugin,
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import theme from '@/styles/theme';
+import { useEffect, useRef } from 'react';
+
+const BmiChart = ({ value }: { value: number }) => {
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  const chartRef = useRef<ChartJS<'doughnut'>>(null);
+  const bmiRef = useRef<number>(value);
+
+  const calculateNeedleValue = (): number => {
+    if (value <= 14) {
+      return 0;
+    } else if (value >= 35) {
+      return 21;
+    } else {
+      return value - 14;
+    }
+  };
+
+  const needleRef = useRef<number>(calculateNeedleValue());
+
+  useEffect(() => {
+    bmiRef.current = value;
+    needleRef.current = calculateNeedleValue();
+    if (chartRef.current) {
+      chartRef.current.update();
+    }
+  }, [value]);
+
+  // 저제중: 18.5 미만, 정상체중: 18.5 ~ 22.9, 과체중: 23 ~ 24.9,
+  // 비만: 25 ~ 29.9, 고도비만: 30이상
+  const data: ChartData<'doughnut'> = {
+    labels: ['저체중', '정상', '과체중', '비만', '고도비만'],
+    datasets: [
+      {
+        label: 'BMI',
+        data: [4.5, 4.5, 2, 5, 5],
+        datalabels: {
+          formatter: (value, context) => {
+            const labels = context.chart.data.labels;
+            if (labels && Array.isArray(labels)) {
+              return labels[context.dataIndex];
+            }
+            return null;
+          },
+          align: 'center',
+          anchor: 'center',
+          color: theme.black,
+          font: {
+            family: 'omyudapretty',
+          },
+        },
+        backgroundColor: [
+          theme.blue,
+          theme.darkgreen,
+          theme.yellow,
+          theme.orange,
+          theme.red,
+        ],
+        borderColor: [
+          theme.blue,
+          theme.darkgreen,
+          theme.yellow,
+          theme.orange,
+          theme.red,
+        ],
+        circumference: 180, // 도넛 반 자르기
+        rotation: 270, // 도넛
+      },
+    ],
+  };
+
+  const options: ChartOptions<'doughnut'> = {
+    cutout: '60%', // 도넛차트 두께
+    layout: {
+      padding: {
+        bottom: 30,
+      },
+    },
+    aspectRatio: 1.6, // 차트 캔버스 비율
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+    },
+  };
+
+  const gaugeNeedle: Plugin<'doughnut'> = {
+    id: 'gaugeNeedle',
+    afterDatasetsDraw(chart: ChartJS<'doughnut'>) {
+      const { ctx, data } = chart;
+
+      ctx.save();
+      const dataset = chart.getDatasetMeta(0).data[0];
+      const { x, y, outerRadius, innerRadius } = dataset as any;
+      const widthSlice = (outerRadius - innerRadius) / 2;
+      const radius = 8;
+      const angle = Math.PI / 180;
+
+      const { circumference } = dataset as any;
+      const circumferenceValue =
+        (circumference / Math.PI / data.datasets[0].data[0]) *
+        needleRef.current;
+
+      ctx.translate(x, y);
+      ctx.rotate(Math.PI * (circumferenceValue + 1.5));
+
+      // needle
+      ctx.beginPath();
+      ctx.strokeStyle = theme.black;
+      ctx.fillStyle = theme.black;
+      ctx.lineWidth = 1;
+      ctx.moveTo(0 - radius, 0);
+      ctx.lineTo(0, 0 - innerRadius - widthSlice);
+      ctx.lineTo(0 + radius, 0);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+
+      // dot
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, angle * 360, false);
+      ctx.fill();
+
+      ctx.restore();
+    },
+  };
+
+  const gaugeFlowMeter: Plugin<'doughnut'> = {
+    id: 'gaugeFlowMeter',
+    afterDatasetsDraw(chart: ChartJS<'doughnut'>) {
+      const { ctx, data } = chart;
+
+      ctx.save();
+      const { x, y } = chart.getDatasetMeta(0).data[0];
+
+      const dataset = chart.getDatasetMeta(0).data[0];
+      const { circumference } = dataset as any;
+
+      const circumferenceValue =
+        (circumference / Math.PI / data.datasets[0].data[0]) *
+        needleRef.current;
+      const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
+
+      const bmiValue = dataTotal * circumferenceValue + 14;
+      ctx.font = '18px omyudapretty';
+      ctx.fillStyle = theme.black;
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        `${bmiRef.current === 0 ? '몸무게를 입력하세요' : bmiValue === 0 || bmiValue === 35 ? `BMI : ${bmiRef.current.toFixed(1)}` : `BMI : ${bmiValue.toFixed(1)}`}`,
+        x,
+        y + 30,
+      );
+    },
+  };
+
+  const plugins: Plugin<'doughnut'>[] = [
+    gaugeNeedle,
+    gaugeFlowMeter,
+    ChartDataLabels as unknown as Plugin<'doughnut'>,
+  ];
+
+  return (
+    <Doughnut ref={chartRef} data={data} options={options} plugins={plugins} />
+  );
+};
+
+export default BmiChart;

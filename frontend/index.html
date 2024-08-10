@@ -2,12 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      href="/apple-touch-icon-180x180.png"
+      sizes="180x180"
+    />
+    <link rel="mask-icon" href="/mask-icon.svg" color="#FFFEFC" />
+    <meta name="theme-color" content="#FFFEFC" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UPDOWN</title>
+    <style>
+      #root {
+        background-color: rgb(245, 245, 245);
+      }
+    </style>
+    <title>UpDown</title>
   </head>
   <body>
     <div id="root"></div>
+    <div id="bottom-sheet"></div>
+    <div id="modal"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
