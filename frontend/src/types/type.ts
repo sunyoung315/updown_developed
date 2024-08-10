@@ -130,7 +130,7 @@ export type iconButtonProps = {
 export type searchProps = {
   placeholder?: string;
   onChange?: React.Dispatch<React.SetStateAction<string>>;
-  search?: () => void;
+  search: () => void;
 };
 
 export type foodResult = {
@@ -248,7 +248,8 @@ export type pageProps = {
   next?: boolean;
   setNext?: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => Promise<void>;
-  targetCalories?: number;
+  nowWeight?: number;
+  targetWeight?: number;
 };
 
 export type ExerciseInfo = {

@@ -20,8 +20,11 @@ const MyEditPage = () => {
   const location = useLocation();
 
   const myInfo = location.state.myInfo;
-  // 이전에 설정해둔 targetCalories
-  const targetCalories = myInfo.targetCalories;
+
+  // 기존에 입력되어 있는 시작 체중
+  const nowWeight = myInfo.nowWeight;
+  // 기존에 입력되어 있는 목표 체중
+  const targetWeight = myInfo.targetWeight;
 
   const [data, setData] = useState<Member>(myInfo);
   const [next, setNext] = useState<boolean>(false);
@@ -58,7 +61,8 @@ const MyEditPage = () => {
             setData={setData}
             next={next}
             onClick={editMyInfo}
-            targetCalories={targetCalories}
+            nowWeight={nowWeight}
+            targetWeight={targetWeight}
           />
         )}
       </MyEditPageWrapper>
