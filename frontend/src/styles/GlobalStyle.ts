@@ -48,6 +48,7 @@ const GlobalStyle = createGlobalStyle`
     .swal2-popup {
         font-family: "omyudapretty";
         width: 70%;
+        max-width: 380px;
         padding-top: 1rem;
     }
     .swal2-icon {

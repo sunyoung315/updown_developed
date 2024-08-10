@@ -69,7 +69,7 @@ const SmallButton = styled.button`
 `;
 
 const SecondPage = (pageProps: pageProps) => {
-  const { data, setData, next, onClick, targetCalories } = pageProps;
+  const { data, setData, next, onClick, nowWeight, targetWeight } = pageProps;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<number>(data.targetCalories);
@@ -130,17 +130,35 @@ const SecondPage = (pageProps: pageProps) => {
     }
     setTDEE(Math.round(valueTDEE));
 
-    // 저장되어 있는 목표 칼로리가 있으면 기존 값으로 유지해야 함
-    if (data.targetCalories !== targetCalories)
+    // 시작 체중과 목표 체중이 수정되면 재계산
+    if (data.nowWeight !== nowWeight || data.targetWeight !== targetWeight) {
+      // 목표 칼로리가 0이하인 값은 message 출력
+      if (Math.round(valueTDEE - 500) <= 0) {
+        setData(prev => ({
+          ...prev,
+          targetCalories: 0,
+        }));
+        return;
+      }
+
       setData(prevData => ({
         ...prevData,
-        // 목표 칼로리를 500kcal 적자로 설명
+        // 목표 칼로리를 500kcal 적자로 설정
         targetCalories: Math.round(valueTDEE - 500),
       }));
+
+      setInputValue(Math.round(valueTDEE - 500));
+    }
   };
 
   const calculatePeriods = (targetCalories: number) => {
     let gap = Math.round((data.nowWeight - data.targetWeight) * 10) / 10;
+
+    if (Math.round((gap / ((TDEE - targetCalories) / 1000)) * 10) / 10 <= 0) {
+      setPeriod(0);
+      return;
+    }
+
     // 활동 대사량보다 +-500kcal일 경우, 주간 체중 변화가 +-0.5kg인 것을 고려하예 기간 계산
     setPeriod(Math.round((gap / ((TDEE - targetCalories) / 1000)) * 10) / 10);
   };
@@ -199,7 +217,7 @@ const SecondPage = (pageProps: pageProps) => {
               title="목표 칼로리 입력"
               signup={true}
             >
-              <ModalContent $margin={targetCalories}>
+              <ModalContent $margin={nowWeight}>
                 <Input
                   unit="kcal"
                   value={inputValue}
@@ -217,12 +235,18 @@ const SecondPage = (pageProps: pageProps) => {
             </BottomSheet>
           </Column>
           <Target>
-            <TargetIcon color={'darkpink'} /> 목표 달성까지 약{' '}
-            <Period>{period}주</Period> 걸려요!
+            <TargetIcon color={'darkpink'} />
+            {period > 0 ? (
+              <>
+                목표 달성까지 약 <Period>{period}주</Period> 걸려요!
+              </>
+            ) : (
+              '목표기간을 계산할 수 없어요!'
+            )}
           </Target>
         </Box>
         <Button
-          buttonName={targetCalories ? '수정하기' : 'UPDOWN 시작하기'}
+          buttonName={nowWeight ? '수정하기' : 'UPDOWN 시작하기'}
           onClick={onClick}
           color="purple"
         />
