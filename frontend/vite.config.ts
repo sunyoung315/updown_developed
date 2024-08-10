@@ -24,8 +24,7 @@ export default defineConfig({
         background_color: '#FFFEFC', // 앱의 배경 색상
         lang: 'ko', // 앱의 기본 언어
         display: 'standalone', // 브라우저 UI 없이 표시
-        start_url: BASE_URL, // PWA가 시작될 URL
-        scope: `${BASE_URL}/`, // PWA가 접근할 수 있는 URL 범위
+        // start_url: '/',
         icons: [
           {
             src: 'pwa-64x64.png',
