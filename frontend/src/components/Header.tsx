@@ -95,7 +95,7 @@ const Header = (headerProps: headerProps) => {
           <SearchInput
             onChange={onChange}
             placeholder={placeholder}
-            search={doSearch}
+            search={doSearch || (() => {})}
           />
           <Blank $search={search} />
         </>
