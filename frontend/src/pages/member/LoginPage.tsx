@@ -25,7 +25,6 @@ const LoginButton = styled.img`
 `;
 
 const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
-
 const KAKAO_AUTH_URI = `${BASE_URL}/oauth2/authorization/kakao`;
 
 const LoginPage = () => {

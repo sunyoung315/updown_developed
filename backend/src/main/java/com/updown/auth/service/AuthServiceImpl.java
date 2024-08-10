@@ -1,15 +1,24 @@
 package com.updown.auth.service;
 
 import com.updown.auth.dto.req.SignUpReq;
+import com.updown.auth.exception.MemberExistException;
 import com.updown.auth.jwt.JwtTokenProvider;
 import com.updown.auth.redis.RedisPrefix;
 import com.updown.auth.redis.RedisService;
 import com.updown.member.entity.Member;
 import com.updown.member.repository.MemberRepository;
+import com.updown.weight.entity.Weight;
+import com.updown.weight.repository.WeightRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
     private final MemberRepository memberRepository;
+    private final WeightRepository weightRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
 
@@ -60,9 +70,15 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
+    @Transactional
     @Override
     public void signUp(SignUpReq signUpReq, String refreshToken) {
         String email = jwtTokenProvider.getEmailFromToken(refreshToken);
+
+        // 만약 해당 이메일이 있다면 예외처리
+        if(memberRepository.findByEmail(email).isPresent()){
+            throw new MemberExistException();
+        }
 
         Member member = Member.builder()
                 .email(email)
@@ -73,9 +89,18 @@ public class AuthServiceImpl implements AuthService{
                 .nowWeight(signUpReq.getNowWeight())
                 .gender(signUpReq.getGender())
                 .activeLevel(signUpReq.getActiveLevel())
+                .themeNum(0)
+                .regDate(LocalDate.now())
+                .build();
+
+        Weight weight = Weight.builder()
+                .member(member)
+                .weight(member.getNowWeight())
+                .regDate(LocalDate.now())
                 .build();
 
         memberRepository.save(member);
+        weightRepository.save(weight);
 
         String key = RedisPrefix.REFRESH_TOKEN.prefix() + email;
         // 레디스에 리프레시 토큰 저장
@@ -83,10 +108,38 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void logOut(Member member) {
+    @Transactional
+    public void logOut(Member member, HttpServletRequest request, HttpServletResponse response) {
         System.out.println(member.getGender());
         // 레디스에서 삭제
         String key = RedisPrefix.REFRESH_TOKEN.prefix() + member.getEmail();
         redisService.deleteValues(key);
+        // 쿠키 삭제
+        deleteRefreshTokenCookie(response);
+
+        // 세션 무효화
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+    }
+
+    public void deleteRefreshTokenCookie(HttpServletResponse response) {
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0);
+        response.addCookie(refreshTokenCookie);
+    }
+
+    /**
+     * 회원탈퇴
+     * @param member
+     */
+    @Transactional
+    @Override
+    public void deleteMember(Member member) {
+        memberRepository.delete(member);
     }
 }

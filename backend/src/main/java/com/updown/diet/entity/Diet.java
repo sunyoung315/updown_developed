@@ -7,7 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -20,18 +21,18 @@ public class Diet {
     @Id
     @Column(name = "diet_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int dietId;
+    private Integer dietId;
 
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
 
     /**
-     * 아침, 점심, 간식, 저녁
+     * breakfast, lunch, snack, dinner
      */
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
-    private DietCatogory category;
+    private DietCategory category;
 
     @Column(name = "diet_total_intake", nullable = false)
     private float dietTotalIntake;
@@ -40,11 +41,11 @@ public class Diet {
     private float dietTotalCalories;
 
     @Column(name = "reg_date", nullable = false)
-    private Date regDate;
+    private LocalDate regDate;
 
     @Column(name = "diet_img")
     private String dietImg;
 
-    @Column(name = "is_fast")
+    @Column(name = "is_fast", nullable = false)
     private Boolean isFast;
 }

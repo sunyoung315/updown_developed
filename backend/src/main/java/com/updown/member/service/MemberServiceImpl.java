@@ -5,6 +5,8 @@ import com.updown.member.dto.res.SearchMyInfoRes;
 import com.updown.member.entity.Member;
 import com.updown.member.exception.NotUpdateMyInfoException;
 import com.updown.member.repository.MemberRepository;
+import com.updown.weight.entity.Weight;
+import com.updown.weight.repository.WeightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberServiceImpl extends DefaultOAuth2UserService implements MemberService {
     private final MemberRepository memberRepository;
+    private final WeightRepository weightRepository;
 
     @Override
     public void updateMyInfo(Member member, MyInfo myInfo) {
@@ -22,20 +25,16 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
             member.setHeight(myInfo.getHeight());
             member.setNowWeight(myInfo.getNowWeight());
             member.setTargetWeight(myInfo.getTargetWeight());
+            member.setTargetCalories(myInfo.getTargetCalories());
             member.setActiveLevel(myInfo.getActiveLevel());
 
             memberRepository.save(member);
-        }catch (Exception e){
-            throw new NotUpdateMyInfoException(e);
-        }
-    }
 
-    @Override
-    public void updateCalorie(Member member, Integer targetCalories) {
-        try {
-            member.setTargetCalories(targetCalories);
+            // member의 now_weight를 weight의 멤버의 regDate와 같은 값 찾아서 변경
+            Weight weight = weightRepository.findByMemberAndRegDate(member, member.getRegDate()).get();
+            weight.setWeight(member.getNowWeight());
+            weightRepository.save(weight);
 
-            memberRepository.save(member);
         }catch (Exception e){
             throw new NotUpdateMyInfoException(e);
         }
@@ -52,11 +51,24 @@ public class MemberServiceImpl extends DefaultOAuth2UserService implements Membe
                 .height(member.getHeight())
                 .nowWeight(member.getNowWeight())
                 .targetWeight(member.getTargetWeight())
-                .targetCalories(member.getTargetCalories())
                 .activeLevel(member.getActiveLevel())
+                .targetCalories(member.getTargetCalories())
+                .recentWeight(weightRepository.findMostRecentWeightByMemberId(member.getMemberId()))
+                .themeNum(member.getThemeNum())
                 .build();
 
         return searchMyInfoRes;
+    }
+
+    /**
+     * 테마 색 변경
+     * @param member
+     * @param themeNum
+     */
+    @Override
+    public void changeTheme(Member member, Integer themeNum) {
+        member.setThemeNum(themeNum);
+        memberRepository.save(member);
     }
 
     /**
