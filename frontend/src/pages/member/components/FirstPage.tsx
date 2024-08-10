@@ -10,6 +10,7 @@ import {
 } from '@/assets/icons';
 import theme from '@/styles/theme';
 import { pageProps } from '@/types/type';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 const Title = styled.div`
@@ -105,7 +106,49 @@ const FirstPage = (pageProps: pageProps) => {
   };
 
   const goNext = () => {
-    if (setNext) setNext(true);
+    if (data.gender === '')
+      return Swal.fire({
+        text: '성별을 선택해주세요!',
+        icon: 'warning',
+        iconColor: theme['lightpurple'],
+        confirmButtonColor: theme['purple'],
+      });
+    else if (data.age === 0)
+      Swal.fire({
+        text: '나이를 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['lightpurple'],
+        confirmButtonColor: theme['purple'],
+      });
+    else if (data.height === 0)
+      Swal.fire({
+        text: '키를 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['lightpurple'],
+        confirmButtonColor: theme['purple'],
+      });
+    else if (data.nowWeight === 0)
+      Swal.fire({
+        text: '시작 체중을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['lightpurple'],
+        confirmButtonColor: theme['purple'],
+      });
+    else if (data.targetWeight === 0)
+      Swal.fire({
+        text: '목표 체중을 입력해주세요!',
+        icon: 'warning',
+        iconColor: theme['lightpurple'],
+        confirmButtonColor: theme['purple'],
+      });
+    else if (data.height === 0)
+      Swal.fire({
+        text: '평소 활동량을 선택해주세요!',
+        icon: 'warning',
+        iconColor: theme['lightpurple'],
+        confirmButtonColor: theme['purple'],
+      });
+    else if (setNext) setNext(true);
   };
 
   return (
@@ -155,6 +198,8 @@ const FirstPage = (pageProps: pageProps) => {
           onChange={handleChange}
           value={data.age}
           name="age"
+          isRequired={true}
+          starColor="red"
         />
         <Input
           inputDir="row"
@@ -164,6 +209,8 @@ const FirstPage = (pageProps: pageProps) => {
           value={data.height}
           name="height"
           step={0.1}
+          isRequired={true}
+          starColor="red"
         />
         <Input
           inputDir="row"
@@ -173,6 +220,8 @@ const FirstPage = (pageProps: pageProps) => {
           value={data.nowWeight}
           name="nowWeight"
           step={0.1}
+          isRequired={true}
+          starColor="red"
         />
         <Input
           inputDir="row"
@@ -182,6 +231,8 @@ const FirstPage = (pageProps: pageProps) => {
           value={data.targetWeight}
           name="targetWeight"
           step={0.1}
+          isRequired={true}
+          starColor="red"
         />
       </InputWrapper>
       <RadioWrapper>

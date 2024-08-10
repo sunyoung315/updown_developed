@@ -105,7 +105,7 @@ const Header = (calendarHeaderProps: calendarHeaderProps) => {
           <YearSelect>
             <LeftArrow size={22} onClick={prevYear} />
             <span>{selectedYear} 년</span>
-            <RightArrow size={22} onClick={nextYear} />
+            <RightArrow size={22} onClick={nextYear} isButton={true} />
           </YearSelect>
           <MonthRadioWrapper>
             {monthArr.map(month => (

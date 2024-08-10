@@ -13,7 +13,9 @@ const OneDietWrapper = styled.div`
   background-color: ${props => props.theme.orange};
   padding: 0.8rem;
   text-align: center;
+  border-radius: 1rem;
 `;
+
 const CategoryWrapper = styled.div`
   display: flex;
   gap: 0.5rem;

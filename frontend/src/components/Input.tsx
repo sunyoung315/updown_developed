@@ -70,7 +70,10 @@ const Input = (inputProps: inputProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (inputType === 'text') {
-      onChange(e.target.value);
+      // 글자 15자 제한
+      if (e.target.value.length <= 15) {
+        onChange(e.target.value);
+      }
     } else {
       // 0이 기본값으로 들어가 있을 때 0 자동 삭제
       if (

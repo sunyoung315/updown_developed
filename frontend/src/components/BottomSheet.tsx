@@ -4,20 +4,20 @@ import { IconButton } from '@/components';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
-const ModalWraper = styled.div<{ $signup?: boolean }>`
+const ModalWraper = styled.div<{ $signup?: boolean; $nomodal?: boolean }>`
   position: fixed;
-  bottom: ${props => (props?.$signup ? '0' : '3.25rem')};
+  bottom: ${props => (props?.$signup || props?.$nomodal ? '0' : '3.25rem')};
   left: 0;
   right: 0;
   top: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  z-index: 10;
+  z-index: ${props => (props?.$nomodal ? '100' : '10')};
   font-family: omyudapretty;
 `;
 
-const BackDrop = styled.div`
+const BackDrop = styled.div<{ $nomodal?: boolean }>`
   margin: auto;
   max-width: 430px;
   width: 100%;
@@ -81,8 +81,8 @@ const BottomSheet = (bottomSheetProps: bottomSheetProps) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <ModalWraper $signup={signup}>
-      <BackDrop onClick={onClose}></BackDrop>
+    <ModalWraper $signup={signup} $nomodal={noModal}>
+      <BackDrop onClick={onClose} $nomodal={noModal} />
       <Modal $nomodal={noModal}>
         {!noModal && (
           <ModalTitle>

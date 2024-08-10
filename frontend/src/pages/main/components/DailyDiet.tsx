@@ -94,38 +94,35 @@ const DailyDiet = () => {
     getTodayDiet();
   };
 
+  const category: Array<'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK'> = [
+    'BREAKFAST',
+    'LUNCH',
+    'DINNER',
+    'SNACK',
+  ];
+
   return (
     <DailyDietWrapper>
       <TitleWrapper>식단</TitleWrapper>
       <DietWrapper>
-        <OneDiet
-          diet={todayDiet?.find(diet => diet.category === 'BREAKFAST')}
-          category="BREAKFAST"
-          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
-          fast={breakfastFast}
-          setFast={(value: boolean) => handleFastChange('BREAKFAST', value)}
-        />
-        <OneDiet
-          diet={todayDiet?.find(diet => diet.category === 'LUNCH')}
-          category="LUNCH"
-          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
-          fast={lunchFast}
-          setFast={(value: boolean) => handleFastChange('LUNCH', value)}
-        />
-        <OneDiet
-          diet={todayDiet?.find(diet => diet.category === 'DINNER')}
-          category="DINNER"
-          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
-          fast={dinnerFast}
-          setFast={(value: boolean) => handleFastChange('DINNER', value)}
-        />
-        <OneDiet
-          diet={todayDiet?.find(diet => diet.category === 'SNACK')}
-          category="SNACK"
-          regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
-          fast={snackFast}
-          setFast={(value: boolean) => handleFastChange('SNACK', value)}
-        />
+        {category.map(c => (
+          <OneDiet
+            key={c}
+            diet={todayDiet?.find(diet => diet.category === c)}
+            category={c}
+            regDate={regDate || format(new Date(), 'yyyy-MM-dd')}
+            fast={
+              c === 'BREAKFAST'
+                ? breakfastFast
+                : c === 'LUNCH'
+                  ? lunchFast
+                  : c === 'DINNER'
+                    ? dinnerFast
+                    : snackFast
+            }
+            setFast={(value: boolean) => handleFastChange(c, value)}
+          />
+        ))}
       </DietWrapper>
     </DailyDietWrapper>
   );

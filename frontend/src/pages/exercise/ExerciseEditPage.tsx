@@ -90,7 +90,7 @@ const ExerciseEditPage = () => {
           inputDir="row"
           inputType="text"
           inputName="운동 이름"
-          placeholder="운동 이름 (최대 20자)"
+          placeholder="운동 이름 (최대 15자)"
           isRequired={true}
           starColor="blue"
           onChange={setExerciseName}
