@@ -85,6 +85,8 @@ export default defineConfig({
           },
         ],
       },
+      srcDir: 'frontend', // 서비스 워커 파일 위치
+      filename: 'custom-sw.js', // 사용자 정의 서비스 워커 파일
     }),
   ],
   server: {
