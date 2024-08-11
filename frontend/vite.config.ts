@@ -51,33 +51,40 @@ export default defineConfig({
           },
         ],
       },
-      // workbox: {
-      //   // 캐시 전략 설정
-      //   runtimeCaching: [
-      //     {
-      //       urlPattern: /^https:\/\/updown\.run\/.*$/, // API 호출 URL 패턴
-      //       handler: 'NetworkFirst', // 네트워크 우선 전략
-      //       options: {
-      //         cacheName: 'api-cache',
-      //         expiration: {
-      //           maxEntries: 50, // 최대 캐시 항목 수
-      //           maxAgeSeconds: 24 * 60 * 60, // 최대 캐시 시간 (1일)
-      //         },
-      //       },
-      //     },
-      //     {
-      //       urlPattern: /\.(?:js|css|html|png|jpg|jpeg|svg)$/, // 정적 자원 패턴
-      //       handler: 'CacheFirst', // 캐시 우선 전략
-      //       options: {
-      //         cacheName: 'static-resources',
-      //         expiration: {
-      //           maxEntries: 100, // 최대 캐시 항목 수
-      //           maxAgeSeconds: 30 * 24 * 60 * 60, // 최대 캐시 시간 (30일)
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
+      workbox: {
+        // 캐시 전략 설정
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/updown\.run\/oauth2\/authorization\/kakao$/, // 로그인 URL 패턴
+            handler: 'NetworkOnly', // 항상 네트워크 요청
+          },
+          {
+            urlPattern: /^https:\/\/updown\.run\/.*$/, // 모든 API 호출
+            handler: 'NetworkFirst', // 네트워크 우선 전략
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 24 * 60 * 60,
+              },
+              fetchOptions: {
+                credentials: 'include', // 쿠키와 인증 정보를 포함하도록 설정
+              },
+            },
+          },
+          {
+            urlPattern: /\.(?:js|css|html|png|jpg|jpeg|svg)$/, // 정적 자원 패턴
+            handler: 'CacheFirst', // 캐시 우선 전략
+            options: {
+              cacheName: 'static-resources',
+              expiration: {
+                maxEntries: 100, // 최대 캐시 항목 수
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 최대 캐시 시간 (30일)
+              },
+            },
+          },
+        ],
+      },
     }),
   ],
   server: {
