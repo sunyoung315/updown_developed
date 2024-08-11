@@ -50,6 +50,14 @@ const GlobalStyle = createGlobalStyle`
         width: 70%;
         max-width: 380px;
         padding-top: 1rem;
+        margin-top: 2rem;
+    }
+    .swal2-popup.swal2-toast .swal2-html-container {
+        margin: 0.5em;
+        padding: 0;
+        overflow: initial;
+        font-size: 1em;
+        text-align: initial;
     }
     .swal2-icon {
         margin: 0 auto;
