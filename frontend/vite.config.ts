@@ -23,7 +23,7 @@ export default defineConfig({
         background_color: '#FFFEFC', // 앱의 배경 색상
         lang: 'ko', // 앱의 기본 언어
         display: 'standalone', // 브라우저 UI 없이 표시
-        start_url: '/main',
+        start_url: '/',
         icons: [
           {
             src: 'pwa-64x64.png',
