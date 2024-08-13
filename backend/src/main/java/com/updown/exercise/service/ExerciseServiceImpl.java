@@ -241,6 +241,8 @@ public class ExerciseServiceImpl implements ExerciseService {
             // 새 이미지 업로드
             String storedFileName = s3Uploader.upload(uploadExerciseImgReq.getExerciseImg(), "exercise");
             exerciseRecord.setExerciseImg(storedFileName);
+            exerciseRecord.setTotalTime(0); // 기본값 설정
+            exerciseRecord.setTotalCaloriesBurned(0.0f); // 기본값 설정
             exerciseRecordRepository.save(exerciseRecord);
         } catch (Exception e) {
             throw new ImgUploadFailureException(e);
