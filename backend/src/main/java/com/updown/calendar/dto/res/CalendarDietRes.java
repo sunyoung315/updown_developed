@@ -14,6 +14,7 @@ public class CalendarDietRes {
     private DietCategory category;
     private float totalCalories;
     private LocalDate regDate;
+    private Boolean isFast;
     private List<FoodRes> foodList;
 
 }

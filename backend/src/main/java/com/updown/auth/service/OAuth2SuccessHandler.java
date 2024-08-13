@@ -38,7 +38,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         jwtTokenProvider.createRefreshTokenCookie(refreshToken, response);
 
         String targetUrl = "https://updown.run/load";
-//        String targetUrl = "http://localhost:3000/load";
+
 
         String urlWithTokens = UriComponentsBuilder.fromUriString(targetUrl)
                 .build().toUriString();

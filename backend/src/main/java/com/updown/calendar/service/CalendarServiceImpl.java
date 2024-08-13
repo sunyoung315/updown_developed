@@ -61,6 +61,7 @@ public class CalendarServiceImpl implements CalendarService{
                     .category(diet.getCategory())
                     .totalCalories(diet.getDietTotalCalories())
                     .regDate(diet.getRegDate())
+                    .isFast(diet.getIsFast())
                     .foodList(foodResList)
                     .build();
             calenderDietResList.add(calendarDietRes);
