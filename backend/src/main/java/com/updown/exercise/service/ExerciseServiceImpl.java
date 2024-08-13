@@ -246,8 +246,9 @@ public class ExerciseServiceImpl implements ExerciseService {
             exerciseRecord.setExerciseImg(storedFileName);
             System.out.println("storedFileName = " + storedFileName);
             exerciseRecord.setTotalTime(0); // 기본값 설정
-            System.out.println("exerciseRecord Total Time = " + exerciseRecord.getTotalTime());
-            exerciseRecord.setTotalCaloriesBurned(0.0f); // 기본값 설정
+   System.out.println("exerciseRecord Total Time = " + exerciseRecord.getTotalTime());       
+     exerciseRecord.setTotalCaloriesBurned(0.0f); // 기본값 설정
+
             exerciseRecordRepository.save(exerciseRecord);
         } catch (Exception e) {
             throw new ImgUploadFailureException(e);
