@@ -98,6 +98,7 @@ public class ExerciseController {
     @Transactional
     @PostMapping("/img")
     public ResponseEntity<?> uploadDietImg(@AuthenticationPrincipal Member member, @ModelAttribute UploadExerciseImgReq uploadExerciseImgReq){
+        System.out.println("운동업로드 로직 시작");
         exerciseService.uploadExerciseImg(member, uploadExerciseImgReq);
         return ResponseEntity.ok().build();
     }
