@@ -258,6 +258,8 @@ public class ExerciseServiceImpl implements ExerciseService {
         ExerciseRecord exerciseRecord = ExerciseRecord.builder()
                 .member(member)
                 .regDate(regDate)
+                .totalTime(0)
+                .totalCaloriesBurned(0)
                 .build();
         return exerciseRecordRepository.save(exerciseRecord);
     }
