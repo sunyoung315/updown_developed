@@ -89,6 +89,7 @@ export type inputProps = {
   name?: string;
   step?: number;
   signup?: boolean;
+  onClick?: () => void;
 };
 
 export type nutritionProps = {
@@ -338,6 +339,7 @@ type dietCalendarProps = commonBoxProps & {
     category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
     totalCalories: number;
     regDate: string;
+    isFast: boolean;
     foodList: {
       foodId: number;
       foodName: string;
@@ -384,6 +386,7 @@ export type CalendarDiet = {
   category: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
   totalCalories: number;
   regDate: string;
+  isFast: boolean;
   foodList: foodInfo[];
 };
 

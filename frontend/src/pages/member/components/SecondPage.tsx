@@ -225,6 +225,7 @@ const SecondPage = (pageProps: pageProps) => {
                   isBig={true}
                   step={0.1}
                   signup={true}
+                  onClick={changeTargetCalories}
                 />
                 <Button
                   buttonName="입력완료"

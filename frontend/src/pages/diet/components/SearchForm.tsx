@@ -107,8 +107,9 @@ const SearchForm = (formProps: formProps) => {
     if (foodIntake === 0)
       return Swal.fire({
         text: '섭취량을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['yellow'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['orange'],
       });
 

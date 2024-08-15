@@ -9,6 +9,7 @@ import { httpStatusCode } from '@/util/http-status';
 import theme, { themeList } from '@/styles/theme';
 import ThemeBox from './components/ThemeBox';
 import { Member } from '@/types/type';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 const MyPageWrapper = styled.div`
@@ -148,12 +149,27 @@ const MyPage = () => {
 
   const logout = async () => {
     try {
-      const response = await useAxios.get('/auth/logout');
-      if (response.status === httpStatusCode.OK) {
-        // 로그아웃 후 access token, local storage 초기화
-        setAccessToken('');
-        localStorage.clear();
-        navigator('/');
+      const result = await Swal.fire({
+        text: '정말 로그아웃 하시겠습니까?',
+        imageUrl: '/images/logout-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
+        confirmButtonColor: theme['blue'],
+        confirmButtonText: '확인',
+        showCancelButton: true,
+        cancelButtonColor: theme['darkpink'],
+        cancelButtonText: '취소',
+      });
+
+      // 확인 버튼을 누르면
+      if (result.isConfirmed) {
+        const response = await useAxios.get('/auth/logout');
+        if (response.status === httpStatusCode.OK) {
+          // 로그아웃 후 access token, local storage 초기화
+          setAccessToken('');
+          localStorage.clear();
+          navigator('/');
+        }
       }
     } catch (err) {
       console.log('로그아웃 에러:', err);
@@ -167,12 +183,27 @@ const MyPage = () => {
   // 회원 탈퇴
   const deleteMember = async () => {
     try {
-      const response = await useAxios.delete('/auth/delete');
-      if (response.status === httpStatusCode.OK) {
-        // 회원 탈퇴 후 access token, local storage 초기화
-        setAccessToken('');
-        localStorage.clear();
-        navigator('/');
+      const result = await Swal.fire({
+        text: '정말 탈퇴하시겠습니까?',
+        imageUrl: '/images/sad-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
+        confirmButtonColor: theme['blue'],
+        confirmButtonText: '확인',
+        showCancelButton: true,
+        cancelButtonColor: theme['darkpink'],
+        cancelButtonText: '취소',
+      });
+
+      // 확인 버튼을 누르면
+      if (result.isConfirmed) {
+        const response = await useAxios.delete('/auth/delete');
+        if (response.status === httpStatusCode.OK) {
+          // 회원 탈퇴 후 access token, local storage 초기화
+          setAccessToken('');
+          localStorage.clear();
+          navigator('/');
+        }
       }
     } catch (err) {
       console.log('회원탈퇴 에러:', err);
