@@ -45,8 +45,9 @@ const DietSearchPage = () => {
     if (searchStr.replace(/\s+/g, '') === '')
       return Swal.fire({
         text: '검색어를 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['yellow'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['orange'],
       });
 
