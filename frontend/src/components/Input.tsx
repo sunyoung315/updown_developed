@@ -66,6 +66,7 @@ const Input = (inputProps: inputProps) => {
     name,
     step,
     signup,
+    onClick,
   } = inputProps;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +87,12 @@ const Input = (inputProps: inputProps) => {
       } else {
         onChange(Number(e.target.value));
       }
+    }
+  };
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onClick?.();
     }
   };
 
@@ -115,6 +122,7 @@ const Input = (inputProps: inputProps) => {
           name={name}
           step={step}
           $signup={signup}
+          onKeyDown={handleEnter}
         />
         {unit && (
           <UnitWrapper
