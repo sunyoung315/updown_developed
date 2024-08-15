@@ -86,15 +86,17 @@ const SelfForm = (formProps: formProps) => {
     if (newFood.foodName.replace(/\s+/g, '') === '')
       return Swal.fire({
         text: '음식 이름을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['yellow'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['orange'],
       });
     else if (newFood.foodIntake === 0)
       return Swal.fire({
         text: '섭취량을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['yellow'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['orange'],
       });
 

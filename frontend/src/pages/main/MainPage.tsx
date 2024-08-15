@@ -67,14 +67,8 @@ const MainPage = () => {
         .getElementById('install-button')
         ?.addEventListener('click', () => {
           event.prompt();
-
-          event.userChoice.then((choiceResult: { outcome: string }) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('사용자가 설치 프롬프트에 동의했습니다.');
-            } else {
-              console.log('사용자가 설치 프롬프트를 무시했습니다.');
-            }
-          });
+          // Toast창 끄기
+          Toast.close();
         });
     }
   };

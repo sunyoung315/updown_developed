@@ -109,43 +109,49 @@ const FirstPage = (pageProps: pageProps) => {
     if (data.gender === '')
       return Swal.fire({
         text: '성별을 선택해주세요!',
-        icon: 'warning',
-        iconColor: theme['lightpurple'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['purple'],
       });
     else if (data.age === 0)
       Swal.fire({
         text: '나이를 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['lightpurple'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['purple'],
       });
     else if (data.height === 0)
       Swal.fire({
         text: '키를 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['lightpurple'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['purple'],
       });
     else if (data.nowWeight === 0)
       Swal.fire({
         text: '시작 체중을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['lightpurple'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['purple'],
       });
     else if (data.targetWeight === 0)
       Swal.fire({
         text: '목표 체중을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['lightpurple'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['purple'],
       });
     else if (data.height === 0)
       Swal.fire({
         text: '평소 활동량을 선택해주세요!',
-        icon: 'warning',
-        iconColor: theme['lightpurple'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['purple'],
       });
     else if (setNext) setNext(true);

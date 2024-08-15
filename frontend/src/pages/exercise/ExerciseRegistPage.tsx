@@ -37,22 +37,25 @@ const ExerciseRegistPage = () => {
     if (exerciseName.replace(/\s+/g, '') === '')
       return Swal.fire({
         text: '운동 이름을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['skyblue'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['blue'],
       });
     else if (exerciseTime === 0)
       return Swal.fire({
         text: '운동 시간을 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['skyblue'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['blue'],
       });
     else if (caloriesBurned === 0)
       return Swal.fire({
         text: '소모 칼로리를 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['skyblue'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['blue'],
       });
 
