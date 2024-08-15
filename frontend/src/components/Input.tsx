@@ -18,7 +18,7 @@ const InputName = styled.span`
 const InputLabel = styled.label<{ $isbig?: boolean; $signup?: boolean }>`
   background-color: ${props => props.theme.lightgrey};
   width: ${props =>
-    !props?.$isbig ? '100%' : props?.$signup ? '12.5rem' : '10.2rem'};
+    !props?.$isbig ? '100%' : props?.$signup ? '12.5rem' : '12rem'};
   border-radius: 0.5rem;
   height: ${props => (props?.$isbig ? '5rem' : '2.94rem')};
   display: flex;
@@ -66,14 +66,12 @@ const Input = (inputProps: inputProps) => {
     name,
     step,
     signup,
+    onClick,
   } = inputProps;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (inputType === 'text') {
-      // 글자 15자 제한
-      if (e.target.value.length <= 15) {
-        onChange(e.target.value);
-      }
+      onChange(e.target.value);
     } else {
       // 0이 기본값으로 들어가 있을 때 0 자동 삭제
       if (
@@ -89,6 +87,12 @@ const Input = (inputProps: inputProps) => {
       } else {
         onChange(Number(e.target.value));
       }
+    }
+  };
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onClick?.();
     }
   };
 
@@ -118,6 +122,7 @@ const Input = (inputProps: inputProps) => {
           name={name}
           step={step}
           $signup={signup}
+          onKeyDown={handleEnter}
         />
         {unit && (
           <UnitWrapper

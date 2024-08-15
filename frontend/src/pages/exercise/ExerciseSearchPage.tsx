@@ -90,8 +90,9 @@ const ExerciseSearchPage = () => {
     if (searchStr.replace(/\s+/g, '') === '')
       return Swal.fire({
         text: '검색어를 입력해주세요!',
-        icon: 'warning',
-        iconColor: theme['skyblue'],
+        imageUrl: '/images/alert-cat.png',
+        imageWidth: 150,
+        imageHeight: 150,
         confirmButtonColor: theme['blue'],
       });
 
@@ -118,7 +119,6 @@ const ExerciseSearchPage = () => {
       return Swal.fire({
         text: '운동 시간을 입력해주세요!',
         icon: 'warning',
-        iconColor: theme['skyblue'],
         confirmButtonColor: theme['blue'],
       });
 

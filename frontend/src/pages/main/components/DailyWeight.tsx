@@ -202,6 +202,7 @@ const DailyWeight = () => {
             onChange={setInputValue}
             isBig={true}
             unit="kg"
+            onClick={!todayRef.current ? registWeight : updateWeight}
           />
           <Button
             buttonName={!todayRef.current ? '등록하기' : '수정하기'}
