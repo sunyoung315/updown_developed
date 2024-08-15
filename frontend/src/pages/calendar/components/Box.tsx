@@ -95,9 +95,11 @@ const Box = ({ type, selectedInfo }: calendarBoxProps) => {
         </Category>
         <BigText $type={type}>
           {type === 'diet'
-            ? selectedInfo.totalCalories === 0
+            ? selectedInfo.isFast
               ? '단식😷'
-              : '총 ' + selectedInfo.totalCalories + 'kcal'
+              : selectedInfo.totalCalories === 0
+                ? '냠냠함🍽️'
+                : '총 ' + selectedInfo.totalCalories + 'kcal'
             : type === 'exercise'
               ? '총 ' +
                 selectedInfo.exerciseTime +
