@@ -23,7 +23,7 @@ public class WeightController {
      * @param registerWeightReq
      * @return
      */
-    @PostMapping
+    @PostMapping("/record")
     ResponseEntity<?> registerWeight(@AuthenticationPrincipal Member member, @RequestBody RegisterWeightReq registerWeightReq){
         weightService.registerWeight(member, registerWeightReq);
         return ResponseEntity.ok().build();
@@ -35,7 +35,7 @@ public class WeightController {
      * @param registerWeightReq
      * @return
      */
-    @PutMapping
+    @PutMapping("/record")
     ResponseEntity<?> updateWeight(@AuthenticationPrincipal Member member, @RequestBody RegisterWeightReq registerWeightReq){
         weightService.updateWeight(member, registerWeightReq);
         return ResponseEntity.ok().build();

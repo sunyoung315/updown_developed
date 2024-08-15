@@ -55,8 +55,8 @@ public class DietController {
      * @return 식단 리스트
      */
     @Transactional
-    @GetMapping
-    public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @RequestParam("regDate") LocalDate regDate){
+    @GetMapping("/daily/{regDate}")
+    public ResponseEntity<?> searchDayDiet(@AuthenticationPrincipal Member member, @PathVariable("regDate") LocalDate regDate){
         List<DietDayRes> dietList = dietService.searchDayDiet(member, regDate);
         return ResponseEntity.ok().body(dietList);
     }

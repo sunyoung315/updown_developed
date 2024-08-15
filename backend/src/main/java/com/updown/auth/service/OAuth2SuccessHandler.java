@@ -31,11 +31,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 리프레시 토큰 생성
         String refreshToken = jwtTokenProvider.createRefreshToken(email);
+        System.out.println("email = " + email);
+        System.out.println("refreshToken = " + refreshToken);
 
         // 리프레시 토큰 쿠키에 담기
         jwtTokenProvider.createRefreshTokenCookie(refreshToken, response);
 
-        String targetUrl = "http://localhost:3000/load";
+        String targetUrl = "https://updown.run/load";
+
 
         String urlWithTokens = UriComponentsBuilder.fromUriString(targetUrl)
                 .build().toUriString();

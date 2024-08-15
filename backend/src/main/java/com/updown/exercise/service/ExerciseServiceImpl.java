@@ -230,17 +230,25 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     public void uploadExerciseImg(Member member, UploadExerciseImgReq uploadExerciseImgReq) {
+        System.out.println("운동서비스임플 시작");
         // RegDate에 해당하는 ExerciseRecord 데이터가 없다면 새로 생성해서 이미지 넣자
         ExerciseRecord exerciseRecord = exerciseRecordRepository.findByMemberAndRegDate(member, uploadExerciseImgReq.getRegDate())
                 .orElseGet(() -> createNewExerciseRecord(uploadExerciseImgReq.getRegDate(), member));
+        System.out.println("운동기록 객체 생성");
         try {
             // 기존 이미지가 있으면 삭제
             if (exerciseRecord.getExerciseImg() != null) {
+                System.out.println("기존 이미지가 있으면 삭제");
                 s3Uploader.delete(exerciseRecord.getExerciseImg());
             }
             // 새 이미지 업로드
             String storedFileName = s3Uploader.upload(uploadExerciseImgReq.getExerciseImg(), "exercise");
             exerciseRecord.setExerciseImg(storedFileName);
+            System.out.println("storedFileName = " + storedFileName);
+            exerciseRecord.setTotalTime(0); // 기본값 설정
+   System.out.println("exerciseRecord Total Time = " + exerciseRecord.getTotalTime());       
+     exerciseRecord.setTotalCaloriesBurned(0.0f); // 기본값 설정
+
             exerciseRecordRepository.save(exerciseRecord);
         } catch (Exception e) {
             throw new ImgUploadFailureException(e);
@@ -251,6 +259,8 @@ public class ExerciseServiceImpl implements ExerciseService {
         ExerciseRecord exerciseRecord = ExerciseRecord.builder()
                 .member(member)
                 .regDate(regDate)
+                .totalTime(0)
+                .totalCaloriesBurned(0)
                 .build();
         return exerciseRecordRepository.save(exerciseRecord);
     }

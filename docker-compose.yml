@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  frontend:
+    image: yukyung531/updown-frontend
+    ports:
+      - "8081:80"
+    networks:
+      - updown-network
+
+  backend:
+    image: yukyung531/updown
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - mariadb
+    env_file:
+      - ./backend/.env 
+    networks:
+      - updown-network
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - updown-network
+
+  mariadb:
+    image: "mariadb:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: updown
+      MYSQL_DATABASE: updown
+      MYSQL_USER: root
+      MYSQL_PASSWORD: updown
+    ports:
+      - "3306:3306"
+    networks:
+      - updown-network
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+networks:
+  updown-network:
+    driver: bridge
+
+volumes:
+  mariadb_data:

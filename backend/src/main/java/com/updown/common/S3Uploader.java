@@ -37,9 +37,12 @@ public class S3Uploader {
      */
     public String upload(MultipartFile multipartFile, String dirName) {
         System.out.println("1번");
+        System.out.println("multipartFile = " + multipartFile.getSize());
+        System.out.println("multipartFile = " + multipartFile.getName());
         // 파일 이름 생성 (디렉토리 이름과 UUID를 포함한 고유한 파일 이름)
         String fileName = dirName + "/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
 
+        System.out.println("fileName = " + fileName);
         // 파일을 InputStream으로 변환하여 S3에 업로드
         try (InputStream inputStream = multipartFile.getInputStream()) {
             // 파일 메타데이터 설정 (파일 크기)
@@ -52,6 +55,7 @@ public class S3Uploader {
             );
 
         } catch (IOException e) {
+            System.out.println("에러발생..");
             throw new ImgUploadFailureException(e);
         }
 

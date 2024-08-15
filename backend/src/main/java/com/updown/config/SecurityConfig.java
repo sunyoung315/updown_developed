@@ -42,7 +42,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(config ->
                         config
-                                .requestMatchers("/auth/token", "/auth/kakao","/auth/signup", "/auth/test").permitAll() // 이 줄을 추가하여 특정 경로 허용
+                                .requestMatchers("/auth/token", "/auth/kakao","/auth/signup", "/auth/test", "/oauth2/**").permitAll() // 이 줄을 추가하여 특정 경로 허용
                                 .anyRequest().authenticated()); // 나머지 요청은 인증이 필요하도록 설정
         http
                 .addFilterBefore(new JwtFilter(jwtTokenProvider, memberRepository),
