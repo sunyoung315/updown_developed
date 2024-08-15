@@ -89,6 +89,7 @@ export type inputProps = {
   name?: string;
   step?: number;
   signup?: boolean;
+  onClick?: () => void;
 };
 
 export type nutritionProps = {
