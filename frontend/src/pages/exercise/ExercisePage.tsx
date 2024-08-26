@@ -81,10 +81,11 @@ const ButtonWrapper = styled.div`
   padding: 1rem 0 1rem;
 `;
 
-const ButtonBox = styled.div<{ $gap: number }>`
+const ButtonBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.$gap}rem;
+  gap: 0.2rem;
+  margin-bottom: 2rem;
 `;
 
 const ExercisePage = () => {
@@ -196,37 +197,36 @@ const ExercisePage = () => {
             alt="dietImg"
           />
           <ImageIcon>
-            <IconButton iconName="photo" onClick={openModal} />
+            <IconButton
+              iconName="photo"
+              onClick={
+                exerciseInfo?.exerciseImg
+                  ? openModal
+                  : onClickImageUploadHandler
+              }
+            />
+            <input
+              type="file"
+              ref={imageInputRef}
+              style={{ display: 'none' }}
+              onChange={uploadImage}
+            />
             <BottomSheet isOpen={isOpen} onClose={closeModal} noModal={true}>
-              <ButtonBox $gap={1}>
-                <ButtonBox $gap={0.15}>
-                  <Button
-                    buttonName="사진 보관함"
-                    color="blue"
-                    radius={0}
-                    dir="top"
-                    onClick={onClickImageUploadHandler}
-                  />
-                  <input
-                    type="file"
-                    ref={imageInputRef}
-                    style={{ display: 'none' }}
-                    onChange={uploadImage}
-                  />
-                  <Button
-                    buttonName="사진 찍기"
-                    color="blue"
-                    radius={0}
-                    dir="bottom"
-                  />
-                </ButtonBox>
-                {exerciseInfo?.exerciseImg && (
-                  <Button
-                    buttonName="삭제하기"
-                    color="blue"
-                    onClick={deleteImage}
-                  />
-                )}
+              <ButtonBox>
+                <Button
+                  buttonName="사진 보관함"
+                  color="blue"
+                  radius={0}
+                  dir="top"
+                  onClick={onClickImageUploadHandler}
+                />
+                <Button
+                  buttonName="삭제하기"
+                  color="blue"
+                  radius={0}
+                  dir="bottom"
+                  onClick={deleteImage}
+                />
               </ButtonBox>
             </BottomSheet>
           </ImageIcon>
