@@ -172,7 +172,6 @@ const DietPage = () => {
 
   // 버튼을 눌렀을 때 input 클릭
   const onClickImageUploadHandler = (): void => {
-    console.log('여기 옴?');
     imageInputRef.current?.click();
   };
 
