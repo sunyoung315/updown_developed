@@ -81,7 +81,7 @@
 
 - **카카오 소셜 로그인**
 
-  <img src="assets/로그인.gif" width="200" style="display: block" align="left" />
+  <img src="assets/로그인.gif" width="200" style="display: block" />
 
   - 카카오 계정을 이용한 소셜 로그인을 지원합니다.
 
@@ -93,7 +93,7 @@
 
 - **회원 가입 페이지**
 
-  <img src="assets/회원가입.gif" width="200" style="display: block" align="left" />
+  <img src="assets/회원가입.gif" width="200" style="display: block" />
 
   - 개인별 맞춤 건강 관리를 위해 성별, 나이, 키, 시작 체중, 목표 체중, 평소 활동량을 등록합니다.
 
@@ -109,7 +109,7 @@
 
 - **테마 선택**
 
-  <img src="assets/테마변경.gif" width="200" style="display: block" align="left" />
+  <img src="assets/테마변경.gif" width="200" style="display: block" />
 
   - 테마 캐릭터 좌측 하단의 동그란 '🖼️' 버튼을 누르면 테마 선택 창이 뜹니다.
   - 원하는 테마를 선택하고 '**테마 변경하기**' 버튼을 누릅니다.
@@ -117,21 +117,21 @@
 
 - **개인 정보 수정**
 
-  <img src="assets/개인정보-수정.gif" width="200" style="display: block" align="left" />
+  <img src="assets/개인정보-수정.gif" width="200" style="display: block" />
 
   - '**나의 목표**' 를 누르면 회원가입 시 등록했던 정보( 성별, 나이, 키, 시작 체중, 목표 체중, 평소 활동량 )을 변경할 수 있습니다.
   - 목표 섭취 칼로리도 수정할 수 있습니다.
 
 - **로그아웃**
 
-  <img src="assets/로그아웃.gif" width="200" style="display: block" align="left" />
+  <img src="assets/로그아웃.gif" width="200" style="display: block" />
 
   - 우측 상단의 로그아웃 아이콘을 누르면 로그아웃할 수 있습니다.
     - 로그아웃 아이콘을 누르면 로그아웃 여부를 다시 한번 확인합니다.
 
 - **회원탈퇴**
 
-  <img src="assets/회원탈퇴.gif" width="200" style="display: block" align="left" />
+  <img src="assets/회원탈퇴.gif" width="200" style="display: block" />
 
   - 우측 하단의 '**회원탈퇴**' 버튼을 누르면 탈퇴할 수 있습니다.
 
@@ -141,13 +141,13 @@
 
 - **앱 설치 유도**
 
-  <img src="assets/앱설치유도.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/앱설치유도.gif"  width="200" style="display: block" />
 
   - 메인페이지 로드 시 앱 설치 유무를 확인하여 설치않은 사용자에게 Toast 창을 통해 설치를 유도합니다.
 
 - **날짜 이동 헤더**
 
-  <img src="assets/날짜이동헤더_하루기록.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/날짜이동헤더_하루기록.gif"  width="200" style="display: block" />
 
   - 왼쪽, 오른쪽 화살표를 이동하여 날짜를 변경할 수 있습니다.
   - 날짜 옆의 '🗓' 버튼을 눌러 캘린더 화면으로 이동할 수 있습니다.
@@ -160,7 +160,7 @@
 
 - **식단**
 
-  <img src="assets/메인페이지_식단.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/메인페이지_식단.gif"  width="200" style="display: block" />
 
   - 아침 / 점심 / 저녁 / 간식으로 나누어 섭취한 칼로리와 등록한 사진을 보여줍니다.
 
@@ -174,7 +174,7 @@
 
 - **몸무게**
 
-  <img src="assets/메인페이지_몸무게.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/메인페이지_몸무게.gif"  width="200" style="display: block" />
 
   - '**몸무게**' 탭
     - 오늘의 몸무게를 등록하고 수정할 수 있습니다.
@@ -184,7 +184,7 @@
 
 - **운동**
 
-  <img src="assets/메인페이지_운동.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/메인페이지_운동.gif"  width="200" style="display: block" />
 
   - 당일 운동 요약 정보 ( 운동 사진, 총 시간, 총 소모 칼로리 )를 제공합니다.
 
@@ -196,7 +196,7 @@
 
 - **식단 사진 업로드 및 삭제**
 
-  <img src="assets/식단사진업로드및삭제.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/식단사진업로드및삭제.gif"  width="200" style="display: block" />
 
   - 사진의 좌측 하단에 있는 '📷' 버튼을 누르면 운동 사진을 업로드할 수 있습니다.
     - 식단별 하나씩만 업로드 가능합니다.
@@ -205,14 +205,14 @@
 
 - **해당 카테고리 영양 정보 조회**
 
-  <img src="assets/해당카테고리영양정보조회.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/해당카테고리영양정보조회.gif"  width="200" style="display: block" />
 
   - 해당 식단의 칼로리, 탄수화물, 단백질, 지방을 확인할 수 있습니다.
   - 우측 상단의 '**영양 성분 상세**' 버튼을 누르면 해당 식단의 더욱 상세한 영양 정보를 조회할 수 있습니다.
 
 - **식단 리스트 조회**
 
-  <img src="assets/식단리스트조회_식단삭제.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/식단리스트조회_식단삭제.gif"  width="200" style="display: block" />
 
   - 해당 카테고리에 등록된 식단 리스트를 조회할 수 있습니다.
   - 음식 이름, 음식 브랜드, 섭취량, 칼로리를 확인할 수 있습니다.
@@ -225,7 +225,7 @@
 
   - **식단 검색**
 
-    <img src="assets/식단검색등록.gif"  width="200" style="display: block" align="left" />
+    <img src="assets/식단검색등록.gif"  width="200" style="display: block" />
 
     - '**검색**' 버튼을 눌러 검색창으로 이동합니다.
 
@@ -241,7 +241,7 @@
 
   - **직접 등록**
 
-    <img src="assets/식단직접등록.gif"  width="200" style="display: block" align="left" />
+    <img src="assets/식단직접등록.gif"  width="200" style="display: block" />
 
     - '**직접 등록**' 버튼을 누르면 식단 등록 페이지로 이동합니다.
       - 음식 이름, 섭취량은 필수값으로 입력해야 합니다.
@@ -250,7 +250,7 @@
 
 - **식단 상세 조회**
 
-  <img src="assets/식단상세조회_수정.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/식단상세조회_수정.gif"  width="200" style="display: block" />
 
   - 조회하고자 하는 식단을 누르면 해당 식단의 상세페이지로 이동해 정보를 조회할 수 있습니다.
 
@@ -264,7 +264,7 @@
 
 - **운동 사진 업로드 및 삭제**
 
-  <img src="assets/운동-사진-등록.gif" width="200" style="display: block" align="left" />
+  <img src="assets/운동-사진-등록.gif" width="200" style="display: block" />
 
   - 사진의 좌측 하단에 있는 '📷' 버튼을 누르면 운동 사진을 업로드할 수 있습니다.
 
@@ -280,7 +280,7 @@
 
 - **운동 리스트 조회**
 
-  <img src="assets/운동리스트 조회.gif" width="200" style="display: block" align="left" />
+  <img src="assets/운동리스트 조회.gif" width="200" style="display: block" />
 
   - 해당 일자에 등록된 운동 리스트를 조회할 수 있습니다.
   - 운동 이름, 운동 시간, 소모 칼로리, 상세 기록 ( 횟수, 무게, 거리 ) 정보를 리스트로 제공합니다.
@@ -293,7 +293,7 @@
 
   - **검색 등록**
 
-    <img src="assets/운동-검색-등록.gif" width="200" style="display: block" align="left" />
+    <img src="assets/운동-검색-등록.gif" width="200" style="display: block" />
 
     - '**검색**' 버튼을 눌러 검색창으로 이동합니다.
 
@@ -311,7 +311,7 @@
 
   - **직접 등록**
 
-    <img src="assets/운동-직접-등록.gif" width="200" style="display: block" align="left" />
+    <img src="assets/운동-직접-등록.gif" width="200" style="display: block" />
 
     - '**직접 등록**' 버튼을 누르면 운동 등록 페이지로 이동합니다.
 
@@ -322,7 +322,7 @@
 
 - **직접 등록 시 운동 상세 조회**
 
-  <img src="assets/직접 등록 운동 수정.gif" width="200" style="display: block" align="left" />
+  <img src="assets/직접 등록 운동 수정.gif" width="200" style="display: block" />
 
   - 조회하고자 하는 운동을 누르면 운동 상세 페이지로 이동해 정보를 조회할 수 있습니다.
 
@@ -333,7 +333,7 @@
 
 - **검색 등록시 운동 상세 조회 및 수정**
 
-  <img src="assets/검색 등록 운동 수정.gif" width="200" style="display: block" align="left" />
+  <img src="assets/검색 등록 운동 수정.gif" width="200" style="display: block" />
 
   - 조회하고자 하는 운동을 누르면 Modal이 열려 정보를 확인할 수 있습니다.
   - 값을 수정한 후 '**수정완료**' 버튼을 누르면 수정이 완료됩니다.
@@ -342,7 +342,7 @@
 
 - **건강 기록 조회**
 
-  <img src="assets/캘린더_건강기록조회.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/캘린더_건강기록조회.gif"  width="200" style="display: block" />
 
   - 원하는 날짜를 선택하면 해당 일자의 식단 / 운동 / 몸무게 기록을 조회할 수 있습니다.
     - 상단의 식단, 운동, 몸무게 버튼을 누르면 원하는 정보를 조회할 수 있습니다.
@@ -352,7 +352,7 @@
 
 - **연, 월 선택**
 
-  <img src="assets/캘린더_연_월선택.gif"  width="200" style="display: block" align="left" />
+  <img src="assets/캘린더_연_월선택.gif"  width="200" style="display: block" />
 
   - 상단의 날짜 옆의 화살표를 누르면 연도와 월을 선택할 수 있습니다.
   - '**선택 완료**' 버튼을 누르면 해당 연, 월의 달력으로 이동합니다.
